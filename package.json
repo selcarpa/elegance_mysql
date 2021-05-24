@@ -11,16 +11,17 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:elegancemysql.helloWorld",
-		"onView:elegance_list"
+		"onView:elegance_list",
+		"onCommand:html.main"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "elegancemysql.helloWorld",
-				"title": "Hello World"
-			}
+				"command": "html.main",
+				"title": "Test main.html",
+				"category": "Cat Coding"
+			  }
 		],
 		"viewsContainers": {
 			"activitybar": [

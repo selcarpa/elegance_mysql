@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-export class DatabaseItem {
+export class DatabaseConfig {
     public enable: boolean;
     constructor(
         public name: string,
@@ -20,8 +20,8 @@ function getConfiguration(): vscode.WorkspaceConfiguration {
     return vscode.workspace.getConfiguration("EleganceMysql");
 }
 
-export function getDatabaseItems(): Array<DatabaseItem> {
+export function getDatabaseConfigs(): Array<DatabaseConfig> {
     const databases = getConfiguration().get("databases");
 
-    return <Array<DatabaseItem>>databases;
+    return <Array<DatabaseConfig>>databases;
 }
