@@ -1,33 +1,161 @@
-import * as vscode from 'vscode';
-import { EleganceDatabaseProvider as EleganceTreeNodeProvider } from './eleganceDatabaseProvider';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as vscode from "vscode";
+import {
+  EleganceDatabaseProvider as EleganceTreeNodeProvider,
+  EleganceTreeItem,
+} from "./eleganceDatabaseProvider";
+import * as fs from "fs";
+import * as path from "path";
+import { select500 } from "./query";
 
 export function activate(context: vscode.ExtensionContext) {
+  console.log("Elegance mysql!");
 
-	console.log('Elegance mysql!');
+  vscode.window.registerTreeDataProvider(
+    "elegance_list",
+    new EleganceTreeNodeProvider()
+  );
 
-	vscode.window.registerTreeDataProvider(
-		'elegance_list',
-		new EleganceTreeNodeProvider()
-	);
+  vscode.commands.registerCommand(
+    "elegance_mysql.select500",
+    (item: EleganceTreeItem) => {
+      select500(item);
+    }
+  );
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand('html.main', () => {
-			const panel = vscode.window.createWebviewPanel(
-				"",
-				'main.html', // Title of the panel displayed to the user
-				vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-				{} // Webview options. More on these later.
-			);
-			fs.readFile(path.join(context.extensionPath,'view', 'html', 'main.html'), (err, data) => {
-				if (err) { console.error(err) ;}
-				panel.webview.html = data.toString();
-			});
-		})
+  context.subscriptions.push(
+    vscode.commands.registerCommand("html.main", () => {
+      const panel = vscode.window.createWebviewPanel(
+        "",
+        "query",
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+          localResourceRoots: [
+            vscode.Uri.file(path.join(context.extensionPath, "views", "js")),
+            vscode.Uri.file(path.join(context.extensionPath, "views", "css")),
+          ],
+        }
+      );
+      fs.readFile(
+        path.join(context.extensionPath, "views", "html", "query.html"),
+        (err, data) => {
+          if (err) {
+            console.error(err);
+          }
+          let htmlContent = data.toString();
+          let imports: Array<string> = [];
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "js",
+                    "jquery.slim.min.js"
+                  )
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "js",
+                    "popper.min.js"
+                  )
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "js",
+                    "bootstrap.min.js"
+                  )
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "js",
+                    "bootstrap.bundle.min.js"
+                  )
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "js",
+                    "angular.min.js"
+                  )
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(context.extensionPath, "views", "js", "query.js")
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<link rel="stylesheet" href="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "css",
+                    "bootstrap.min.css"
+                  )
+                )
+              ) +
+              '">'
+          );
+          imports.push(
+            '<link rel="stylesheet" href="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(context.extensionPath, "views", "css", "query.css")
+                )
+              ) +
+              '">'
+          );
 
-	);
-
+          htmlContent = htmlContent.replace(
+            "[ELEGANCE_IMPORT]",
+            imports.join("\n")
+          );
+          panel.webview.html = htmlContent;
+        }
+      );
+    })
+  );
 }
 
-export function deactivate() { }
+export function deactivate() {}

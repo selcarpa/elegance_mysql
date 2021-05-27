@@ -1,0 +1,14 @@
+body.vscode-light {
+  color: black;
+}
+
+body.vscode-dark {
+  color: white;
+}
+
+body.vscode-high-contrast {
+  color: red;
+}
+body {
+  background-color: var(--vscode-editor-background);
+}

@@ -1,92 +1,124 @@
 {
-	"name": "elegance_mysql",
-	"displayName": "elegance mysql",
-	"description": "mysql database diagram",
-	"publisher": "aethli",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.56.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onView:elegance_list",
-		"onCommand:html.main"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "html.main",
-				"title": "Test main.html",
-				"category": "Cat Coding"
-			  }
-		],
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "elegance_mysql",
-					"title": "elegance mysql",
-					"icon": "media/elegance_mysql.svg"
-				}
-			]
-		},
-		"views": {
-			"elegance_mysql": [
-				{
-					"id": "elegance_list",
-					"name": "List",
-					"icon": "media/elegance_database.svg",
-					"contextualTitle": ""
-				}
-			]
-		},
-		"configuration": {
-			"title": "EleganceMysql",
-			"properties": {
-				"EleganceMysql.databases": {
-					"type": "array",
-					"default": [
-						{
-							"name": "local",
-							"host": "127.0.0.1",
-							"port": 3306,
-							"user": "root",
-							"password": "mysqlpassword",
-							"alwaysEnable": false,
-							"schemaFilterEnable": false,
-							"inSchemas": []
-						}
-					],
-					"description": "database list"
-				}
-			}
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.56.0",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.4",
-		"@types/node": "^12.11.7",
-		"eslint": "^7.19.0",
-		"@typescript-eslint/eslint-plugin": "^4.14.1",
-		"@typescript-eslint/parser": "^4.14.1",
-		"glob": "^7.1.6",
-		"mocha": "^8.2.1",
-		"typescript": "^4.1.3",
-		"vscode-test": "^1.5.0"
-	},
-	"dependencies": {
-		"@types/mysql": "^2.15.18",
-		"mysql": "^2.18.1"
-	}
+  "name": "elegance_mysql",
+  "displayName": "elegance mysql",
+  "description": "mysql database diagram",
+  "publisher": "aethli",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.56.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:elegance_list",
+    "onCommand:html.main"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "elegance_mysql.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "media/light/elegance_refresh.svg",
+          "dark": "media/dark/elegance_refresh.svg"
+        }
+      },
+      {
+        "command": "html.main",
+        "title": "Test main.html",
+        "category": "Cat Coding"
+      },
+      {
+        "command": "elegance_mysql.select500",
+        "title": "Select for 500 results",
+        "category": "Select"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "elegance_mysql",
+          "title": "elegance mysql",
+          "icon": "media/elegance_mysql.svg"
+        }
+      ]
+    },
+    "views": {
+      "elegance_mysql": [
+        {
+          "id": "elegance_list",
+          "name": "List",
+          "icon": "media/elegance_database.svg",
+          "contextualTitle": ""
+        }
+      ]
+    },
+    "configuration": {
+      "title": "elegance.mysql",
+      "properties": {
+        "elegance.mysql.databases": {
+          "type": "array",
+          "default": [
+            {
+              "name": "local",
+              "host": "127.0.0.1",
+              "port": 3306,
+              "user": "root",
+              "password": "mysqlpassword",
+              "schemaFilterEnable": false,
+              "showSchemas": []
+            }
+          ],
+          "description": "database list"
+        }
+      }
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "elegance_mysql.refresh",
+          "when": "view==elegance_list",
+          "group": "inline"
+        },
+        {
+          "command": "elegance_mysql.select500",
+          "when": "view==elegance_list",
+          "group": "z_commands"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "elegance_list",
+        "contents": "No Database found.[Edit Settings](command:nodeDependencies.addEntry)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.56.0",
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^12.11.7",
+    "eslint": "^7.19.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "glob": "^7.1.6",
+    "mocha": "^8.2.1",
+    "typescript": "^4.1.3",
+    "vscode-test": "^1.5.0"
+  },
+  "dependencies": {
+    "@types/mysql": "^2.15.18",
+    "mysql": "^2.18.1"
+  }
 }

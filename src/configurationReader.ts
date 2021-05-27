@@ -1,23 +1,20 @@
 import * as vscode from 'vscode';
 export class DatabaseConfig {
-    public enable: boolean;
     constructor(
         public name: string,
         public host: string,
         public port: number,
         public user: string,
         public password: string,
-        public alwaysEnable: boolean,
         public schemaFilterEnable: boolean,
-        public inSchemas: Array<string>) {
-        this.enable = alwaysEnable;
+        public showSchemas: Array<string>) {
     }
 }
 
 
 
 function getConfiguration(): vscode.WorkspaceConfiguration {
-    return vscode.workspace.getConfiguration("EleganceMysql");
+    return vscode.workspace.getConfiguration("elegance.mysql");
 }
 
 export function getDatabaseConfigs(): Array<DatabaseConfig> {
