@@ -137,6 +137,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
             "elegance_database.svg"
           ),
         };
+        this.contextValue="database";
         this.sql =
           "SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;";
         break;
@@ -159,6 +160,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
             "elegance_schema.svg"
           ),
         };
+        this.contextValue="schema";
         this.sql =
           "SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='" +
           result.schemaName +
@@ -183,6 +185,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
             "elegance_table.svg"
           ),
         };
+        this.contextValue="table";
         this.sql =
           "SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='" +
           result.tableName +
@@ -230,10 +233,11 @@ export class EleganceTreeItem extends vscode.TreeItem {
             ),
           };
         }
+        this.contextValue="column";
         this.collapsibleState = TreeItemCollapsibleState.None;
         break;
       default:
-    }
+    } 
   }
 }
 

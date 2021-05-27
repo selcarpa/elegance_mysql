@@ -32,7 +32,7 @@
       },
       {
         "command": "elegance_mysql.select500",
-        "title": "Select for 500 results",
+        "title": "select top 500",
         "category": "Select"
       }
     ],
@@ -84,7 +84,7 @@
         },
         {
           "command": "elegance_mysql.select500",
-          "when": "view==elegance_list",
+          "when": "view == elegance_list && viewItem == table",
           "group": "z_commands"
         }
       ]
