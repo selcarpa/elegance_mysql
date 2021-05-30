@@ -1,13 +1,45 @@
 <html>
-  [ELEGANCE_IMPORT]
+  <!-- [ELEGANCE_IMPORT] -->
+  <script src="../js/jquery.slim.min.js"></script>
+  <script src="../js/colResizable-1.6.js"></script>
+  <script src="../js/popper.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/angular.min.js"></script>
+  <script src="../js/query.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../css/query.css" />
 
   <body ng-app="queryApp" ng-controller="queryController">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm">One of three columns</div>
-        <div class="col-sm">One of three columns</div>
-        <div class="col-sm">One of three columns</div>
+    <form>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="First name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Last name">
+        </div>
+        <button class="btn btn-primary" type="button">Apply</button>
+      </div>
+    </form>
+
+    <div class="jumbotron jumbotron-fluid" ng-show="queryData==undefined||queryData.columns==undefined||queryData.columns.length==0">
+      <div class="container">
+        <p class="lead">No data.</p>
       </div>
     </div>
+
+    <table class="table table-striped table-bordered" id="mainContent" ng-show="queryData!=undefined&&queryData.columns.length>0">
+      <thead>
+        <th class="disabled" scope="col">#</th>
+        <th ng-repeat="column in queryData.columns">{{column}}</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="row in queryData.rows">
+          <td class="disabled">{{$index+1}}</td>
+          <td ng-repeat="k in queryData.columns">{{row[k]}}</td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>

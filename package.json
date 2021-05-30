@@ -31,11 +31,65 @@
         "category": "Cat Coding"
       },
       {
+        "command": "elegance_mysql.addDatabase",
+        "title": "add database",
+        "category": "add"
+      },
+      {
         "command": "elegance_mysql.select500",
         "title": "select top 500",
-        "category": "Select"
+        "category": "query"
+      },
+      {
+        "command": "elegance_mysql.newQuery",
+        "title": "new query",
+        "category": "query"
+      },
+      {
+        "command": "elegance_mysql.detail",
+        "title": "detail",
+        "category": "query"
+      },
+      {
+        "command": "elegance_mysql.compareTo",
+        "title": "compare to",
+        "category": "compare"
       }
     ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "elegance_mysql.refresh",
+          "when": "view==elegance_list",
+          "group": "inline"
+        },
+        {
+          "command": "elegance_mysql.select500",
+          "when": "view == elegance_list && viewItem == table",
+          "group": "query@1"
+        },
+        {
+          "command": "elegance_mysql.newQuery",
+          "when": "view == elegance_list && viewItem == table",
+          "group": "query@2"
+        },
+        {
+          "command": "elegance_mysql.detail",
+          "when": "view == elegance_list && viewItem == table",
+          "group": "query@3"
+        },
+        {
+          "command": "elegance_mysql.addDatabase",
+          "when": "view == elegance_list && viewItem == database",
+          "group": "add@1"
+        },
+        {
+          "command": "elegance_mysql.compareTo",
+          "when": "view == elegance_list && viewItem in elegance_mysql.compareTo.supportedItem",
+          "group": "compare@1"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {
@@ -74,20 +128,6 @@
           "description": "database list"
         }
       }
-    },
-    "menus": {
-      "view/item/context": [
-        {
-          "command": "elegance_mysql.refresh",
-          "when": "view==elegance_list",
-          "group": "inline"
-        },
-        {
-          "command": "elegance_mysql.select500",
-          "when": "view == elegance_list && viewItem == table",
-          "group": "z_commands"
-        }
-      ]
     },
     "viewsWelcome": [
       {

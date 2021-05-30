@@ -6,9 +6,20 @@ import {
 import * as fs from "fs";
 import * as path from "path";
 import { select500 } from "./query";
+import { getWebviewPanel } from "./capability/utils";
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("Elegance mysql!");
+
+  var banner: string = String.raw`
+  .__                                                 
+  ____  |  |    ____    ____ _____     ____    ____   ____  
+_/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \ 
+\  ___/ |  |__\  ___/ / /_/  >/ __ \_|   |  \\  \___\  ___/ 
+ \___  >|____/ \___  >\___  /(____  /|___|  / \___  >\___  >
+     \/            \//_____/      \/      \/      \/     \/ 
+  `;
+  console.log(banner);
 
   vscode.window.registerTreeDataProvider(
     "elegance_list",
@@ -18,8 +29,20 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     "elegance_mysql.select500",
     (item: EleganceTreeItem) => {
-      select500(item);
+      let panel = getWebviewPanel(
+        "elegance_mysql.query",
+        "result",
+        vscode.ViewColumn.One,
+        context
+      );
+      select500(item, panel,context);
     }
+  );
+
+  vscode.commands.executeCommand(
+    "setContext",
+    "elegance_mysql.compareTo.supportedItem",
+    ["table", "schema"]
   );
 
   context.subscriptions.push(
@@ -53,6 +76,20 @@ export function activate(context: vscode.ExtensionContext) {
                     "views",
                     "js",
                     "jquery.slim.min.js"
+                  )
+                )
+              ) +
+              '"></script>'
+          );
+          imports.push(
+            '<script src="' +
+              panel.webview.asWebviewUri(
+                vscode.Uri.file(
+                  path.join(
+                    context.extensionPath,
+                    "views",
+                    "js",
+                    "colResizable-1.6.min.js"
                   )
                 )
               ) +
@@ -148,7 +185,7 @@ export function activate(context: vscode.ExtensionContext) {
           );
 
           htmlContent = htmlContent.replace(
-            "[ELEGANCE_IMPORT]",
+            "<!-- [ELEGANCE_IMPORT] -->",
             imports.join("\n")
           );
           panel.webview.html = htmlContent;

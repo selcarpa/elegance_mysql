@@ -12,3 +12,24 @@ body.vscode-high-contrast {
 body {
   background-color: var(--vscode-editor-background);
 }
+
+table {
+  overflow-x: auto;
+  color: var(--vscode-foreground) !important;
+  border-collapse: collapse;
+  font-family: var(--vscode-editor-font-family);
+  text-align: center;
+}
+
+td,
+th {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 250px;
+}
+
+td.disabled,
+th.disabled {
+  width: 30px;
+  min-width: 30px;
+}
