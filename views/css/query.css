@@ -33,3 +33,8 @@ th.disabled {
   width: 30px;
   min-width: 30px;
 }
+
+.jumbotron{
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-foreground) !important;
+}

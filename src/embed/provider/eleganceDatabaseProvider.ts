@@ -1,15 +1,15 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { DatabaseConfig, getDatabaseConfigs } from "./configurationReader";
+import { DatabaseConfig, getDatabaseConfigs } from "../../configurationReader";
 import { TreeItemCollapsibleState } from "vscode";
 import * as mysql from "mysql";
-import { ChildrenGetter } from "./childrenGetter";
+import { ChildrenGetter } from "../../capability/childrenGetter";
 import { FieldInfo, MysqlError } from "mysql";
 
 export class EleganceDatabaseProvider
   implements vscode.TreeDataProvider<EleganceTreeItem>
 {
-  constructor() {}
+  constructor(readonly extensionPath: string) {}
   onDidChangeTreeData?:
     | vscode.Event<void | EleganceTreeItem | null | undefined>
     | undefined;
@@ -36,7 +36,8 @@ export class EleganceDatabaseProvider
         let e: EleganceTreeItem = new EleganceTreeItem(
           config.name,
           EleganceTreeItemType.database,
-          config
+          config,
+          this.extensionPath
         );
         databaseTreeItems.push(e);
       });
@@ -95,6 +96,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
                 result.name,
                 sonItemType,
                 this.config,
+                this.extensionPath,
                 result
               );
               sonTreeItems.push(e);
@@ -114,6 +116,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
     public readonly label: string,
     public type: EleganceTreeItemType,
     public config: DatabaseConfig,
+    public extensionPath: string,
     public result: any | null = null
   ) {
     super(label, TreeItemCollapsibleState.Collapsed);
@@ -121,46 +124,38 @@ export class EleganceTreeItem extends vscode.TreeItem {
       case EleganceTreeItemType.database:
         this.iconPath = {
           light: path.join(
-            __filename,
-            "..",
-            "..",
+            extensionPath,
             "media",
             "light",
             "elegance_database.svg"
           ),
           dark: path.join(
-            __filename,
-            "..",
-            "..",
+            extensionPath,
             "media",
             "dark",
             "elegance_database.svg"
           ),
         };
-        this.contextValue="database";
+        this.contextValue = "database";
         this.sql =
           "SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;";
         break;
       case EleganceTreeItemType.schema:
         this.iconPath = {
           light: path.join(
-            __filename,
-            "..",
-            "..",
+            extensionPath,
             "media",
             "light",
             "elegance_schema.svg"
           ),
           dark: path.join(
-            __filename,
-            "..",
-            "..",
+            extensionPath,
             "media",
             "dark",
             "elegance_schema.svg"
           ),
         };
-        this.contextValue="schema";
+        this.contextValue = "schema";
         this.sql =
           "SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='" +
           result.schemaName +
@@ -169,23 +164,14 @@ export class EleganceTreeItem extends vscode.TreeItem {
       case EleganceTreeItemType.table:
         this.iconPath = {
           light: path.join(
-            __filename,
-            "..",
-            "..",
+            extensionPath,
             "media",
             "light",
             "elegance_table.svg"
           ),
-          dark: path.join(
-            __filename,
-            "..",
-            "..",
-            "media",
-            "dark",
-            "elegance_table.svg"
-          ),
+          dark: path.join(extensionPath, "media", "dark", "elegance_table.svg"),
         };
-        this.contextValue="table";
+        this.contextValue = "table";
         this.sql =
           "SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='" +
           result.tableName +
@@ -197,17 +183,13 @@ export class EleganceTreeItem extends vscode.TreeItem {
         if (result.COLUMN_KEY === "PRI") {
           this.iconPath = {
             light: path.join(
-              __filename,
-              "..",
-              "..",
+              extensionPath,
               "media",
               "light",
               "elegance_key.svg"
             ),
             dark: path.join(
-              __filename,
-              "..",
-              "..",
+              extensionPath,
               "media",
               "dark",
               "elegance_key.svg"
@@ -216,28 +198,24 @@ export class EleganceTreeItem extends vscode.TreeItem {
         } else {
           this.iconPath = {
             light: path.join(
-              __filename,
-              "..",
-              "..",
+              extensionPath,
               "media",
               "light",
               "elegance_column.svg"
             ),
             dark: path.join(
-              __filename,
-              "..",
-              "..",
+              extensionPath,
               "media",
               "dark",
               "elegance_column.svg"
             ),
           };
         }
-        this.contextValue="column";
+        this.contextValue = "column";
         this.collapsibleState = TreeItemCollapsibleState.None;
         break;
       default:
-    } 
+    }
   }
 }
 

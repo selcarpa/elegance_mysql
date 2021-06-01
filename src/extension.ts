@@ -2,10 +2,10 @@ import * as vscode from "vscode";
 import {
   EleganceDatabaseProvider as EleganceTreeNodeProvider,
   EleganceTreeItem,
-} from "./eleganceDatabaseProvider";
+} from "./embed/provider/eleganceDatabaseProvider";
 import * as fs from "fs";
 import * as path from "path";
-import { select500 } from "./query";
+import { select500 } from "./controller/query";
 import { getWebviewPanel } from "./capability/utils";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -23,7 +23,7 @@ _/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \
 
   vscode.window.registerTreeDataProvider(
     "elegance_list",
-    new EleganceTreeNodeProvider()
+    new EleganceTreeNodeProvider(context.extensionPath)
   );
 
   vscode.commands.registerCommand(
