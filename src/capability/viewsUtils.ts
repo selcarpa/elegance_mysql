@@ -15,12 +15,12 @@ export function convertImports(
   for (const resource of resources) {
     if (resource.indexOf("js") !== -1) {
       let jsResource = pathResolve(
-        vscode.Uri.file(path.join(extensionPath, "view", "js", resource))
+        vscode.Uri.file(path.join(extensionPath, "views", "js", resource))
       );
       imports.push(`<script src="${jsResource}"></script>`);
     } else if (resource.indexOf("css") !== -1) {
       let cssResource = pathResolve(
-        vscode.Uri.file(path.join(extensionPath, "view", "css", resource))
+        vscode.Uri.file(path.join(extensionPath, "views", "css", resource))
       );
       imports.push(`<link rel="stylesheet" href="${cssResource}">`);
     }

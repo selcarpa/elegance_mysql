@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { DatabaseConfig, getDatabaseConfigs } from "../../configurationReader";
+import { DatabaseConfig, getDatabaseConfigs } from "../../capability/configurationReader";
 import { TreeItemCollapsibleState } from "vscode";
 import * as mysql from "mysql";
 import { ChildrenGetter } from "../../capability/childrenGetter";

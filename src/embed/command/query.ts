@@ -1,9 +1,9 @@
-import { EleganceTreeItem } from "../embed/provider/eleganceDatabaseProvider";
+import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
 import * as mysql from "mysql";
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
-import { convertImports } from "../capability/utils";
+import { convertImports } from "../../capability/viewsUtils";
 
 async function getQueryHtml(rootPath: string): Promise<string> {
   let promise = new Promise<string>((resolve) => {
