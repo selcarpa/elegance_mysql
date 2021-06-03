@@ -26,11 +26,6 @@
         }
       },
       {
-        "command": "html.main",
-        "title": "Test main.html",
-        "category": "Cat Coding"
-      },
-      {
         "command": "elegance_mysql.addDatabase",
         "title": "add database",
         "category": "add"

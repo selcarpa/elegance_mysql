@@ -1,15 +1,11 @@
 import { DatabaseConfig } from "./configurationReader";
 import * as mysql from "mysql";
 
-export interface OnResult {
-  (): Promise<Array<any>>;
-}
-
 export function execSelect(
-  sql: string,
-  database: string,
   config: DatabaseConfig,
-  onSuccess: OnResult
+  database: string,
+  sql: string,
+  callBack: mysql.queryCallback
 ) {
   let connection = mysql.createConnection({
     host: config.host,
@@ -17,16 +13,16 @@ export function execSelect(
     password: config.password,
     database: database,
   });
-  let promise = new Promise<Array<string>>((resolve) => {
-    connection.query(
-      sql,
-      (
-        error: mysql.MysqlError,
-        results: Array<any>,
-        fields: mysql.FieldInfo[]
-      ) => {
-          
-      }
-    );
-  });
+  connection.connect();
+  connection.query(
+    sql,
+    (
+      error: mysql.MysqlError,
+      results: Array<any>,
+      fields: mysql.FieldInfo[]
+    ) => {
+      callBack(error, results, fields);
+    }
+  );
+  connection.end();
 }

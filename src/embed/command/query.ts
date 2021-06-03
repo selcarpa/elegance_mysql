@@ -21,8 +21,6 @@ async function getQueryHtml(rootPath: string): Promise<string> {
   return promise;
 }
 
-function getImports() {}
-
 export function select500(
   item: EleganceTreeItem,
   panel: vscode.WebviewPanel,

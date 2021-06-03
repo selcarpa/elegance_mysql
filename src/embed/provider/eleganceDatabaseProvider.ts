@@ -1,10 +1,16 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { DatabaseConfig, getDatabaseConfigs } from "../../capability/configurationReader";
+import {
+  DatabaseConfig,
+  getDatabaseConfigs,
+} from "../../capability/configurationReader";
 import { TreeItemCollapsibleState } from "vscode";
-import * as mysql from "mysql";
-import { ChildrenGetter } from "../../capability/childrenGetter";
 import { FieldInfo, MysqlError } from "mysql";
+import { execSelect } from "../../capability/connectionUtils";
+
+interface ChildrenGetter {
+  (): Promise<Array<EleganceTreeItem>>;
+}
 
 export class EleganceDatabaseProvider
   implements vscode.TreeDataProvider<EleganceTreeItem>
@@ -63,20 +69,16 @@ export class EleganceTreeItem extends vscode.TreeItem {
         break;
       default:
     }
-
-    let connection = mysql.createConnection({
-      host: this.config.host,
-      user: this.config.user,
-      password: this.config.password,
-      database: "mysql",
-    });
-
-    connection.connect();
-
     let promise = new Promise<Array<EleganceTreeItem>>((resolve) => {
-      connection.query(
+      execSelect(
+        this.config,
+        "mysql",
         this.sql,
-        (error: MysqlError, results: Array<any>, fields: FieldInfo[]) => {
+        (
+          error: MysqlError | null,
+          results: Array<any>,
+          fields: FieldInfo[] | undefined
+        ) => {
           if (error) {
             console.error(error.message);
             throw error;
@@ -106,12 +108,19 @@ export class EleganceTreeItem extends vscode.TreeItem {
         }
       );
     });
-    connection.end();
     return promise;
   };
 
   private sql!: string;
 
+  /**
+   *
+   * @param label text to display
+   * @param type @see EleganceTreeItemType
+   * @param config @see DatabaseConfig
+   * @param extensionPath extension absolute path
+   * @param result result from last select
+   */
   constructor(
     public readonly label: string,
     public type: EleganceTreeItemType,
@@ -188,12 +197,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
               "light",
               "elegance_key.svg"
             ),
-            dark: path.join(
-              extensionPath,
-              "media",
-              "dark",
-              "elegance_key.svg"
-            ),
+            dark: path.join(extensionPath, "media", "dark", "elegance_key.svg"),
           };
         } else {
           this.iconPath = {
@@ -219,6 +223,9 @@ export class EleganceTreeItem extends vscode.TreeItem {
   }
 }
 
+/**
+ * item type
+ */
 enum EleganceTreeItemType {
   database,
   schema,
