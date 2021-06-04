@@ -7,6 +7,7 @@ import {
 import { TreeItemCollapsibleState } from "vscode";
 import { FieldInfo, MysqlError } from "mysql";
 import { execSelect } from "../../capability/connectionUtils";
+import { Logger } from "../../capability/logService";
 
 interface ChildrenGetter {
   (): Promise<Array<EleganceTreeItem>>;
@@ -52,6 +53,9 @@ export class EleganceDatabaseProvider
   }
 }
 
+/**
+ * tree item
+ */
 export class EleganceTreeItem extends vscode.TreeItem {
   public getChildren: ChildrenGetter = () => {
     let sonItemType: EleganceTreeItemType;
@@ -80,12 +84,12 @@ export class EleganceTreeItem extends vscode.TreeItem {
           fields: FieldInfo[] | undefined
         ) => {
           if (error) {
-            console.error(error.message);
+            Logger.error(error.message, error);
             throw error;
           }
           let sonTreeItems: EleganceTreeItem[] = [];
           results.forEach((result) => {
-            console.log(result);
+            Logger.debug(undefined,result);
 
             //to filter out schemas with showSchemas in settings.json
             if (

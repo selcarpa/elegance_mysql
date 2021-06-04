@@ -1,9 +1,16 @@
 import { DatabaseConfig } from "./configurationReader";
 import * as mysql from "mysql";
 
+/**
+ *
+ * @param config database config of this item
+ * @param schema schema used
+ * @param sql sql to execute
+ * @param callBack callback
+ */
 export function execSelect(
   config: DatabaseConfig,
-  database: string,
+  schema: string,
   sql: string,
   callBack: mysql.queryCallback
 ) {
@@ -11,18 +18,9 @@ export function execSelect(
     host: config.host,
     user: config.user,
     password: config.password,
-    database: database,
+    database: schema,
   });
   connection.connect();
-  connection.query(
-    sql,
-    (
-      error: mysql.MysqlError,
-      results: Array<any>,
-      fields: mysql.FieldInfo[]
-    ) => {
-      callBack(error, results, fields);
-    }
-  );
+  connection.query(sql, callBack);
   connection.end();
 }

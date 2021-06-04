@@ -1,10 +1,21 @@
 import * as vscode from "vscode";
 import * as path from "path";
 
+/**
+ *
+ */
 export interface PathResolve {
   (file: vscode.Uri): vscode.Uri;
 }
 
+/**
+ *
+ * @param originHtml
+ * @param extensionPath
+ * @param pathResolve
+ * @param resources
+ * @returns
+ */
 export function convertImports(
   originHtml: string,
   extensionPath: string,
@@ -33,6 +44,14 @@ export function convertImports(
   return originHtml;
 }
 
+/**
+ *
+ * @param viewType
+ * @param title
+ * @param showOptions
+ * @param context
+ * @returns
+ */
 export function getWebviewPanel(
   viewType: string,
   title: string,

@@ -1,4 +1,3 @@
-export interface Message {
-  result: any;
-  status: boolean;
+export class Message {
+  constructor(public result: any, public status: boolean) {}
 }

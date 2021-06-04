@@ -3,13 +3,15 @@ import {
   EleganceDatabaseProvider as EleganceTreeNodeProvider,
   EleganceTreeItem,
 } from "./embed/provider/eleganceDatabaseProvider";
-import * as fs from "fs";
-import * as path from "path";
 import { select500 } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
+import { Logger } from "./capability/logService";
+import { getLogConfig } from "./capability/configurationReader";
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("Elegance mysql!");
+  Logger.setOutputLevel(getLogConfig());
+
+  Logger.info("Elegance mysql!");
 
   vscode.commands.executeCommand(
     "setContext",
@@ -42,7 +44,7 @@ _/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \
  \___  >|____/ \___  >\___  /(____  /|___|  / \___  >\___  >
      \/            \//_____/      \/      \/      \/     \/ 
   `;
-  console.log(banner);
+  Logger.plain(banner);
 }
 
 export function deactivate() {}

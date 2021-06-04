@@ -1,105 +1,4 @@
 angular.module("queryApp", []).controller("queryController", function ($scope) {
-  $scope.queryData = {
-    columns: ["this", "is", "a", "very", "long", "example"],
-    rows: [
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-    ],
-  };
   $scope.queryData = {};
   $scope.error = "No data.";
   angular.element(document).ready(function () {
@@ -113,8 +12,10 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
   });
   window.addEventListener("message", (event) => {
     const message = event.data;
+    debugger;
     if (message.status) {
       $scope.queryData = message.result;
+      $scope.$digest();
     } else {
       $scope.error = message.result;
     }

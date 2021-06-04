@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { LogLevel } from "./logService";
 /**
  * database config model for settings.json
  */
@@ -40,4 +41,8 @@ export function getDatabaseConfigs(): Array<DatabaseConfig> {
   const databases = getConfiguration().get("databases");
 
   return <Array<DatabaseConfig>>databases;
+}
+
+export function getLogConfig(): LogLevel {
+  return "DEBUG";
 }
