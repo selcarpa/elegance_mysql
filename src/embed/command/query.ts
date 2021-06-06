@@ -1,5 +1,4 @@
 import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
-import * as mysql from "mysql";
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
@@ -7,6 +6,8 @@ import { convertImports } from "../../capability/viewsUtils";
 import { execSelect } from "../../capability/connectionUtils";
 import { Message } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
+import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
+import { FieldPacket } from "mysql2";
 
 /**
  *
@@ -31,9 +32,9 @@ export function select500(
     "mysql",
     columnsSql,
     (
-      error: mysql.MysqlError | null,
+      error: Query.QueryError | null,
       results: Array<any>,
-      fields?: mysql.FieldInfo[]
+      fields: FieldPacket[]
     ) => {
       if (error) {
         console.error(error.message);
@@ -53,9 +54,9 @@ export function select500(
         item.result.schemaName,
         sql,
         (
-          error: mysql.MysqlError | null,
+          error: Query.QueryError | null,
           results: Array<any>,
-          fields?: mysql.FieldInfo[]
+          fields: FieldPacket[]
         ) => {
           if (error) {
             console.error(error.message);

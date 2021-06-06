@@ -1,6 +1,6 @@
 import { window } from "vscode";
 
-type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "NONE";
+export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "NONE";
 
 export class Logger {
   private static outputChannel = window.createOutputChannel("elegance_mysql");

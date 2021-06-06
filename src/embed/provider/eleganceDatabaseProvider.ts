@@ -5,9 +5,10 @@ import {
   getDatabaseConfigs,
 } from "../../capability/configurationReader";
 import { TreeItemCollapsibleState } from "vscode";
-import { FieldInfo, MysqlError } from "mysql";
 import { execSelect } from "../../capability/connectionUtils";
 import { Logger } from "../../capability/logService";
+import { FieldPacket } from "mysql2";
+import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 
 interface ChildrenGetter {
   (): Promise<Array<EleganceTreeItem>>;
@@ -79,9 +80,9 @@ export class EleganceTreeItem extends vscode.TreeItem {
         "mysql",
         this.sql,
         (
-          error: MysqlError | null,
+          error: Query.QueryError | null,
           results: Array<any>,
-          fields: FieldInfo[] | undefined
+          fields: FieldPacket[]
         ) => {
           if (error) {
             Logger.error(error.message, error);

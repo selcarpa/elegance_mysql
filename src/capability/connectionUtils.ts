@@ -1,5 +1,7 @@
 import { DatabaseConfig } from "./configurationReader";
-import * as mysql from "mysql";
+import * as mysql2 from "mysql2";
+import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
+import { FieldPacket } from "mysql2";
 
 /**
  *
@@ -12,9 +14,13 @@ export function execSelect(
   config: DatabaseConfig,
   schema: string,
   sql: string,
-  callBack: mysql.queryCallback
+  callBack?: (
+    err: Query.QueryError | null,
+    result: any,
+    fields: FieldPacket[]
+  ) => any
 ) {
-  let connection = mysql.createConnection({
+  let connection = mysql2.createConnection({
     host: config.host,
     user: config.user,
     password: config.password,
