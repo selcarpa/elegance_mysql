@@ -2,6 +2,7 @@ import { DatabaseConfig } from "./configurationService";
 import * as mysql2 from "mysql2";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { FieldPacket } from "mysql2";
+import { Logger } from "./logService";
 
 /**
  *
@@ -26,6 +27,7 @@ export function execSelect(
     password: config.password,
     database: schema,
   });
+  Logger.debug(sql);
   connection.connect();
   connection.query(sql, callBack);
   connection.end();

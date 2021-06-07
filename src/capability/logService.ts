@@ -72,6 +72,7 @@ export class Logger {
       return;
     }
     this.logMessage(message, "ERROR");
+    window.showErrorMessage(message);
     if (typeof error === "string") {
       // Errors as a string usually only happen with
       // plugins that don't return the expected error.

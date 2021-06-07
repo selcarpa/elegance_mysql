@@ -34,7 +34,7 @@ function getConfiguration(): vscode.WorkspaceConfiguration {
 }
 
 /**
- *
+ * TODO: known issue: other extensions can get this configuration. if there is any malicious extension, it will leak database connection information from settings.json.
  * @returns database configs from settings.json
  */
 export function getDatabaseConfigs(): Array<DatabaseConfig> {
@@ -44,9 +44,17 @@ export function getDatabaseConfigs(): Array<DatabaseConfig> {
 }
 
 /**
- * 
+ *
  * @returns log level configs from settings.json
  */
 export function getLogConfig(): LogLevel {
-  return  <LogLevel>getConfiguration().get("logLevel");
+  return <LogLevel>getConfiguration().get("logLevel");
+}
+
+/**
+ *
+ * @returns log level configs from settings.json
+ */
+export function getSecurityDisplayed(): boolean {
+  return <boolean>getConfiguration().get("securityDisplayed");
 }

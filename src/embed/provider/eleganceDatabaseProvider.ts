@@ -18,9 +18,15 @@ export class EleganceDatabaseProvider
   implements vscode.TreeDataProvider<EleganceTreeItem>
 {
   constructor(readonly extensionPath: string) {}
-  onDidChangeTreeData?:
-    | vscode.Event<void | EleganceTreeItem | null | undefined>
-    | undefined;
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    EleganceTreeItem | undefined | null | void
+  > = new vscode.EventEmitter<EleganceTreeItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<
+    EleganceTreeItem | undefined | null | void
+  > = this._onDidChangeTreeData.event;
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
   getTreeItem(
     element: EleganceTreeItem
   ): vscode.TreeItem | Thenable<vscode.TreeItem> {
@@ -86,7 +92,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
         ) => {
           if (error) {
             Logger.error(error.message, error);
-            throw error;
+            resolve([]);
           }
           let sonTreeItems: EleganceTreeItem[] = [];
           results.forEach((result) => {

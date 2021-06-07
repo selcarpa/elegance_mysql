@@ -53,11 +53,6 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "elegance_mysql.refresh",
-          "when": "view==elegance_list",
-          "group": "inline"
-        },
-        {
           "command": "elegance_mysql.select500",
           "when": "view == elegance_list && viewItem == table",
           "group": "query@1"
@@ -73,14 +68,21 @@
           "group": "query@3"
         },
         {
-          "command": "elegance_mysql.addDatabase",
-          "when": "view == elegance_list && viewItem == database",
-          "group": "add@1"
-        },
-        {
           "command": "elegance_mysql.compareTo",
           "when": "view == elegance_list && viewItem in elegance_mysql.compareTo.supportedItem",
           "group": "compare@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "elegance_mysql.addDatabase",
+          "when": "view == elegance_list",
+          "group": "navigation"
+        },
+        {
+          "command": "elegance_mysql.refresh",
+          "when": "view == elegance_list",
+          "group": "navigation"
         }
       ]
     },
@@ -121,11 +123,22 @@
           ],
           "description": "database list"
         },
-        "elegance.mysql.logLevel":{
-          "type":"string",
-          "enum": ["DEBUG" , "INFO" , "WARN" , "ERROR" , "NONE"],
-          "default":"INFO",
+        "elegance.mysql.logLevel": {
+          "type": "string",
+          "enum": [
+            "DEBUG",
+            "INFO",
+            "WARN",
+            "ERROR",
+            "NONE"
+          ],
+          "default": "INFO",
           "description": "log level(Elegance_mysql will print log into output.)"
+        },
+        "elegance.mysql.securityDisplayed":{
+          "type":"boolean",
+          "default":true,
+          "description": "Whether the security problem to be displayed or not."
         }
       }
     },
