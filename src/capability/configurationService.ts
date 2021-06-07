@@ -43,6 +43,10 @@ export function getDatabaseConfigs(): Array<DatabaseConfig> {
   return <Array<DatabaseConfig>>databases;
 }
 
+/**
+ * 
+ * @returns log level configs from settings.json
+ */
 export function getLogConfig(): LogLevel {
-  return "DEBUG";
+  return  <LogLevel>getConfiguration().get("logLevel");
 }

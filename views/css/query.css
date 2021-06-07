@@ -26,6 +26,7 @@ th {
   overflow: hidden;
   white-space: nowrap;
   width: 250px;
+  text-overflow: ellipsis;
 }
 
 td.disabled,
@@ -36,5 +37,9 @@ th.disabled {
 
 .jumbotron{
   background-color: var(--vscode-editor-background);
+  color: var(--vscode-foreground) !important;
+}
+
+button{
   color: var(--vscode-foreground) !important;
 }

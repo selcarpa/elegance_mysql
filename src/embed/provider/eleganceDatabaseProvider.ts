@@ -3,7 +3,7 @@ import * as path from "path";
 import {
   DatabaseConfig,
   getDatabaseConfigs,
-} from "../../capability/configurationReader";
+} from "../../capability/configurationService";
 import { TreeItemCollapsibleState } from "vscode";
 import { execSelect } from "../../capability/connectionUtils";
 import { Logger } from "../../capability/logService";
@@ -90,7 +90,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
           }
           let sonTreeItems: EleganceTreeItem[] = [];
           results.forEach((result) => {
-            Logger.debug(undefined,result);
+            Logger.debug(undefined, result);
 
             //to filter out schemas with showSchemas in settings.json
             if (

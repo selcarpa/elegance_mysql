@@ -6,7 +6,7 @@ import {
 import { select500 } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
 import { Logger } from "./capability/logService";
-import { getLogConfig } from "./capability/configurationReader";
+import { getLogConfig } from "./capability/configurationService";
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.setOutputLevel(getLogConfig());
@@ -18,6 +18,11 @@ export function activate(context: vscode.ExtensionContext) {
     "elegance_mysql.compareTo.supportedItem",
     ["table", "schema"]
   );
+
+  //TODO: update database list and other item affect by config
+  vscode.workspace.onDidChangeConfiguration((e) => {
+    Logger.debug("configuration changed");
+  });
 
   vscode.window.registerTreeDataProvider(
     "elegance_list",

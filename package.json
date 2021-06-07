@@ -11,8 +11,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:elegance_list",
-    "onCommand:html.main"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -121,6 +120,12 @@
             }
           ],
           "description": "database list"
+        },
+        "elegance.mysql.logLevel":{
+          "type":"string",
+          "enum": ["DEBUG" , "INFO" , "WARN" , "ERROR" , "NONE"],
+          "default":"INFO",
+          "description": "log level(Elegance_mysql will print log into output.)"
         }
       }
     },

@@ -1,4 +1,4 @@
-import { DatabaseConfig } from "./configurationReader";
+import { DatabaseConfig } from "./configurationService";
 import * as mysql2 from "mysql2";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { FieldPacket } from "mysql2";
