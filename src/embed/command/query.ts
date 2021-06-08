@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
 import { convertImports } from "../../capability/viewsUtils";
-import { execSelect } from "../../capability/connectionUtils";
+import { execSelect } from "../../capability/databaseUtils";
 import { Message } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");

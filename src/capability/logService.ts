@@ -52,6 +52,11 @@ export class Logger {
     }
   }
 
+  public static infoAndShow(message:string,data?:unknown):void{
+    this.info(message,data);
+    window.showInformationMessage(message);
+  }
+
   /**
    * Append messages to the output channel and format it with a title
    *

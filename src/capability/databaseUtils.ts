@@ -1,8 +1,8 @@
 import { DatabaseConfig } from "./configurationService";
 import * as mysql2 from "mysql2";
-import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { FieldPacket } from "mysql2";
 import { Logger } from "./logService";
+import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 
 /**
  *
@@ -31,4 +31,25 @@ export function execSelect(
   connection.connect();
   connection.query(sql, callBack);
   connection.end();
+}
+
+/**
+ *
+ * @param curVersion current version
+ * @param desVersion destination version
+ * @returns true if curVersion>=desVersion
+ */
+export function versionCheck(curVersion: string, desVersion: string): boolean {
+  let currentVersions = curVersion.split(".");
+  let destinationVersions = desVersion.split(".");
+  for (let index = 0; index < destinationVersions.length; index++) {
+    if (
+      !currentVersions[index] ||
+      currentVersions[index] < destinationVersions[index]
+    ) {
+      return false;
+    }
+  }
+
+  return true;
 }

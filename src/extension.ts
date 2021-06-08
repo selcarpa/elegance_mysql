@@ -21,7 +21,6 @@ export function activate(context: vscode.ExtensionContext) {
        it will leak database connection information from settings.json.
        Set elegance.mysql.securityDisplayed=false into settings.json to avoid this message.`;
   if (getSecurityDisplayed()) {
-    console.info(securityText);
     vscode.window.showInformationMessage(securityText);
   }
 
@@ -77,7 +76,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.newQuery",
       async (item: any) => {
-        const uri = vscode.Uri.parse("elegance_sql_provider:asdfhasklfhafhkj.sql");
+        const uri = vscode.Uri.parse(
+          "elegance_sql_provider:asdfhasklfhafhkj.sql"
+        );
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
       }

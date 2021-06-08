@@ -5,13 +5,54 @@ import {
   getDatabaseConfigs,
 } from "../../capability/configurationService";
 import { TreeItemCollapsibleState } from "vscode";
-import { execSelect } from "../../capability/connectionUtils";
+import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import { FieldPacket } from "mysql2";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 
+const minimumSuppertVersion = "5.7.0";
+
+/**
+ * children getter interface@see EleganceTreeItem
+ */
 interface ChildrenGetter {
   (): Promise<Array<EleganceTreeItem>>;
+}
+
+/**
+ * item type
+ */
+enum EleganceTreeItemType {
+  database,
+  schema,
+  table,
+  column,
+}
+
+/**
+ *
+ * @param config @see DatabaseConfig
+ */
+function setVersion(config: DatabaseConfig): void {
+  execSelect(
+    config,
+    "mysql",
+    "SELECT VERSION()",
+    (
+      error: Query.QueryError | null,
+      results: Array<any>,
+      fields: FieldPacket[]
+    ) => {
+      let version: string = results[0]["VERSION()"];
+      if (version) {
+        config.version = version;
+        if (!versionCheck(version, minimumSuppertVersion)) {
+          let message = `The minimum supported version is ${minimumSuppertVersion}. This database configuration may not get full-support: ${config.name}(host:${config.host}, version:${config.version})`;
+          Logger.infoAndShow(message);
+        }
+      }
+    }
+  );
 }
 
 export class EleganceDatabaseProvider
@@ -95,9 +136,8 @@ export class EleganceTreeItem extends vscode.TreeItem {
             resolve([]);
           }
           let sonTreeItems: EleganceTreeItem[] = [];
+          Logger.debug(undefined, results);
           results.forEach((result) => {
-            Logger.debug(undefined, result);
-
             //to filter out schemas with showSchemas in settings.json
             if (
               this.config.schemaFilterEnable &&
@@ -159,6 +199,9 @@ export class EleganceTreeItem extends vscode.TreeItem {
         this.contextValue = "database";
         this.sql =
           "SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;";
+
+        setVersion(config);
+
         break;
       case EleganceTreeItemType.schema:
         this.iconPath = {
@@ -232,14 +275,4 @@ export class EleganceTreeItem extends vscode.TreeItem {
       default:
     }
   }
-}
-
-/**
- * item type
- */
-enum EleganceTreeItemType {
-  database,
-  schema,
-  table,
-  column,
 }

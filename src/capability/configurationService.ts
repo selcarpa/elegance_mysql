@@ -4,6 +4,11 @@ import { LogLevel } from "./logService";
  * database config model for settings.json
  */
 export class DatabaseConfig {
+  /*
+   * database version, this field init when toggle first layer of database list
+   */
+  public version?: string;
+
   /**
    *
    * @param name text to display on first layer of treeview
