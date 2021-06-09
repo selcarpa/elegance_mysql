@@ -59,7 +59,7 @@ export function select500(
           let messageContent = {
             columns: Array<string>(),
             rows: Array<any>(),
-            sql: sql+" where BANNER IS NOT NULL ORDER BY BANNER",
+            sql: sql,
             limitValue: limitValue,
           };
           if (fields) {

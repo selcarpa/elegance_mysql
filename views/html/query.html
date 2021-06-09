@@ -6,39 +6,60 @@
   <script src="../js/bootstrap.min.js"></script>
   <script src="../js/bootstrap.bundle.min.js"></script>
   <script src="../js/angular.min.js"></script>
-  <script src="../js/sql-parser.js"></script>
   <script src="../js/query.js"></script>
   <link rel="stylesheet" href="../css/bootstrap.min.css" />
   <link rel="stylesheet" href="../css/query.css" /> -->
 
   <body ng-app="queryApp" ng-controller="queryController">
     <form ng-show="queryData!=undefined&&queryData.columns.length>0">
-      <div class="form-row">
+      <div class="form-row align-items-center">
         <div class="col">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Where"
-            ng-model="whereClause"
-          />
+          <label class="sr-only" for="inlineFormInputGroup">where clause</label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Where</div>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="inlineFormInputGroup"
+              ng-model="queryData.whereClause"
+            />
+          </div>
         </div>
         <div class="col">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="SortBy"
-            ng-model="orderByClause"
-          />
+          <label class="sr-only" for="inlineFormInputGroup"
+            >order by clause</label
+          >
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Order By</div>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="inlineFormInputGroup"
+              ng-model="queryData.orderByClause"
+            />
+          </div>
         </div>
-        <div class="col">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="SortBy"
-            ng-model="orderByClause"
-          />
+        <div class="col-lg-2">
+          <label class="sr-only" for="inlineFormInputGroup">limit</label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Limit</div>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="inlineFormInputGroup"
+              ng-model="queryData.limitValue"
+            />
+          </div>
         </div>
-        <button class="btn" type="button">Apply</button>
+        <div class="col-auto">
+          <button class="btn" type="button">Apply</button>
+        </div>
       </div>
     </form>
     <table

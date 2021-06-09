@@ -17,6 +17,7 @@ table {
   overflow-x: auto;
   color: var(--vscode-foreground) !important;
   border-collapse: collapse;
+  border-style:dashed;
   font-family: var(--vscode-editor-font-family);
   text-align: center;
 }
@@ -35,11 +36,15 @@ th.disabled {
   min-width: 30px;
 }
 
-.jumbotron{
+.jumbotron {
   background-color: var(--vscode-editor-background);
   color: var(--vscode-foreground) !important;
 }
 
-button{
+button {
+  background-color: var(--vscode-button-foreground) !important;
+}
+input {
   color: var(--vscode-foreground) !important;
+  background-color: var(--vscode-editor-background) !important;
 }
