@@ -11,6 +11,7 @@ import {
   getSecurityDisplayed,
 } from "./capability/configurationService";
 import { EleganceSqlFileProvider } from "./embed/provider/eleganceSqlFileProvider";
+import { details } from "./embed/command/details";
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.setOutputLevel(getLogConfig());
@@ -72,15 +73,22 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
+  //TODO: not correct way to achieve newQuery command
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "elegance_mysql.newQuery",
       async (item: any) => {
-        const uri = vscode.Uri.parse(
-          "elegance_sql_provider:asdfhasklfhafhkj.sql"
-        );
-        const doc = await vscode.workspace.openTextDocument(uri);
+        const doc = await vscode.workspace.openTextDocument({language:"sql"});
         await vscode.window.showTextDocument(doc, { preview: false });
+      }
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "elegance_mysql_details",
+      async (item: EleganceTreeItem) => {
+        details(item);
       }
     )
   );

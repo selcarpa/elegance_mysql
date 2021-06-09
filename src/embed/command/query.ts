@@ -20,13 +20,7 @@ export function select500(
   panel: vscode.WebviewPanel,
   context: vscode.ExtensionContext
 ): void {
-  let columnsSql: string =
-    "SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='" +
-    item.result.tableName +
-    "' and TABLE_SCHEMA='" +
-    item.result.schemaName +
-    "' ORDER BY ORDINAL_POSITION;";
-
+  let columnsSql: string = `SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='${item.result.tableName}' and TABLE_SCHEMA='${item.result.schemaName}' ORDER BY ORDINAL_POSITION;`;
   execSelect(
     item.config,
     "mysql",
@@ -45,27 +39,28 @@ export function select500(
         columns.push(result.name);
       });
 
+      let limitValue = 500;
       let sql: string = `select ${columns.join(",")} from ${
         item.result.tableName
-      } limit 500`;
-      Logger.debug(sql);
+      }`;
       execSelect(
         item.config,
         item.result.schemaName,
-        sql,
+        `${sql} limit ${limitValue}`,
         (
           error: Query.QueryError | null,
           results: Array<any>,
           fields: FieldPacket[]
         ) => {
           if (error) {
-            console.error(error.message);
+            Logger.error(error.message, error);
             throw error;
           }
-          let sonTreeItems: EleganceTreeItem[] = [];
           let messageContent = {
             columns: Array<string>(),
             rows: Array<any>(),
+            sql: sql+" where BANNER IS NOT NULL ORDER BY BANNER",
+            limitValue: limitValue,
           };
           if (fields) {
             fields.forEach((field) => {
@@ -79,7 +74,7 @@ export function select500(
             path.join(context.extensionPath, "views", "html", "query.html"),
             (err, data) => {
               if (err) {
-                console.error(err);
+                Logger.error(err.message, err);
               }
               let htmlContent = data.toString();
               htmlContent = convertImports(
@@ -94,6 +89,7 @@ export function select500(
                 "bootstrap.min.js",
                 "bootstrap.bundle.min.js",
                 "angular.min.js",
+                "sql-parser.js",
                 "query.js",
                 "bootstrap.min.css",
                 "query.css"

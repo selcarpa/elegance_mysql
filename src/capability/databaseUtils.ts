@@ -27,7 +27,7 @@ export function execSelect(
     password: config.password,
     database: schema,
   });
-  Logger.debug(sql);
+  Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
   connection.connect();
   connection.query(sql, callBack);
   connection.end();

@@ -40,8 +40,8 @@
         "category": "query"
       },
       {
-        "command": "elegance_mysql.detail",
-        "title": "detail",
+        "command": "elegance_mysql.details",
+        "title": "details",
         "category": "query"
       },
       {
@@ -63,7 +63,7 @@
           "group": "query@2"
         },
         {
-          "command": "elegance_mysql.detail",
+          "command": "elegance_mysql.details",
           "when": "view == elegance_list && viewItem == table",
           "group": "query@3"
         },
@@ -135,9 +135,9 @@
           "default": "INFO",
           "description": "log level(Elegance_mysql will print log into output.)"
         },
-        "elegance.mysql.securityDisplayed":{
-          "type":"boolean",
-          "default":true,
+        "elegance.mysql.securityDisplayed": {
+          "type": "boolean",
+          "default": true,
           "description": "Whether the security problem to be displayed or not."
         }
       }

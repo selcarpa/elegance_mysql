@@ -1,11 +1,12 @@
 <html>
   <!-- [ELEGANCE_IMPORT] -->
-<!--   <script src="../js/jquery.slim.min.js"></script>
+  <!-- <script src="../js/jquery.slim.min.js"></script>
   <script src="../js/colResizable-1.6.js"></script>
   <script src="../js/popper.min.js"></script>
   <script src="../js/bootstrap.min.js"></script>
   <script src="../js/bootstrap.bundle.min.js"></script>
   <script src="../js/angular.min.js"></script>
+  <script src="../js/sql-parser.js"></script>
   <script src="../js/query.js"></script>
   <link rel="stylesheet" href="../css/bootstrap.min.css" />
   <link rel="stylesheet" href="../css/query.css" /> -->
@@ -14,16 +15,34 @@
     <form ng-show="queryData!=undefined&&queryData.columns.length>0">
       <div class="form-row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="Where" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Where"
+            ng-model="whereClause"
+          />
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="SortBy" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="SortBy"
+            ng-model="orderByClause"
+          />
+        </div>
+        <div class="col">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="SortBy"
+            ng-model="orderByClause"
+          />
         </div>
         <button class="btn" type="button">Apply</button>
       </div>
     </form>
     <table
-      style="margin-top: 10px;"
+      style="margin-top: 10px"
       class="table table-striped table-bordered"
       id="mainContent"
       ng-show="queryData!=undefined&&queryData.columns.length>0"

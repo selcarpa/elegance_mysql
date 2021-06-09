@@ -43,6 +43,9 @@ function setVersion(config: DatabaseConfig): void {
       results: Array<any>,
       fields: FieldPacket[]
     ) => {
+      if (error) {
+        Logger.error(error.message, error);
+      }
       let version: string = results[0]["VERSION()"];
       if (version) {
         config.version = version;
@@ -219,10 +222,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
           ),
         };
         this.contextValue = "schema";
-        this.sql =
-          "SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='" +
-          result.schemaName +
-          "';";
+        this.sql = `SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='${result.schemaName}';`;
         break;
       case EleganceTreeItemType.table:
         this.iconPath = {
@@ -235,12 +235,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
           dark: path.join(extensionPath, "media", "dark", "elegance_table.svg"),
         };
         this.contextValue = "table";
-        this.sql =
-          "SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='" +
-          result.tableName +
-          "' and TABLE_SCHEMA='" +
-          result.schemaName +
-          "' ORDER BY ORDINAL_POSITION;";
+        this.sql = `SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='${result.tableName}' and TABLE_SCHEMA='${result.schemaName}' ORDER BY ORDINAL_POSITION;`;
         break;
       case EleganceTreeItemType.column:
         if (result.COLUMN_KEY === "PRI") {
