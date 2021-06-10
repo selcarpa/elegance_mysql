@@ -1,6 +1,6 @@
 angular.module("queryApp", []).controller("queryController", function ($scope) {
   $scope.queryData = {};
-  $scope.error = "No data.";
+  $scope.message = "No data.";
   let vscode = acquireVsCodeApi();
 
   $scope.apply = function () {
@@ -16,10 +16,11 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
     const message = event.data;
     if (message.status) {
       $scope.queryData = message.result;
-      $scope.$digest();
     } else {
-      $scope.error = message.result;
+      $scope.queryData = {};
+      $scope.message = message.result;
     }
+    $scope.$digest();
   });
   angular.element(document).ready(function () {
     $("#mainContent").colResizable({
