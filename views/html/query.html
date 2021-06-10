@@ -1,6 +1,6 @@
 <html>
   <!-- [ELEGANCE_IMPORT] -->
-  <script src="../js/jquery.slim.min.js"></script>
+  <!-- <script src="../js/jquery.slim.min.js"></script>
   <script src="../js/colResizable-1.6.js"></script>
   <script src="../js/popper.min.js"></script>
   <script src="../js/bootstrap.min.js"></script>
@@ -8,14 +8,14 @@
   <script src="../js/angular.min.js"></script>
   <script src="../js/query.js"></script>
   <link rel="stylesheet" href="../css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../css/query.css" />
+  <link rel="stylesheet" href="../css/query.css" /> -->
 
   <body ng-app="queryApp" ng-controller="queryController">
     <form ng-show="queryData!=undefined&&queryData.columns.length>0">
-      <div class="form-row">
+      <div class="form-row align-items-center">
         <div class="col">
           <label class="sr-only" for="inlineFormInputGroup">where clause</label>
-          <div class="input-group mb-2">
+          <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">Where</div>
             </div>
@@ -31,7 +31,7 @@
           <label class="sr-only" for="inlineFormInputGroup"
             >order by clause</label
           >
-          <div class="input-group mb-2">
+          <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">Order By</div>
             </div>
@@ -45,7 +45,7 @@
         </div>
         <div class="col-lg-2">
           <label class="sr-only" for="inlineFormInputGroup">limit</label>
-          <div class="input-group mb-2">
+          <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">Limit</div>
             </div>
