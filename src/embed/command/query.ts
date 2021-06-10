@@ -89,7 +89,6 @@ export function select500(
                 "bootstrap.min.js",
                 "bootstrap.bundle.min.js",
                 "angular.min.js",
-                "sql-parser.js",
                 "query.js",
                 "bootstrap.min.css",
                 "query.css"
@@ -101,5 +100,50 @@ export function select500(
         }
       );
     }
+  );
+  panel.webview.onDidReceiveMessage(
+    (message) => {
+      if (!message.limitValue) {
+        message.limitValue = 500;
+      }
+      execSelect(
+        item.config,
+        item.result.schemaName,
+        `${message.sql} ${
+          message.whereClause ? "where " + message.whereClause : ""
+        } ${
+          message.orderByClause ? "order by " + message.orderByClause : ""
+        } limit ${message.limitValue}`,
+        (
+          error: Query.QueryError | null,
+          results: Array<any>,
+          fields: FieldPacket[]
+        ) => {
+          if (error) {
+            Logger.error(error.message, error);
+            throw error;
+          }
+          let messageContent = {
+            columns: Array<string>(),
+            rows: Array<any>(),
+            sql: message.sql,
+            limitValue: message.limitValue,
+            whereClause: message.whereClause,
+            orderByClause: message.orderByClause,
+          };
+          if (fields) {
+            fields.forEach((field) => {
+              messageContent.columns.push(field.name);
+            });
+          }
+          results.forEach((result) => {
+            messageContent.rows.push(result);
+          });
+          panel.webview.postMessage(new Message(messageContent, true));
+        }
+      );
+    },
+    undefined,
+    context.subscriptions
   );
 }
