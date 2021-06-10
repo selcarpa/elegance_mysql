@@ -26,6 +26,7 @@ export function execSelect(
     user: config.user,
     password: config.password,
     database: schema,
+    port:config.port
   });
   Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
   connection.connect();
