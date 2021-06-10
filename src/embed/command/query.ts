@@ -122,7 +122,7 @@ export function select500(
       }
       let columns: Array<string> = [];
       results.forEach((result) => {
-        columns.push(result.name);
+        columns.push(`\`${result.name}\``);
       });
 
       let limitValue = "500";

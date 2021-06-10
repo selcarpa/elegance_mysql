@@ -70,7 +70,7 @@
     >
       <thead>
         <th class="disabled" scope="col">#</th>
-        <th ng-repeat="column in queryData.columns">{{column}}</th>
+        <th ng-repeat="column in queryData.columns">{{column.replace('`',"")}}</th>
       </thead>
       <tbody>
         <tr ng-repeat="row in queryData.rows">
