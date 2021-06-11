@@ -26,7 +26,7 @@ export function execSelect(
     user: config.user,
     password: config.password,
     database: schema,
-    port:config.port
+    port: config.port,
   });
   Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
   connection.connect();
@@ -46,9 +46,13 @@ export function versionCheck(curVersion: string, desVersion: string): boolean {
   for (let index = 0; index < destinationVersions.length; index++) {
     if (
       !currentVersions[index] ||
-      currentVersions[index] < destinationVersions[index]
+      Number(currentVersions[index]) < Number(destinationVersions[index])
     ) {
       return false;
+    } else if (
+      Number(currentVersions[index]) > Number(destinationVersions[index])
+    ) {
+      break;
     }
   }
 
