@@ -59,6 +59,26 @@
         "command": "elegance_mysql.compareTo",
         "title": "compare to",
         "category": "compare"
+      },
+      {
+        "command": "elegance_mysql.compareWithSelectedSchema",
+        "title": "compare with selected schema",
+        "category": "compare"
+      },
+      {
+        "command": "elegance_mysql.compareWithSelectedTable",
+        "title": "compare with selected table",
+        "category": "compare"
+      },
+      {
+        "command": "elegance_mysql.execSelected",
+        "title": "execute select sql",
+        "category": "exec"
+      },
+      {
+        "command": "elegance_mysql.execFile",
+        "title": "execute sql from file",
+        "category": "exec"
       }
     ],
     "menus": {
@@ -82,6 +102,16 @@
           "command": "elegance_mysql.compareTo",
           "when": "view == elegance_list && viewItem in elegance_mysql.compareTo.supportedItem",
           "group": "compare@1"
+        },
+        {
+          "command": "elegance_mysql.compareWithSelectedSchema",
+          "when": "view == elegance_list && elegance_mysql.compare_schema_selected && viewItem == schema",
+          "group": "compare@2"
+        },
+        {
+          "command": "elegance_mysql.compareWithSelectedTable",
+          "when": "view == elegance_list && elegance_mysql.compare_table_selected && viewItem == table",
+          "group": "compare@3"
         }
       ],
       "view/title": [

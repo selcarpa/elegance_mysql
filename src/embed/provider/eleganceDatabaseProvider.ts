@@ -22,7 +22,7 @@ interface ChildrenGetter {
 /**
  * item type
  */
-enum EleganceTreeItemType {
+export enum EleganceTreeItemType {
   database,
   schema,
   table,
