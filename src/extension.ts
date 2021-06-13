@@ -10,11 +10,12 @@ import {
   getLogConfig,
   getSecurityDisplayed,
 } from "./capability/configurationService";
-import { EleganceSqlFileProvider } from "./embed/provider/eleganceSqlFileProvider";
 import { details } from "./embed/command/details";
+import { BarItem } from "./embed/item/statusBarItem";
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.setOutputLevel(getLogConfig());
+  let barItem = new BarItem();
 
   let securityText: string = String.raw`Security Attention:
      other extensions can get this configuration.
@@ -39,13 +40,6 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider(
       "elegance_list",
       eleganceTreeNodeProvider
-    )
-  );
-
-  context.subscriptions.push(
-    vscode.workspace.registerTextDocumentContentProvider(
-      "elegance_sql_provider",
-      new EleganceSqlFileProvider()
     )
   );
 
@@ -78,7 +72,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.newQuery",
       async (item: any) => {
-        const doc = await vscode.workspace.openTextDocument({language:"sql"});
+        const doc = await vscode.workspace.openTextDocument({
+          language: "sql",
+        });
         await vscode.window.showTextDocument(doc, { preview: false });
       }
     )
@@ -86,17 +82,27 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "elegance_mysql_details",
-      async (item: EleganceTreeItem) => {
-        details(item);
+      "elegance_mysql.details",
+      (item: EleganceTreeItem) => {
+        let panel = getWebviewPanel(
+          "elegance_mysql.query",
+          "result",
+          vscode.ViewColumn.One,
+          context
+        );
+        details(item, panel, context);
       }
     )
   );
   /// end register
 
+  //status bar item
+  context.subscriptions.push(barItem.databaseSelectBar);
+
   //TODO: update database list and other item affect by config
   vscode.workspace.onDidChangeConfiguration((e) => {
     Logger.debug("configuration changed");
+    Logger.setOutputLevel(getLogConfig());
   });
 
   Logger.info("Elegance mysql!");

@@ -15,6 +15,17 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "notebooks": [
+      {
+        "type": "elegance_mysql_query_console",
+        "displayName": "query console",
+        "selector": [
+          {
+            "filenamePattern": "esqlc"
+          }
+        ]
+      }
+    ],
     "commands": [
       {
         "command": "elegance_mysql.refresh",

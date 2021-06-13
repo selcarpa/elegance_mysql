@@ -10,6 +10,13 @@ import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { FieldPacket } from "mysql2";
 import { DatabaseConfig } from "../../capability/configurationService";
 
+/**
+ *
+ * @param query query information
+ * @param config database config
+ * @param schemaName schema name of this query used
+ * @returns
+ */
 function getQueryResult(
   query: {
     sql: string;
@@ -18,7 +25,8 @@ function getQueryResult(
     orderByClause: string | null;
   },
   config: DatabaseConfig,
-  schemaName: string
+  schemaName: string,
+  showToolsBar: boolean
 ): Promise<any> {
   return new Promise((resolve) => {
     execSelect(
@@ -34,7 +42,7 @@ function getQueryResult(
       ) => {
         if (error) {
           Logger.error(error.message, error);
-          resolve(new Message(error.message,false));
+          resolve(new Message(error.message, false));
         }
         let messageContent = new QueryMessage(
           Array<string>(),
@@ -42,7 +50,8 @@ function getQueryResult(
           query.sql,
           query.limitValue,
           query.whereClause,
-          query.orderByClause
+          query.orderByClause,
+          showToolsBar
         );
         if (fields) {
           fields.forEach((field) => {
@@ -52,7 +61,7 @@ function getQueryResult(
         results.forEach((result) => {
           messageContent.rows.push(result);
         });
-        resolve(new Message(messageContent,true));
+        resolve(new Message(messageContent, true));
       }
     );
   });
@@ -139,7 +148,8 @@ export function select500(
           orderByClause: null,
         },
         item.config,
-        item.result.schemaName
+        item.result.schemaName,
+        true
       ).then((m) => panel.webview.postMessage(m));
     }
   );
@@ -156,10 +166,34 @@ export function select500(
           orderByClause: message.orderByClause,
         },
         item.config,
-        item.result.schemaName
+        item.result.schemaName,
+        true
       ).then((m) => panel.webview.postMessage(m));
     },
     undefined,
     context.subscriptions
   );
+}
+
+export function selectSql(
+  sql: string,
+  panel: vscode.WebviewPanel,
+  context: vscode.ExtensionContext,
+  config: DatabaseConfig,
+  schemaName: string
+) {
+  let limitValue = "500";
+
+  openQueryHtml(panel, context.extensionPath);
+  getQueryResult(
+    {
+      sql: sql,
+      limitValue: limitValue,
+      whereClause: null,
+      orderByClause: null,
+    },
+    config,
+    schemaName,
+    false
+  ).then((m) => panel.webview.postMessage(m));
 }

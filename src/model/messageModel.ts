@@ -9,6 +9,7 @@ export class QueryMessage {
     public sql: string,
     public limitValue: string | null,
     public whereClause: string | null,
-    public orderByClause: string | null
+    public orderByClause: string | null,
+    public showToolsBar: boolean = false
   ) {}
 }
