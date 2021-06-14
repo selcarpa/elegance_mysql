@@ -15,6 +15,20 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "mysql",
+        "extensions": [
+          ".sql"
+        ],
+        "aliases": [
+          "mysql",
+          "Mysql sql",
+          "sql"
+        ],
+        "configuration": "./mysql-language-configuration.json"
+      }
+    ],
     "notebooks": [
       {
         "type": "elegance_mysql_query_console",
