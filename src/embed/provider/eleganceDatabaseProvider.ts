@@ -183,6 +183,9 @@ export class EleganceTreeItem extends vscode.TreeItem {
     public result: any | null = null
   ) {
     super(label, TreeItemCollapsibleState.Collapsed);
+    if (result && result.comment) {
+      this.tooltip = result.comment;
+    }
     switch (type) {
       case EleganceTreeItemType.database:
         this.iconPath = {
@@ -202,9 +205,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
         this.contextValue = "database";
         this.sql =
           "SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;";
-
         setVersion(config);
-
         break;
       case EleganceTreeItemType.schema:
         this.iconPath = {
@@ -222,20 +223,32 @@ export class EleganceTreeItem extends vscode.TreeItem {
           ),
         };
         this.contextValue = "schema";
-        this.sql = `SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='${result.schemaName}';`;
+        this.sql = `SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName,TABLE_COMMENT comment,TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='${result.schemaName}';`;
         break;
       case EleganceTreeItemType.table:
-        this.iconPath = {
-          light: path.join(
-            extensionPath,
-            "media",
-            "light",
-            "elegance_table.svg"
-          ),
-          dark: path.join(extensionPath, "media", "dark", "elegance_table.svg"),
-        };
+        if(result.TABLE_TYPE === 'BASE TABLE'){
+          this.iconPath = {
+            light: path.join(
+              extensionPath,
+              "media",
+              "light",
+              "elegance_table.svg"
+            ),
+            dark: path.join(extensionPath, "media", "dark", "elegance_table.svg"),
+          };
+        }else if (result.TABLE_TYPE === 'VIEW'||result.TABLE_TYPE ==='SYSTEM VIEW'){
+          this.iconPath = {
+            light: path.join(
+              extensionPath,
+              "media",
+              "light",
+              "elegance_view.svg"
+            ),
+            dark: path.join(extensionPath, "media", "dark", "elegance_view.svg"),
+          };
+        }
         this.contextValue = "table";
-        this.sql = `SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='${result.tableName}' and TABLE_SCHEMA='${result.schemaName}' ORDER BY ORDINAL_POSITION;`;
+        this.sql = `SELECT COLUMN_NAME name,COLUMN_KEY,COLUMN_COMMENT comment FROM information_schema.columns WHERE TABLE_NAME='${result.tableName}' and TABLE_SCHEMA='${result.schemaName}' ORDER BY ORDINAL_POSITION;`;
         break;
       case EleganceTreeItemType.column:
         if (result.COLUMN_KEY === "PRI") {

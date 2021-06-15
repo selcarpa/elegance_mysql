@@ -70,6 +70,11 @@
         "category": "query"
       },
       {
+        "command": "elegance_mysql.databaseSelect",
+        "title": "database select",
+        "category": "query"
+      },
+      {
         "command": "elegance_mysql.compareTo",
         "title": "compare to",
         "category": "compare"

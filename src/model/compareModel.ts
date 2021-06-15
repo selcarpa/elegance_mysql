@@ -5,6 +5,7 @@ export class CompareToModel {
   constructor(
     public type: EleganceTreeItemType,
     public config: DatabaseConfig,
-    public name: string
+    public name: string,
+    public schemaName:string
   ) {}
 }

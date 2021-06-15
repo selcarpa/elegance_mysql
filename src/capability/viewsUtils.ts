@@ -59,6 +59,7 @@ export function getWebviewPanel(
   context: vscode.ExtensionContext
 ): vscode.WebviewPanel {
   return vscode.window.createWebviewPanel(viewType, title, showOptions, {
+    retainContextWhenHidden: true,
     enableScripts: true,
     localResourceRoots: [
       vscode.Uri.file(path.join(context.extensionPath, "views", "js")),

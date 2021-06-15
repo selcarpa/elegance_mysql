@@ -8,7 +8,11 @@ import { Message, QueryMessage } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { FieldPacket } from "mysql2";
-import { DatabaseConfig } from "../../capability/configurationService";
+import {
+  DatabaseConfig,
+  getDatabaseConfigs,
+} from "../../capability/configurationService";
+import { getRuntimeConstant } from "../../capability/globalConstant";
 
 /**
  *
@@ -155,6 +159,7 @@ export function select500(
   );
   panel.webview.onDidReceiveMessage(
     (message) => {
+      // avoid unlimitted select
       if (!message.limitValue) {
         message.limitValue = 500;
       }
@@ -196,4 +201,53 @@ export function selectSql(
     schemaName,
     false
   ).then((m) => panel.webview.postMessage(m));
+}
+
+export function databaseSelect() {
+  let configs = getDatabaseConfigs();
+
+  vscode.window
+    .showQuickPick(
+      configs.map((config) => ({
+        label: config.name,
+        config: config,
+      })),
+      { title: "select a database" }
+    )
+    .then(
+      (
+        selectedValue: { label: string; config: DatabaseConfig } | undefined
+      ) => {
+        if (selectedValue === undefined) {
+          return;
+        }
+
+        let sql = `SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;`;
+        execSelect(
+          selectedValue.config,
+          "mysql",
+          sql,
+          (
+            error: Query.QueryError | null,
+            results: Array<any>,
+            fields: FieldPacket[]
+          ) => {
+            if (error) {
+              Logger.error(error.message, error);
+            }
+            vscode.window
+              .showQuickPick(
+                results.map((r) => r.name),
+                { title: "select a database" }
+              )
+              .then((schemaName) => {
+                getRuntimeConstant().selectedSchema = {
+                  schemaName: schemaName,
+                  config: selectedValue.config,
+                };
+              });
+          }
+        );
+      }
+    );
 }

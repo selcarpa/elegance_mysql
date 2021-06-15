@@ -1,6 +1,5 @@
 angular.module("queryApp", []).controller("queryController", function ($scope) {
-  $scope.queryData = {};
-  $scope.message = "No data.";
+  $scope.message = "Loading.";
   let vscode = acquireVsCodeApi();
 
   $scope.apply = function () {

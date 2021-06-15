@@ -9,11 +9,11 @@ export class CompareToValue {
 }
 
 export function tableCompareTo(destination: CompareToModel) {
-  let sql = "SHOW CREATE DATABASE ";
+  let sql = `SHOW CREATE TABLE ${CompareToValue.origin.name};`;
   execSelect(
     CompareToValue.origin.config,
-    "mysql",
-    sql + CompareToValue.origin.name,
+    CompareToValue.origin.schemaName,
+    sql,
     (
       error: Query.QueryError | null,
       results: Array<any>,

@@ -4,7 +4,7 @@ import {
   EleganceTreeItem,
   EleganceTreeItemType,
 } from "./embed/provider/eleganceDatabaseProvider";
-import { select500 } from "./embed/command/query";
+import { databaseSelect, select500 } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
 import { Logger } from "./capability/logService";
 import {
@@ -14,6 +14,7 @@ import {
 import { details } from "./embed/command/details";
 import { BarItem } from "./embed/item/statusBarItem";
 import { CompareToValue, tableCompareTo } from "./embed/command/compare";
+import { CompareToModel } from "./model/compareModel";
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.setOutputLevel(getLogConfig());
@@ -101,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.compareTo",
       (item: EleganceTreeItem) => {
-        CompareToValue.origin = (item.type, item.config, item.result.name);
+        CompareToValue.origin = new CompareToModel(item.type, item.config, item.result.name,item.result.schemaName);
         vscode.commands.executeCommand(
           "setContext",
           "elegance_mysql.compare_schema_selected",
@@ -142,6 +143,14 @@ export function activate(context: vscode.ExtensionContext) {
       "elegance_mysql.compareWithSelectedTable",
       (item: EleganceTreeItem) => {
         tableCompareTo((item.type, item.config, item.result.name));
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "elegance_mysql.databaseSelect",
+      () => {
+        databaseSelect();
       }
     )
   );

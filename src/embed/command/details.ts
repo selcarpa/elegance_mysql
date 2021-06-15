@@ -12,8 +12,6 @@ export async function details(
   panel: vscode.WebviewPanel,
   context: vscode.ExtensionContext
 ): Promise<void> {
-  let limitValue = "500";
-
   openQueryHtml(panel, context.extensionPath);
   execSelect(
     item.config,
@@ -34,7 +32,7 @@ export async function details(
         `select * from information_schema.columns 
         where table_schema = '${item.result.schemaName}' 
         and table_name = '${item.result.tableName}';`,
-        "500",
+        "0",
         null,
         null,
         false
