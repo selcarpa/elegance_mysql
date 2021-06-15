@@ -98,6 +98,11 @@
         "command": "elegance_mysql.execFile",
         "title": "execute sql from file",
         "category": "exec"
+      },
+      {
+        "command": "elegance_mysql.runSelectedSql",
+        "title": "run selected sql",
+        "category": "exec"
       }
     ],
     "menus": {

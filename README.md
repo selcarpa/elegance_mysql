@@ -4,7 +4,7 @@
 
 1.Easy to configure database connection.
 
-![configure example](/example/config.png)
+![configure example](./example/config.png)
 
 > ATTENSION:
 > other extensions can get configuration for eleganc_mysql.

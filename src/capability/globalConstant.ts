@@ -1,9 +1,9 @@
-import { BarItem } from "../embed/item/statusBarItem";
+import * as vscode from "vscode";
 import { DatabaseConfig } from "./configurationService";
 
 class RuntimeConstant {
   public static instance?: RuntimeConstant;
-  public barItem?: BarItem;
+  public barItem?: vscode.StatusBarItem;
   public selectedSchema?: { schemaName: string; config: DatabaseConfig };
 }
 

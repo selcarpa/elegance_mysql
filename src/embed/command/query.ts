@@ -36,9 +36,9 @@ function getQueryResult(
     execSelect(
       config,
       schemaName,
-      `${query.sql}  ${query.whereClause ? "where " + query.whereClause : ""} ${
-        query.orderByClause ? "order by " + query.orderByClause : ""
-      } ${query.limitValue ? "limit " + query.limitValue : "limit 500"}`,
+      `${query.sql}${query.whereClause ? " where " + query.whereClause : ""}${
+        query.orderByClause ? " order by " + query.orderByClause : ""
+      }${query.limitValue ? " limit " + query.limitValue : " limit 500"}`,
       (
         error: Query.QueryError | null,
         results: Array<any>,

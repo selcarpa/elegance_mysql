@@ -12,13 +12,17 @@ import {
   getSecurityDisplayed,
 } from "./capability/configurationService";
 import { details } from "./embed/command/details";
-import { BarItem } from "./embed/item/statusBarItem";
 import { CompareToValue, tableCompareTo } from "./embed/command/compare";
 import { CompareToModel } from "./model/compareModel";
+import { getRuntimeConstant } from "./capability/globalConstant";
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.setOutputLevel(getLogConfig());
-  let barItem = new BarItem();
+  getRuntimeConstant().barItem= vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    1
+  );
+  getRuntimeConstant().barItem.name = "elegance mysql database select";
 
   let securityText: string = String.raw`Security Attention:
      other extensions can get this configuration.
@@ -151,6 +155,14 @@ export function activate(context: vscode.ExtensionContext) {
       "elegance_mysql.databaseSelect",
       () => {
         databaseSelect();
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "elegance_mysql.runSelectedSql",
+      () => {
+        
       }
     )
   );

@@ -13,7 +13,8 @@ import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 const minimumSuppertVersion = "5.7.0";
 
 /**
- * children getter interface@see EleganceTreeItem
+ * children getter interface
+ * @see EleganceTreeItem
  */
 interface ChildrenGetter {
   (): Promise<Array<EleganceTreeItem>>;
@@ -226,7 +227,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
         this.sql = `SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName,TABLE_COMMENT comment,TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='${result.schemaName}';`;
         break;
       case EleganceTreeItemType.table:
-        if(result.TABLE_TYPE === 'BASE TABLE'){
+        if (result.TABLE_TYPE === "BASE TABLE") {
           this.iconPath = {
             light: path.join(
               extensionPath,
@@ -234,9 +235,17 @@ export class EleganceTreeItem extends vscode.TreeItem {
               "light",
               "elegance_table.svg"
             ),
-            dark: path.join(extensionPath, "media", "dark", "elegance_table.svg"),
+            dark: path.join(
+              extensionPath,
+              "media",
+              "dark",
+              "elegance_table.svg"
+            ),
           };
-        }else if (result.TABLE_TYPE === 'VIEW'||result.TABLE_TYPE ==='SYSTEM VIEW'){
+        } else if (
+          result.TABLE_TYPE === "VIEW" ||
+          result.TABLE_TYPE === "SYSTEM VIEW"
+        ) {
           this.iconPath = {
             light: path.join(
               extensionPath,
@@ -244,7 +253,12 @@ export class EleganceTreeItem extends vscode.TreeItem {
               "light",
               "elegance_view.svg"
             ),
-            dark: path.join(extensionPath, "media", "dark", "elegance_view.svg"),
+            dark: path.join(
+              extensionPath,
+              "media",
+              "dark",
+              "elegance_view.svg"
+            ),
           };
         }
         this.contextValue = "table";
