@@ -9,6 +9,7 @@ import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import { FieldPacket } from "mysql2";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
+import { compileConstant } from "../../capability/globalValues";
 
 const minimumSuppertVersion = "5.7.0";
 
@@ -50,7 +51,7 @@ function setVersion(config: DatabaseConfig): void {
       let version: string = results[0]["VERSION()"];
       if (version) {
         config.version = version;
-        if (!versionCheck(version, minimumSuppertVersion)) {
+        if (!versionCheck(version, compileConstant.COMPATIBLE_VERSION)) {
           let message = `The minimum supported version is ${minimumSuppertVersion}. This database configuration may not get full-support: ${config.name}(host:${config.host}, version:${config.version})`;
           Logger.infoAndShow(message);
         }

@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { convertImports } from "../../capability/viewsUtils";
 import { execSelect } from "../../capability/databaseUtils";
-import { Message, QueryMessage } from "../../model/messageModel";
+import { Message, Page, QueryMessage } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
 import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { FieldPacket } from "mysql2";
@@ -12,7 +12,7 @@ import {
   DatabaseConfig,
   getDatabaseConfigs,
 } from "../../capability/configurationService";
-import { getRuntimeConstant } from "../../capability/globalConstant";
+import { RuntimeValues } from "../../capability/globalValues";
 
 /**
  *
@@ -24,9 +24,9 @@ import { getRuntimeConstant } from "../../capability/globalConstant";
 function getQueryResult(
   query: {
     sql: string;
-    limitValue: string | null;
-    whereClause: string | null;
-    orderByClause: string | null;
+    page: Page;
+    whereClause?: string;
+    orderByClause?: string;
   },
   config: DatabaseConfig,
   schemaName: string,
@@ -38,7 +38,7 @@ function getQueryResult(
       schemaName,
       `${query.sql}${query.whereClause ? " where " + query.whereClause : ""}${
         query.orderByClause ? " order by " + query.orderByClause : ""
-      }${query.limitValue ? " limit " + query.limitValue : " limit 500"}`,
+      }${query.page.size ? " limit " + query.page.size : " limit 500"}`,
       (
         error: Query.QueryError | null,
         results: Array<any>,
@@ -52,10 +52,10 @@ function getQueryResult(
           Array<string>(),
           Array<any>(),
           query.sql,
-          query.limitValue,
+          new Page(0, 0, query.page.size),
+          showToolsBar,
           query.whereClause,
-          query.orderByClause,
-          showToolsBar
+          query.orderByClause
         );
         if (fields) {
           fields.forEach((field) => {
@@ -147,9 +147,7 @@ export function select500(
       getQueryResult(
         {
           sql: sql,
-          limitValue: limitValue,
-          whereClause: null,
-          orderByClause: null,
+          page: new Page(0),
         },
         item.config,
         item.result.schemaName,
@@ -166,7 +164,7 @@ export function select500(
       getQueryResult(
         {
           sql: message.sql,
-          limitValue: message.limitValue,
+          page: new Page(0),
           whereClause: message.whereClause,
           orderByClause: message.orderByClause,
         },
@@ -187,15 +185,14 @@ export function selectSql(
   config: DatabaseConfig,
   schemaName: string
 ) {
+  sql = `SELECT * FROM (${sql}) cfd30866091d4a0d9cf12cf76fc448ee`;
   let limitValue = "500";
 
   openQueryHtml(panel, context.extensionPath);
   getQueryResult(
     {
       sql: sql,
-      limitValue: limitValue,
-      whereClause: null,
-      orderByClause: null,
+      page: new Page(0),
     },
     config,
     schemaName,
@@ -203,6 +200,9 @@ export function selectSql(
   ).then((m) => panel.webview.postMessage(m));
 }
 
+/**
+ * TODO: persist it
+ */
 export function databaseSelect() {
   let configs = getDatabaseConfigs();
 
@@ -241,10 +241,12 @@ export function databaseSelect() {
                 { title: "select a database" }
               )
               .then((schemaName) => {
-                getRuntimeConstant().selectedSchema = {
+                RuntimeValues.selectedSchema = {
                   schemaName: schemaName,
                   config: selectedValue.config,
                 };
+                RuntimeValues.barItem.text = `${selectedValue.config.name}-${schemaName}`;
+                RuntimeValues.barItem.show();
               });
           }
         );

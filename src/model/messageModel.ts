@@ -7,9 +7,17 @@ export class QueryMessage {
     public columns: Array<string>,
     public rows: Array<any>,
     public sql: string,
-    public limitValue: string | null,
-    public whereClause: string | null,
-    public orderByClause: string | null,
-    public showToolsBar: boolean = false
+    public page: Page,
+    public showToolsBar: boolean = false,
+    public whereClause?: string,
+    public orderByClause?: string
+  ) {}
+}
+
+export class Page {
+  constructor(
+    public current: number,
+    public total?: number,
+    public size: number = 500
   ) {}
 }

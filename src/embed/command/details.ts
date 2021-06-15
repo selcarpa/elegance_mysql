@@ -5,7 +5,7 @@ import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { execSelect } from "../../capability/databaseUtils";
 import { FieldPacket } from "mysql2";
 import { Logger } from "../../capability/logService";
-import { Message, QueryMessage } from "../../model/messageModel";
+import { Message, Page, QueryMessage } from "../../model/messageModel";
 
 export async function details(
   item: EleganceTreeItem,
@@ -32,9 +32,7 @@ export async function details(
         `select * from information_schema.columns 
         where table_schema = '${item.result.schemaName}' 
         and table_name = '${item.result.tableName}';`,
-        "0",
-        null,
-        null,
+        new Page(0),
         false
       );
       if (fields) {

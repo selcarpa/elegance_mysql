@@ -4,7 +4,10 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
 
   $scope.apply = function () {
     vscode.postMessage({
-      limitValue: $scope.queryData.limitValue,
+      page: {
+        size: $scope.queryData.size,
+        current: 0,
+      },
       whereClause: $scope.queryData.whereClause,
       orderByClause: $scope.queryData.orderByClause,
       sql: $scope.queryData.sql,
@@ -13,6 +16,7 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
 
   window.addEventListener("message", (event) => {
     const message = event.data;
+    debugger;
     if (message.status) {
       $scope.queryData = message.result;
     } else {

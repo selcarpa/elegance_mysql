@@ -4,7 +4,7 @@ import {
   EleganceTreeItem,
   EleganceTreeItemType,
 } from "./embed/provider/eleganceDatabaseProvider";
-import { databaseSelect, select500 } from "./embed/command/query";
+import { databaseSelect, select500, selectSql } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
 import { Logger } from "./capability/logService";
 import {
@@ -12,17 +12,15 @@ import {
   getSecurityDisplayed,
 } from "./capability/configurationService";
 import { details } from "./embed/command/details";
-import { CompareToValue, tableCompareTo } from "./embed/command/compare";
-import { CompareToModel } from "./model/compareModel";
-import { getRuntimeConstant } from "./capability/globalConstant";
+import {
+  compareTo,
+  CompareToValue,
+  tableCompareTo,
+} from "./embed/command/compare";
+import { RuntimeValues } from "./capability/globalValues";
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.setOutputLevel(getLogConfig());
-  getRuntimeConstant().barItem= vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    1
-  );
-  getRuntimeConstant().barItem.name = "elegance mysql database select";
 
   let securityText: string = String.raw`Security Attention:
      other extensions can get this configuration.
@@ -79,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.newQuery",
       async (item: any) => {
-        const doc = await vscode.workspace.openTextDocument({
+        let doc = await vscode.workspace.openTextDocument({
           language: "sql",
         });
         await vscode.window.showTextDocument(doc, { preview: false });
@@ -106,33 +104,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.compareTo",
       (item: EleganceTreeItem) => {
-        CompareToValue.origin = new CompareToModel(item.type, item.config, item.result.name,item.result.schemaName);
-        vscode.commands.executeCommand(
-          "setContext",
-          "elegance_mysql.compare_schema_selected",
-          false
-        );
-        vscode.commands.executeCommand(
-          "setContext",
-          "elegance_mysql.compare_table_selected",
-          false
-        );
-        switch (item.type) {
-          case EleganceTreeItemType.schema:
-            vscode.commands.executeCommand(
-              "setContext",
-              "elegance_mysql.compare_schema_selected",
-              true
-            );
-            break;
-          case EleganceTreeItemType.table:
-            vscode.commands.executeCommand(
-              "setContext",
-              "elegance_mysql.compare_table_selected",
-              true
-            );
-            break;
-        }
+        compareTo(item);
       }
     )
   );
@@ -146,30 +118,52 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.compareWithSelectedTable",
       (item: EleganceTreeItem) => {
-        tableCompareTo((item.type, item.config, item.result.name));
+        tableCompareTo({
+          type: item.type,
+          config: item.config,
+          name: item.result.name,
+          schemaName: item.result.schemaName,
+        });
       }
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "elegance_mysql.databaseSelect",
-      () => {
-        databaseSelect();
-      }
-    )
+    vscode.commands.registerCommand("elegance_mysql.databaseSelect", () => {
+      databaseSelect();
+    })
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "elegance_mysql.runSelectedSql",
-      () => {
-        
+    vscode.commands.registerCommand("elegance_mysql.runSelectedSql", () => {
+      let editor = vscode.window.activeTextEditor;
+
+      if (editor) {
+        let document = editor.document;
+        let selection = editor.selection;
+
+        // Get the word within the selection
+        let words = document.getText(selection);
+        let panel = getWebviewPanel(
+          "elegance_mysql.query",
+          "result",
+          vscode.ViewColumn.One,
+          context
+        );
+        selectSql(
+          words,
+          panel,
+          context,
+          RuntimeValues.selectedSchema.config,
+          RuntimeValues.selectedSchema.schemaName
+        );
       }
-    )
+    })
   );
   /// end register
 
   //status bar item
-  context.subscriptions.push(barItem.databaseSelectBar);
+  RuntimeValues.barItem.name = "elegance mysql database select";
+  RuntimeValues.barItem.command = "elegance_mysql.databaseSelect";
+  context.subscriptions.push(RuntimeValues.barItem);
 
   //TODO: update database list and other item affect by config
   vscode.workspace.onDidChangeConfiguration((e) => {
