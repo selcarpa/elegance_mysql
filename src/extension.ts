@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import {
   EleganceDatabaseProvider as EleganceTreeNodeProvider,
   EleganceTreeItem,
-  EleganceTreeItemType,
 } from "./embed/provider/eleganceDatabaseProvider";
 import { databaseSelect, select500, selectSql } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
@@ -12,11 +11,7 @@ import {
   getSecurityDisplayed,
 } from "./capability/configurationService";
 import { details } from "./embed/command/details";
-import {
-  compareTo,
-  CompareToValue,
-  tableCompareTo,
-} from "./embed/command/compare";
+import { compareTo, tableCompareTo } from "./embed/command/compare";
 import { RuntimeValues } from "./capability/globalValues";
 
 export function activate(context: vscode.ExtensionContext) {

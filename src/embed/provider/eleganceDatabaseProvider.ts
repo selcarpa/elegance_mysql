@@ -9,6 +9,7 @@ import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
 import { compileConstant } from "../../capability/globalValues";
+import { config, version } from "process";
 
 /**
  * children getter interface
@@ -37,24 +38,39 @@ function setVersion(config: DatabaseConfig): void {
     config,
     "mysql",
     "SELECT VERSION()",
-    (
-      error: QueryError | null,
-      results: Array<any>,
-      fields: FieldPacket[]
-    ) => {
+    (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
       if (error) {
         Logger.error(error.message, error);
       }
       let version: string = results[0]["VERSION()"];
       if (version) {
         config.version = version;
-        if (!versionCheck(version, compileConstant.compatibleVersion)) {
-          let message = `The minimum supported version is ${compileConstant.compatibleVersion}. This database configuration may not get full-support: ${config.name}(host:${config.host}, version:${config.version})`;
-          Logger.infoAndShow(message);
-        }
+        // if (!versionCheck(version, compileConstant.compatibleVersion)) {
+        //   let message = `The minimum supported version is ${compileConstant.compatibleVersion}. This database configuration may not get full-support: ${config.name}(host:${config.host}, version:${config.version})`;
+        //   Logger.infoAndShow(message);
+        // }
       }
     }
   );
+}
+
+function popVersionMessage(configs: Array<DatabaseConfig>) {
+  let notSupportConfigs = configs.filter(
+    (config) =>
+      config.version &&
+      !versionCheck(version, compileConstant.compatibleVersion)
+  );
+  if (notSupportConfigs && notSupportConfigs.length > 0) {
+    let message = `The minimum supported version is ${
+      compileConstant.compatibleVersion
+    }. This database configuration may not get full-support: ${notSupportConfigs
+      .map(
+        (config) =>
+          `${config.name}(host:${config.host}, version:${config.version})`
+      )
+      .join(",")})`;
+    Logger.infoAndShow(message);
+  }
 }
 
 export class EleganceDatabaseProvider
@@ -98,6 +114,9 @@ export class EleganceDatabaseProvider
         );
         databaseTreeItems.push(e);
       });
+
+      popVersionMessage(databaseConfigs);
+
       return databaseTreeItems;
     }
   }
