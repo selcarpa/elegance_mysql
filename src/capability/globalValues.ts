@@ -8,5 +8,5 @@ export class RuntimeValues {
 }
 
 export const compileConstant = {
-  COMPATIBLE_VERSION: "5.7.0",
+  compatibleVersion: "5.7.0",
 };
