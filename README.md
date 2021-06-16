@@ -6,6 +6,12 @@
 
 1. Easy to configure database connection.![configure example](./example/config.png)
 2. Execute simple query with a mouse operation.![select top 500](./example/selectTop500.png)
+3. Execute sql anywhere.
+   - run "database select" command
+   - select sql for execute
+   - run "run selected sql"
+
+![execSql](./example/execSql.gif)
 
 > ATTENSION:
 >
