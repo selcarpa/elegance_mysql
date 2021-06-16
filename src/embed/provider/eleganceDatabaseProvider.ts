@@ -58,9 +58,9 @@ function popVersionMessage(configs: Array<DatabaseConfig>) {
   let notSupportConfigs = configs.filter(
     (config) =>
       config.version &&
-      !versionCheck(version, compileConstant.compatibleVersion)
+      !versionCheck(config.version, compileConstant.compatibleVersion)
   );
-  if (notSupportConfigs && notSupportConfigs.length > 0) {
+  if (notSupportConfigs.length > 0) {
     let message = `The minimum supported version is ${
       compileConstant.compatibleVersion
     }. This database configuration may not get full-support: ${notSupportConfigs
@@ -115,7 +115,9 @@ export class EleganceDatabaseProvider
         databaseTreeItems.push(e);
       });
 
-      popVersionMessage(databaseConfigs);
+      setTimeout(() => {
+        popVersionMessage(databaseConfigs);
+      }, 5);
 
       return databaseTreeItems;
     }
