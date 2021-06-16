@@ -1,9 +1,8 @@
 import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
 import * as vscode from "vscode";
 import { openQueryHtml } from "./query";
-import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 import { execSelect } from "../../capability/databaseUtils";
-import { FieldPacket } from "mysql2";
+import { FieldPacket, QueryError } from "mysql2";
 import { Logger } from "../../capability/logService";
 import { Message, Page, QueryMessage } from "../../model/messageModel";
 
@@ -18,7 +17,7 @@ export async function details(
     "mysql",
     `select * from information_schema.columns where table_schema = '${item.result.schemaName}' and table_name = '${item.result.tableName}';`,
     (
-      error: Query.QueryError | null,
+      error: QueryError | null,
       results: Array<any>,
       fields: FieldPacket[]
     ) => {

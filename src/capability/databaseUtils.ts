@@ -1,8 +1,7 @@
 import { DatabaseConfig } from "./configurationService";
 import * as mysql2 from "mysql2";
-import { FieldPacket } from "mysql2";
+import { FieldPacket, QueryError } from "mysql2";
 import { Logger } from "./logService";
-import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
 
 /**
  *
@@ -16,7 +15,7 @@ export function execSelect(
   schema: string,
   sql: string,
   callBack?: (
-    err: Query.QueryError | null,
+    err: QueryError | null,
     result: any,
     fields: FieldPacket[]
   ) => any

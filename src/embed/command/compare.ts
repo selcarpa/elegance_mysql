@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
-import { FieldPacket } from "mysql2";
-import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
+import { FieldPacket, QueryError } from "mysql2";
 import { execSelect } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import {
@@ -60,7 +59,7 @@ export function tableCompareTo(destination: any) {
     CompareToValue.origin.schemaName,
     sql,
     (
-      error: Query.QueryError | null,
+      error: QueryError | null,
       results: Array<any>,
       fields: FieldPacket[]
     ) => {

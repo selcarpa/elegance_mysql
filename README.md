@@ -63,10 +63,4 @@ other settings:
 3. Add page support for result webview.
 4. Complete language switch support.
 
-## Release Notes
-
-### 0.1.0
-
-Simple query function is already available
-
 **Enjoy!**

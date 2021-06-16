@@ -7,8 +7,7 @@ import {
 import { TreeItemCollapsibleState } from "vscode";
 import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
-import { FieldPacket } from "mysql2";
-import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
+import { FieldPacket, QueryError } from "mysql2";
 import { compileConstant } from "../../capability/globalValues";
 
 /**
@@ -39,7 +38,7 @@ function setVersion(config: DatabaseConfig): void {
     "mysql",
     "SELECT VERSION()",
     (
-      error: Query.QueryError | null,
+      error: QueryError | null,
       results: Array<any>,
       fields: FieldPacket[]
     ) => {
@@ -130,7 +129,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
         "mysql",
         this.sql,
         (
-          error: Query.QueryError | null,
+          error: QueryError | null,
           results: Array<any>,
           fields: FieldPacket[]
         ) => {

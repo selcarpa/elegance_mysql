@@ -6,8 +6,7 @@ import { convertImports } from "../../capability/viewsUtils";
 import { execSelect } from "../../capability/databaseUtils";
 import { Message, Page, QueryMessage } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
-import Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
-import { FieldPacket } from "mysql2";
+import { FieldPacket, QueryError } from "mysql2";
 import {
   DatabaseConfig,
   getDatabaseConfigs,
@@ -40,7 +39,7 @@ function getQueryResult(
         query.orderByClause ? " order by " + query.orderByClause : ""
       }${query.page.size ? " limit " + query.page.size : " limit 500"}`,
       (
-        error: Query.QueryError | null,
+        error: QueryError | null,
         results: Array<any>,
         fields: FieldPacket[]
       ) => {
@@ -125,7 +124,7 @@ export function select500(
     "mysql",
     columnsSql,
     (
-      error: Query.QueryError | null,
+      error: QueryError | null,
       results: Array<any>,
       fields: FieldPacket[]
     ) => {
@@ -228,7 +227,7 @@ export function databaseSelect() {
           "mysql",
           sql,
           (
-            error: Query.QueryError | null,
+            error: QueryError | null,
             results: Array<any>,
             fields: FieldPacket[]
           ) => {
