@@ -1,6 +1,6 @@
-import { DatabaseConfig } from "./configurationService";
 import * as mysql2 from "mysql2";
 import { FieldPacket, QueryError } from "mysql2";
+import { DatabaseConfig } from "../model/configurationModel";
 import { Logger } from "./logService";
 
 /**

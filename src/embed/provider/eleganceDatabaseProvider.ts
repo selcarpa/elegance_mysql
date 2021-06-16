@@ -1,15 +1,12 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import {
-  DatabaseConfig,
-  getDatabaseConfigs,
-} from "../../capability/configurationService";
+import { getDatabaseConfigs } from "../../capability/configurationService";
 import { TreeItemCollapsibleState } from "vscode";
 import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
 import { compileConstant } from "../../capability/globalValues";
-import { config, version } from "process";
+import { DatabaseConfig } from "../../model/configurationModel";
 
 /**
  * children getter interface

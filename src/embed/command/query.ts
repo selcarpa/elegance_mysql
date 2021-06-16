@@ -7,11 +7,7 @@ import { execSelect } from "../../capability/databaseUtils";
 import { Message, Page, QueryMessage } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
-import {
-  DatabaseConfig,
-  getDatabaseConfigs,
-} from "../../capability/configurationService";
-import { RuntimeValues } from "../../capability/globalValues";
+import { DatabaseConfig } from "../../model/configurationModel";
 
 /**
  *
@@ -123,11 +119,7 @@ export function select500(
     item.config,
     "mysql",
     columnsSql,
-    (
-      error: QueryError | null,
-      results: Array<any>,
-      fields: FieldPacket[]
-    ) => {
+    (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
       if (error) {
         console.error(error.message);
         throw error;
@@ -197,58 +189,4 @@ export function selectSql(
     schemaName,
     false
   ).then((m) => panel.webview.postMessage(m));
-}
-
-/**
- * TODO: persist it
- */
-export function databaseSelect() {
-  let configs = getDatabaseConfigs();
-
-  vscode.window
-    .showQuickPick(
-      configs.map((config) => ({
-        label: config.name,
-        config: config,
-      })),
-      { title: "select a database" }
-    )
-    .then(
-      (
-        selectedValue: { label: string; config: DatabaseConfig } | undefined
-      ) => {
-        if (selectedValue === undefined) {
-          return;
-        }
-
-        let sql = `SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;`;
-        execSelect(
-          selectedValue.config,
-          "mysql",
-          sql,
-          (
-            error: QueryError | null,
-            results: Array<any>,
-            fields: FieldPacket[]
-          ) => {
-            if (error) {
-              Logger.error(error.message, error);
-            }
-            vscode.window
-              .showQuickPick(
-                results.map((r) => r.name),
-                { title: "select a database" }
-              )
-              .then((schemaName) => {
-                RuntimeValues.selectedSchema = {
-                  schemaName: schemaName,
-                  config: selectedValue.config,
-                };
-                RuntimeValues.barItem.text = `${selectedValue.config.name}-${schemaName}`;
-                RuntimeValues.barItem.show();
-              });
-          }
-        );
-      }
-    );
 }

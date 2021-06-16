@@ -3,7 +3,7 @@ import {
   EleganceDatabaseProvider as EleganceTreeNodeProvider,
   EleganceTreeItem,
 } from "./embed/provider/eleganceDatabaseProvider";
-import { databaseSelect, select500, selectSql } from "./embed/command/query";
+import { select500, selectSql } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
 import { Logger } from "./capability/logService";
 import {
@@ -13,9 +13,14 @@ import {
 import { details } from "./embed/command/details";
 import { compareTo, tableCompareTo } from "./embed/command/compare";
 import { RuntimeValues } from "./capability/globalValues";
+import { onConfiguationChange as onConfigurationChange } from "./embed/event/configurationEvent";
+import { StorageService } from "./capability/localStorageService.ts";
+import { databaseSelect } from "./embed/command/otherOperations";
 
 export function activate(context: vscode.ExtensionContext) {
+  //initial some static value
   Logger.setOutputLevel(getLogConfig());
+  StorageService.memento = context.workspaceState;
 
   let securityText: string = String.raw`Security Attention:
      other extensions can get this configuration.
@@ -160,10 +165,8 @@ export function activate(context: vscode.ExtensionContext) {
   RuntimeValues.barItem.command = "elegance_mysql.databaseSelect";
   context.subscriptions.push(RuntimeValues.barItem);
 
-  //TODO: update database list and other item affect by config
   vscode.workspace.onDidChangeConfiguration((e) => {
-    Logger.debug("configuration changed");
-    Logger.setOutputLevel(getLogConfig());
+    onConfigurationChange(e);
   });
 
   Logger.info("Elegance mysql!");

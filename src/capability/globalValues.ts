@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { DatabaseConfig } from "./configurationService";
+import { DatabaseConfig } from "../model/configurationModel";
 
 export class RuntimeValues {
   public static barItem: vscode.StatusBarItem =

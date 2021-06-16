@@ -6,7 +6,7 @@ import {
   EleganceTreeItem,
   EleganceTreeItemType,
 } from "../provider/eleganceDatabaseProvider";
-import { DatabaseConfig } from "../../capability/configurationService";
+import { DatabaseConfig } from "../../model/configurationModel";
 
 export function compareTo(item: EleganceTreeItem) {
   CompareToValue.origin = {
@@ -58,11 +58,7 @@ export function tableCompareTo(destination: any) {
     CompareToValue.origin.config,
     CompareToValue.origin.schemaName,
     sql,
-    (
-      error: QueryError | null,
-      results: Array<any>,
-      fields: FieldPacket[]
-    ) => {
+    (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
       if (error) {
         Logger.error(error.message, error);
       }

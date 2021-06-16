@@ -187,7 +187,9 @@
               "user": "root",
               "password": "mysqlpassword",
               "schemaFilterEnable": false,
-              "showSchemas": ["schema-1"]
+              "showSchemas": [
+                "schema-1"
+              ]
             }
           ],
           "description": "database list"
