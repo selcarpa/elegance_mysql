@@ -3,7 +3,7 @@
   "displayName": "elegance mysql",
   "description": "mysql database diagram",
   "publisher": "aethli",
-  "version": "0.1.0-preview",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",

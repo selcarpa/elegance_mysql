@@ -65,8 +65,8 @@ other settings:
 
 ## Release Notes
 
-### 0.1.0-preview
+### 0.1.0
 
-- Add feature
+Simple query function is already available
 
 **Enjoy!**
