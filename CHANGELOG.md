@@ -20,3 +20,7 @@ All notable changes to the "elegance mysql" extension will be documented in this
 ## [0.1.3]
 
 - Fix status bar doesn't show 'selectedSchema' when startup
+
+## [0.1.4]
+
+- Fix tools bar doesn't displayed
