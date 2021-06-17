@@ -14,7 +14,6 @@ import { SelectedSchema } from "../../model/storageModel";
  */
 function changLogsPopup() {
   if (getChangeLogPopUpEnable()) {
-
   }
 }
 
@@ -28,9 +27,13 @@ export function initial(context: ExtensionContext) {
 
   // workspace state storage
   StorageService.memento = context.workspaceState;
-  let selectedSchema = StorageService.getValue("selectedSchema");
+  let selectedSchema = <SelectedSchema>(
+    StorageService.getValue("selectedSchema")
+  );
   if (selectedSchema) {
     RuntimeValues.selectedSchema = <SelectedSchema>selectedSchema;
+    RuntimeValues.barItem.text = `${selectedSchema.config.name}-${selectedSchema.schemaName}`;
+    RuntimeValues.barItem.show();
   }
 
   // compareTo command context

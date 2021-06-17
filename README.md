@@ -53,14 +53,14 @@ other settings:
 ## Known Issues
 
 1. Add database button doesn't take effect.
-2. New query menu doesn't take effect.
-3. CompareTo doesn't take effect.
+2. CompareTo doesn't take effect.
 
-## Next Version
+## Version Plan
 
 1. Complete sql language support for mysql.
 2. Complete all installed button or menus.
 3. Add page support for result webview.
 4. Complete language switch support.
+5. Complete beginner's guide.
 
 **Enjoy!**

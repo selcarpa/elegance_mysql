@@ -16,3 +16,7 @@ All notable changes to the "elegance mysql" extension will be documented in this
 - Move "new query" context menu from table item to schema item
 - Remove default for pagination
 - Rewrite onDidChangeConfiguration part
+
+## [0.1.3]
+
+- Fix status bar doesn't show 'selectedSchema' when startup
