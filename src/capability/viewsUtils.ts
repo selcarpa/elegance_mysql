@@ -1,5 +1,7 @@
+import * as fs from "fs";
 import * as vscode from "vscode";
 import * as path from "path";
+import { Logger } from "./logService";
 
 /**
  *
@@ -66,4 +68,41 @@ export function getWebviewPanel(
       vscode.Uri.file(path.join(context.extensionPath, "views", "css")),
     ],
   });
+}
+
+/**
+ * just open a query webview
+ * @param panel
+ * @param extensionPath
+ */
+export function openQueryHtml(
+  panel: vscode.WebviewPanel,
+  extensionPath: string
+) {
+  fs.readFile(
+    path.join(extensionPath, "views", "html", "query.html"),
+    (err, data) => {
+      if (err) {
+        Logger.error(err.message, err);
+      }
+      let htmlContent = data.toString();
+      htmlContent = convertImports(
+        htmlContent,
+        extensionPath,
+        (file: vscode.Uri) => {
+          return panel.webview.asWebviewUri(file);
+        },
+        "jquery.slim.min.js",
+        "colResizable-1.6.js",
+        "popper.min.js",
+        "bootstrap.min.js",
+        "bootstrap.bundle.min.js",
+        "angular.min.js",
+        "query.js",
+        "bootstrap.min.css",
+        "query.css"
+      );
+      panel.webview.html = htmlContent;
+    }
+  );
 }

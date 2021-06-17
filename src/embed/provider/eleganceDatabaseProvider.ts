@@ -22,6 +22,7 @@ interface ChildrenGetter {
 export enum EleganceTreeItemType {
   database,
   schema,
+  tableType, //Reserved, never used
   table,
   column,
 }
@@ -42,10 +43,6 @@ function setVersion(config: DatabaseConfig): void {
       let version: string = results[0]["VERSION()"];
       if (version) {
         config.version = version;
-        // if (!versionCheck(version, compileConstant.compatibleVersion)) {
-        //   let message = `The minimum supported version is ${compileConstant.compatibleVersion}. This database configuration may not get full-support: ${config.name}(host:${config.host}, version:${config.version})`;
-        //   Logger.infoAndShow(message);
-        // }
       }
     }
   );
@@ -160,8 +157,8 @@ export class EleganceTreeItem extends vscode.TreeItem {
           results.forEach((result) => {
             //to filter out schemas with showSchemas in settings.json
             if (
-              this.config.schemaFilterEnable &&
               this.type === EleganceTreeItemType.database &&
+              this.config.schemaFilterEnable &&
               this.config.showSchemas.indexOf(result.name) <= -1
             ) {
             } else {

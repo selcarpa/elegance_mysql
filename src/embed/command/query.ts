@@ -1,39 +1,63 @@
 import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
 import * as vscode from "vscode";
-import * as fs from "fs";
-import * as path from "path";
-import { convertImports } from "../../capability/viewsUtils";
 import { execSelect } from "../../capability/databaseUtils";
-import { Message, Page, QueryMessage } from "../../model/messageModel";
+import {
+  Message,
+  Page,
+  QueryMessage,
+  QueryViewOptions,
+} from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
+import { openQueryHtml } from "../../capability/viewsUtils";
+
+function getCountResult(
+  sql: string,
+  config: DatabaseConfig,
+  schemaName: string
+): Promise<Page> {
+  return new Promise((r) => {
+    execSelect(config, schemaName, `SELECT COUNT(1) FROM(${sql})`);
+  });
+}
 
 /**
- *
- * @param query query information
+ * Assmble sql with where, orderby, limit clause, execute and assble result
+ * @param queryParamas query information
  * @param config database config
  * @param schemaName schema name of this query used
  * @returns
  */
 function getQueryResult(
-  query: {
+  queryParamas: {
     sql: string;
-    page: Page;
+    page?: Page;
     whereClause?: string;
     orderByClause?: string;
   },
   config: DatabaseConfig,
   schemaName: string,
-  showToolsBar: boolean
+  options: QueryViewOptions
 ): Promise<any> {
   return new Promise((resolve) => {
+    let limitClause;
+    if (queryParamas.page) {
+      limitClause = ` limit ${
+        queryParamas.page.current * queryParamas.page.size
+      },${queryParamas.page.size}`;
+    }
+
     execSelect(
       config,
       schemaName,
-      `${query.sql}${query.whereClause ? " where " + query.whereClause : ""}${
-        query.orderByClause ? " order by " + query.orderByClause : ""
-      }${query.page.size ? " limit " + query.page.size : " limit 500"}`,
+      `${queryParamas.sql}${
+        queryParamas.whereClause ? " where " + queryParamas.whereClause : ""
+      }${
+        queryParamas.orderByClause
+          ? " order by " + queryParamas.orderByClause
+          : ""
+      }${limitClause || ""}`, //sql in fact
       (
         error: QueryError | null,
         results: Array<any>,
@@ -43,14 +67,19 @@ function getQueryResult(
           Logger.error(error.message, error);
           resolve(new Message(error.message, false));
         }
+        // assmble result
         let messageContent = new QueryMessage(
           Array<string>(),
           Array<any>(),
-          query.sql,
-          new Page(0, 0, query.page.size),
-          showToolsBar,
-          query.whereClause,
-          query.orderByClause
+          queryParamas.sql,
+          new Page(
+            queryParamas.page ? queryParamas.page.current : 0,
+            0,
+            queryParamas.page ? queryParamas.page.size : 0
+          ),
+          options,
+          queryParamas.whereClause,
+          queryParamas.orderByClause
         );
         if (fields) {
           fields.forEach((field) => {
@@ -64,43 +93,6 @@ function getQueryResult(
       }
     );
   });
-}
-
-/**
- * just open a query webview
- * @param panel
- * @param extensionPath
- */
-export function openQueryHtml(
-  panel: vscode.WebviewPanel,
-  extensionPath: string
-) {
-  fs.readFile(
-    path.join(extensionPath, "views", "html", "query.html"),
-    (err, data) => {
-      if (err) {
-        Logger.error(err.message, err);
-      }
-      let htmlContent = data.toString();
-      htmlContent = convertImports(
-        htmlContent,
-        extensionPath,
-        (file: vscode.Uri) => {
-          return panel.webview.asWebviewUri(file);
-        },
-        "jquery.slim.min.js",
-        "colResizable-1.6.js",
-        "popper.min.js",
-        "bootstrap.min.js",
-        "bootstrap.bundle.min.js",
-        "angular.min.js",
-        "query.js",
-        "bootstrap.min.css",
-        "query.css"
-      );
-      panel.webview.html = htmlContent;
-    }
-  );
 }
 
 /**
@@ -129,7 +121,6 @@ export function select500(
         columns.push(`\`${result.name}\``);
       });
 
-      let limitValue = "500";
       let sql: string = `select ${columns.join(",")} from ${
         item.result.tableName
       }`;
@@ -142,7 +133,10 @@ export function select500(
         },
         item.config,
         item.result.schemaName,
-        true
+        {
+          showToolsBar: true,
+          showPaginationToolsBar: true,
+        }
       ).then((m) => panel.webview.postMessage(m));
     }
   );
@@ -161,7 +155,10 @@ export function select500(
         },
         item.config,
         item.result.schemaName,
-        true
+        {
+          showToolsBar: true,
+          showPaginationToolsBar: true,
+        }
       ).then((m) => panel.webview.postMessage(m));
     },
     undefined,
@@ -169,6 +166,7 @@ export function select500(
   );
 }
 
+//TODO: Distinguish limit clause or not give a default pagination
 export function selectSql(
   sql: string,
   panel: vscode.WebviewPanel,
@@ -177,7 +175,6 @@ export function selectSql(
   schemaName: string
 ) {
   sql = `SELECT * FROM (${sql}) cfd30866091d4a0d9cf12cf76fc448ee`;
-  let limitValue = "500";
 
   openQueryHtml(panel, context.extensionPath);
   getQueryResult(
@@ -187,6 +184,9 @@ export function selectSql(
     },
     config,
     schemaName,
-    false
+    {
+      showToolsBar: false,
+      showPaginationToolsBar: true,
+    }
   ).then((m) => panel.webview.postMessage(m));
 }

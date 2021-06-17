@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+//TODO: never used yet
 class MarkdownProvider implements vscode.NotebookSerializer {
   deserializeNotebook(
     data: Uint8Array,

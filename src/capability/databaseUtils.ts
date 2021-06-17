@@ -14,11 +14,7 @@ export function execSelect(
   config: DatabaseConfig,
   schema: string,
   sql: string,
-  callBack?: (
-    err: QueryError | null,
-    result: any,
-    fields: FieldPacket[]
-  ) => any
+  callBack?: (err: QueryError | null, result: any, fields: FieldPacket[]) => any
 ) {
   let connection = mysql2.createConnection({
     host: config.host,
@@ -27,6 +23,7 @@ export function execSelect(
     database: schema,
     port: config.port,
   });
+  // debug mode will print sql
   Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
   connection.connect();
   connection.query(sql, callBack);

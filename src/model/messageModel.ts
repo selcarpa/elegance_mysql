@@ -8,7 +8,7 @@ export class QueryMessage {
     public rows: Array<any>,
     public sql: string,
     public page: Page,
-    public showToolsBar: boolean = false,
+    public options: QueryViewOptions,
     public whereClause?: string,
     public orderByClause?: string
   ) {}
@@ -20,4 +20,8 @@ export class Page {
     public total?: number,
     public size: number = 500
   ) {}
+}
+export interface QueryViewOptions {
+  showToolsBar: boolean;
+  showPaginationToolsBar: boolean;
 }
