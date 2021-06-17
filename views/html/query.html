@@ -12,7 +12,7 @@
 
   <body ng-app="queryApp" ng-controller="queryController">
     <form ng-show="queryData!=undefined&&queryData.columns.length>0">
-      <div class="form-row align-items-center" ng-show="queryData.showToolsBar">
+      <div class="form-row align-items-center" ng-show="queryData.options.showToolsBar">
         <div class="col">
           <label class="sr-only" for="inlineFormInputGroup">where clause</label>
           <div class="input-group">
