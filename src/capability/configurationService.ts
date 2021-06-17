@@ -31,8 +31,15 @@ export function getLogConfig(): LogLevel {
 
 /**
  *
- * @returns log level configs from settings.json
+ * @returns security notice popup configuration from settings.json
  */
-export function getSecurityDisplayed(): boolean {
+ export function getSecurityDisplayed(): boolean {
   return <boolean>getConfiguration().get("securityDisplayed");
+}
+/**
+ *
+ * @returns change logs popup configuration from settings.json
+ */
+export function getChangeLogPopUpEnable(): boolean {
+  return <boolean>getConfiguration().get("changeLogPopupEnable");
 }

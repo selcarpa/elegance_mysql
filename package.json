@@ -118,7 +118,7 @@
         },
         {
           "command": "elegance_mysql.newQuery",
-          "when": "view == elegance_list && viewItem == table",
+          "when": "view == elegance_list && viewItem == schema",
           "group": "query@2"
         },
         {
@@ -209,7 +209,12 @@
         "elegance.mysql.securityDisplayed": {
           "type": "boolean",
           "default": true,
-          "description": "Whether the security problem to be displayed or not."
+          "description": "whether the security problem to be displayed."
+        },
+        "elegance.mysql.changeLogPopupEnable": {
+          "type": "boolean",
+          "default": true,
+          "description": "whether popup change log notice."
         }
       }
     },

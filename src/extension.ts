@@ -11,6 +11,7 @@ import { RuntimeValues } from "./capability/globalValues";
 import { onConfiguationChange as onConfigurationChange } from "./embed/event/configurationEvent";
 import { databaseSelect } from "./embed/command/otherOperations";
 import { initial, startupTasks } from "./embed/elegance/startup";
+import { StorageService } from "./capability/localStorageService.ts";
 
 export function activate(context: vscode.ExtensionContext) {
   initial(context);
@@ -55,7 +56,20 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "elegance_mysql.newQuery",
-      async (item: any) => {
+      async (item: EleganceTreeItem) => {
+
+        RuntimeValues.selectedSchema = {
+          schemaName: item.result.schemaName,
+          config: item.config,
+        };
+        StorageService.setValue("selectedSchema", {
+          schemaName: item.result.schemaName,
+          config: item.config,
+        });
+        RuntimeValues.barItem.text = `${item.config.name}-${item.result.schemaName}`;
+        RuntimeValues.barItem.show();
+
+
         let doc = await vscode.workspace.openTextDocument({
           language: "sql",
         });

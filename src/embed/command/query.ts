@@ -174,13 +174,12 @@ export function selectSql(
   config: DatabaseConfig,
   schemaName: string
 ) {
-  sql = `SELECT * FROM (${sql}) cfd30866091d4a0d9cf12cf76fc448ee`;
+  // sql = `SELECT * FROM (${sql}) cfd30866091d4a0d9cf12cf76fc448ee`;
 
   openQueryHtml(panel, context.extensionPath);
   getQueryResult(
     {
       sql: sql,
-      page: new Page(0),
     },
     config,
     schemaName,

@@ -1,5 +1,6 @@
 import { commands, ExtensionContext, window } from "vscode";
 import {
+  getChangeLogPopUpEnable,
   getLogConfig,
   getSecurityDisplayed,
 } from "../../capability/configurationService";
@@ -7,6 +8,15 @@ import { RuntimeValues } from "../../capability/globalValues";
 import { StorageService } from "../../capability/localStorageService.ts";
 import { Logger } from "../../capability/logService";
 import { SelectedSchema } from "../../model/storageModel";
+
+/**
+ * popup change log notice
+ */
+function changLogsPopup() {
+  if (getChangeLogPopUpEnable()) {
+
+  }
+}
 
 /**
  * initial some global values
@@ -60,4 +70,5 @@ _/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \
      \/            \//_____/      \/      \/      \/     \/ 
   `;
   Logger.plain(banner);
+  changLogsPopup();
 }
