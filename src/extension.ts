@@ -5,37 +5,16 @@ import {
 } from "./embed/provider/eleganceDatabaseProvider";
 import { select500, selectSql } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
-import { Logger } from "./capability/logService";
-import {
-  getLogConfig,
-  getSecurityDisplayed,
-} from "./capability/configurationService";
 import { details } from "./embed/command/details";
 import { compareTo, tableCompareTo } from "./embed/command/compare";
 import { RuntimeValues } from "./capability/globalValues";
 import { onConfiguationChange as onConfigurationChange } from "./embed/event/configurationEvent";
-import { StorageService } from "./capability/localStorageService.ts";
 import { databaseSelect } from "./embed/command/otherOperations";
+import { initial, startupTasks } from "./embed/elegance/startup";
 
 export function activate(context: vscode.ExtensionContext) {
-  //initial some static value
-  Logger.setOutputLevel(getLogConfig());
-  StorageService.memento = context.workspaceState;
-
-  let securityText: string = String.raw`Security Attention:
-     other extensions can get this configuration.
-      if there is any malicious extension,
-       it will leak database connection information from settings.json.
-       Set elegance.mysql.securityDisplayed=false into settings.json to avoid this message.`;
-  if (getSecurityDisplayed()) {
-    vscode.window.showInformationMessage(securityText);
-  }
-
-  vscode.commands.executeCommand(
-    "setContext",
-    "elegance_mysql.compareTo.supportedItem",
-    ["table", "schema"]
-  );
+  initial(context);
+  startupTasks();
 
   let eleganceTreeNodeProvider: EleganceTreeNodeProvider =
     new EleganceTreeNodeProvider(context.extensionPath);
@@ -169,16 +148,6 @@ export function activate(context: vscode.ExtensionContext) {
     onConfigurationChange(e);
   });
 
-  Logger.info("Elegance mysql!");
-  var banner: string = String.raw`
-  .__                                                 
-  ____  |  |    ____    ____ _____     ____    ____   ____  
-_/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \ 
-\  ___/ |  |__\  ___/ / /_/  >/ __ \_|   |  \\  \___\  ___/ 
- \___  >|____/ \___  >\___  /(____  /|___|  / \___  >\___  >
-     \/            \//_____/      \/      \/      \/     \/ 
-  `;
-  Logger.plain(banner);
 }
 
 export function deactivate() {}
