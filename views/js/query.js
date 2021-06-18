@@ -1,6 +1,6 @@
 angular.module("queryApp", []).controller("queryController", function ($scope) {
   $scope.message = "Loading.";
-  let vscode = acquireVsCodeApi();
+  // let vscode = acquireVsCodeApi();
 
   $scope.apply = function () {
     vscode.postMessage({
@@ -16,7 +16,6 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
 
   window.addEventListener("message", (event) => {
     const message = event.data;
-    debugger;
     if (message.status) {
       $scope.queryData = message.result;
     } else {
@@ -34,4 +33,263 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
       disabledColumns: [0],
     });
   });
+  
+  $scope.queryData = {
+    columns: ["this", "is", "a", "very", "long", "example"],
+    rows: [
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+      {
+        this: "this",
+        is: "is",
+        a: "a",
+        very: "very",
+        long: "looooooooooooooooooooooooooooooong",
+        example: "examply",
+      },
+    ],
+    options: {
+      showToolsBar: true,
+      showPaginationToolsBar: true,
+    },
+  };
+
 });

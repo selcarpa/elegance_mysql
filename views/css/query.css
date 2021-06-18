@@ -17,9 +17,11 @@ table {
   overflow-x: auto;
   color: var(--vscode-foreground) !important;
   border-collapse: collapse;
-  border-style:dashed;
+  border-style: dashed;
   font-family: var(--vscode-editor-font-family);
   text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px !important;
 }
 
 td,
@@ -48,4 +50,21 @@ button {
 input {
   color: var(--vscode-foreground) !important;
   background-color: var(--vscode-editor-background) !important;
+}
+
+.nav-pagination {
+  bottom: 0px;
+  background-color: var(--vscode-editor-background) !important;
+  color: var(--vscode-button-foreground) !important;
+}
+form {
+  position: fixed;
+  width: 100%;
+  background-color: var(--vscode-editor-background) !important;
+  top: 0%;
+}
+
+tr:hover {
+  background-color: var(--vscode-foreground) !important;
+  color: var(--vscode-editor-background) !important;
 }
