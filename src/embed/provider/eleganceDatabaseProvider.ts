@@ -35,12 +35,12 @@ function setVersion(config: DatabaseConfig): void {
   execSelect(
     config,
     "mysql",
-    "SELECT VERSION()",
+    compileConstant.versionSql,
     (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
       if (error) {
         Logger.error(error.message, error);
       }
-      let version: string = results[0]["VERSION()"];
+      let version: string = results[0]["version1"];
       if (version) {
         config.version = version;
       }
@@ -217,8 +217,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
           ),
         };
         this.contextValue = "database";
-        this.sql =
-          "SELECT SCHEMA_NAME name,SCHEMA_NAME schemaName FROM information_schema.SCHEMATA;";
+        this.sql = compileConstant.eleganceProviderSchemaSql;
         setVersion(config);
         break;
       case EleganceTreeItemType.schema:

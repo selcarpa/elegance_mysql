@@ -27,8 +27,12 @@ export async function details(
         `select * from information_schema.columns 
         where table_schema = '${item.result.schemaName}' 
         and table_name = '${item.result.tableName}';`,
-        new Page(0),
-        { showToolsBar: false, showPaginationToolsBar: false }
+        { showToolsBar: false, showPaginationToolsBar: false },
+        {
+          current: 0,
+          size: 0,
+          total: 0,
+        }
       );
       if (fields) {
         fields.forEach((field) => {

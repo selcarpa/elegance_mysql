@@ -11,14 +11,28 @@ import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
 import { openQueryHtml } from "../../capability/viewsUtils";
+import { compileConstant } from "../../capability/globalValues";
 
 function getCountResult(
   sql: string,
   config: DatabaseConfig,
   schemaName: string
-): Promise<Page> {
+): Promise<number> {
   return new Promise((r) => {
-    execSelect(config, schemaName, `SELECT COUNT(1) FROM(${sql})`);
+    execSelect(
+      config,
+      schemaName,
+      `SELECT COUNT(1) as elegance_c1 FROM(${sql}) as elegance_t1`,
+      (err, result, fields) => {
+        if (err) {
+          Logger.error(err.message, err);
+          r(0);
+        } else {
+          Logger.debug(undefined, result);
+          r(result[0].elegance_c1);
+        }
+      }
+    );
   });
 }
 
@@ -72,12 +86,12 @@ function getQueryResult(
           Array<string>(),
           Array<any>(),
           queryParamas.sql,
-          new Page(
-            queryParamas.page ? queryParamas.page.current : 0,
-            0,
-            queryParamas.page ? queryParamas.page.size : 0
-          ),
           options,
+          {
+            current: queryParamas.page ? queryParamas.page.current : 0,
+            total: queryParamas.page ? queryParamas.page.total : 0,
+            size: queryParamas.page ? queryParamas.page.size : 0,
+          },
           queryParamas.whereClause,
           queryParamas.orderByClause
         );
@@ -126,18 +140,24 @@ export function select500(
       }`;
 
       openQueryHtml(panel, context.extensionPath);
-      getQueryResult(
-        {
-          sql: sql,
-          page: new Page(0),
-        },
-        item.config,
-        item.result.schemaName,
-        {
-          showToolsBar: true,
-          showPaginationToolsBar: true,
-        }
-      ).then((m) => panel.webview.postMessage(m));
+      getCountResult(sql, item.config, item.result.schemaName).then((c1) => {
+        getQueryResult(
+          {
+            sql: sql,
+            page: {
+              current: 0,
+              total: c1,
+              size: compileConstant.queryDefaultSize,
+            },
+          },
+          item.config,
+          item.result.schemaName,
+          {
+            showToolsBar: true,
+            showPaginationToolsBar: true,
+          }
+        ).then((m) => panel.webview.postMessage(m));
+      });
     }
   );
   panel.webview.onDidReceiveMessage(
@@ -146,20 +166,28 @@ export function select500(
       if (!message.limitValue) {
         message.limitValue = 500;
       }
-      getQueryResult(
-        {
-          sql: message.sql,
-          page: new Page(0),
-          whereClause: message.whereClause,
-          orderByClause: message.orderByClause,
-        },
-        item.config,
-        item.result.schemaName,
-        {
-          showToolsBar: true,
-          showPaginationToolsBar: true,
+      getCountResult(message.sql, item.config, item.result.schemaName).then(
+        (c1) => {
+          getQueryResult(
+            {
+              sql: message.sql,
+              page: {
+                current: message.page.current,
+                total: c1,
+                size: message.page.size,
+              },
+              whereClause: message.whereClause,
+              orderByClause: message.orderByClause,
+            },
+            item.config,
+            item.result.schemaName,
+            {
+              showToolsBar: true,
+              showPaginationToolsBar: true,
+            }
+          ).then((m) => panel.webview.postMessage(m));
         }
-      ).then((m) => panel.webview.postMessage(m));
+      );
     },
     undefined,
     context.subscriptions
@@ -185,7 +213,7 @@ export function selectSql(
     schemaName,
     {
       showToolsBar: false,
-      showPaginationToolsBar: true,
+      showPaginationToolsBar: false,
     }
   ).then((m) => panel.webview.postMessage(m));
 }

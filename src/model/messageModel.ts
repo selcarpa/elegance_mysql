@@ -7,19 +7,17 @@ export class QueryMessage {
     public columns: Array<string>,
     public rows: Array<any>,
     public sql: string,
-    public page: Page,
     public options: QueryViewOptions,
+    public page: Page,
     public whereClause?: string,
     public orderByClause?: string
   ) {}
 }
 
-export class Page {
-  constructor(
-    public current: number,
-    public total?: number,
-    public size: number = 500
-  ) {}
+export interface Page {
+  current: number;
+  total?: number;
+  size: number;
 }
 export interface QueryViewOptions {
   showToolsBar: boolean;
