@@ -9,4 +9,7 @@ export class RuntimeValues {
 
 export const compileConstant = {
   compatibleVersion: "5.7.0",
+  updateNotice:"Elegance mysql has been updated!",
+  updateNoticeAction:"what's news",
+  changeLogUrl:"https://github.com/AethLi/elegance_mysql/blob/main/CHANGELOG.md"
 };

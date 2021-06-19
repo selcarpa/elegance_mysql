@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../css/query.css" />
 
   <body ng-app="queryApp" ng-controller="queryController">
-    <form ng-show="queryData!=undefined&&queryData.columns.length>0">
+    <form style="padding-right: 20px;" ng-show="queryData!=undefined&&queryData.columns.length>0">
       <div
         class="form-row align-items-center"
         ng-show="queryData.options.showToolsBar"
@@ -52,12 +52,17 @@
             <div class="input-group-prepend">
               <div class="input-group-text">size</div>
             </div>
-            <input
-              type="text"
+            <select
               class="form-control"
               id="inlineFormInputGroup"
               ng-model="queryData.page.size"
-            />
+            >
+            <option>100</option>
+            <option>200</option>
+            <option>500</option>
+            <option>1000</option>
+            <option>unlimit</option>
+          </select>
           </div>
         </div>
         <div class="col-auto">
@@ -78,7 +83,9 @@
       </thead>
       <tbody>
         <tr ng-repeat="row in queryData.rows">
-          <td class="disabled">{{$index+1}}</td>
+          <td class="disabled">
+            {{queryData.page?(queryData.page.current)*queryData.page.size+$index+1:$index+1}}
+          </td>
           <td ng-repeat="k in queryData.columns">{{row[k]}}</td>
         </tr>
       </tbody>
@@ -91,28 +98,22 @@
         <p class="lead">{{message}}</p>
       </div>
     </div>
-    <nav class="navbar fixed-bottom navbar-expand-sm nav-pagination justify-content-end">
+    <nav
+      class="
+        navbar
+        fixed-bottom
+        navbar-expand-sm
+        nav-pagination
+        justify-content-end
+      "
+    >
       <ul class="navbar-nav justify-content-end">
         <li class="page-item">
           <a class="page-link" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <div class="col-lg-3">
-          <label class="sr-only" for="inlineFormInputGroup">size</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">size</div>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              id="inlineFormInputGroup"
-              ng-model="queryData.page.size"
-            />
-          </div>
-        </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3 div-pagination-container">
           <label class="sr-only" for="inlineFormInputGroup">page</label>
           <div class="input-group">
             <div class="input-group-prepend">
@@ -122,8 +123,41 @@
               type="text"
               class="form-control"
               id="inlineFormInputGroup"
-              ng-model="queryData.page.size"
+              ng-model="queryData.page.current"
             />
+          </div>
+        </div>
+        <div class="col-lg-3 div-pagination-container">
+          <label class="sr-only" for="inlineFormInputGroup">total</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">total</div>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="inlineFormInputGroup"
+              ng-model="queryData.page.total"
+            />
+          </div>
+        </div>
+        <div class="col-lg-4 div-pagination-container">
+          <label class="sr-only" for="inlineFormInputGroup">size</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">size</div>
+            </div>
+            <select
+              class="form-control"
+              id="inlineFormInputGroup"
+              ng-model="queryData.page.size"
+            >
+            <option>100</option>
+            <option>200</option>
+            <option>500</option>
+            <option>1000</option>
+            <option>unlimit</option>
+          </select>
           </div>
         </div>
         <li class="page-item">

@@ -10,7 +10,7 @@ import { compareTo, tableCompareTo } from "./embed/command/compare";
 import { RuntimeValues } from "./capability/globalValues";
 import { onConfiguationChange as onConfigurationChange } from "./embed/event/configurationEvent";
 import { databaseSelect } from "./embed/command/otherOperations";
-import { initial, startupTasks } from "./embed/elegance/startup";
+import { finishStartup, initial, startupTasks } from "./embed/elegance/startup";
 import { StorageService } from "./capability/localStorageService.ts";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -161,6 +161,8 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.workspace.onDidChangeConfiguration((e) => {
     onConfigurationChange(e);
   });
+
+  finishStartup();
 
 }
 

@@ -1,8 +1,8 @@
 angular.module("queryApp", []).controller("queryController", function ($scope) {
   $scope.message = "Loading.";
-  // let vscode = acquireVsCodeApi();
 
   $scope.apply = function () {
+  let vscode = acquireVsCodeApi();
     vscode.postMessage({
       page: {
         size: $scope.queryData.size,
@@ -290,6 +290,11 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
       showToolsBar: true,
       showPaginationToolsBar: true,
     },
+    page:{
+      current:1,
+      size:200,
+      total:2000
+    }
   };
 
 });

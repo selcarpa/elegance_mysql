@@ -2,14 +2,13 @@
 
 All notable changes to the "elegance mysql" extension will be documented in this file.
 
-## [0.1.0]
+## [0.1.4]
 
-- Initial release
+- Fix tools bar doesn't displayed
 
-## [0.1.1]
+## [0.1.3]
 
-- Add icon
-- Package with esbuild
+- Fix status bar doesn't show 'selectedSchema' when startup
 
 ## [0.1.2]
 
@@ -17,10 +16,11 @@ All notable changes to the "elegance mysql" extension will be documented in this
 - Remove default for pagination
 - Rewrite onDidChangeConfiguration part
 
-## [0.1.3]
+## [0.1.1]
 
-- Fix status bar doesn't show 'selectedSchema' when startup
+- Add icon
+- Package with esbuild
 
-## [0.1.4]
+## [0.1.0]
 
-- Fix tools bar doesn't displayed
+- Initial release

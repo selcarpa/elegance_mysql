@@ -1,10 +1,10 @@
-import { commands, ExtensionContext, window } from "vscode";
+import { commands, env, ExtensionContext, Uri, window } from "vscode";
 import {
   getChangeLogPopUpEnable,
   getLogConfig,
   getSecurityDisplayed,
 } from "../../capability/configurationService";
-import { RuntimeValues } from "../../capability/globalValues";
+import { compileConstant, RuntimeValues } from "../../capability/globalValues";
 import { StorageService } from "../../capability/localStorageService.ts";
 import { Logger } from "../../capability/logService";
 import { SelectedSchema } from "../../model/storageModel";
@@ -14,6 +14,16 @@ import { SelectedSchema } from "../../model/storageModel";
  */
 function changLogsPopup() {
   if (getChangeLogPopUpEnable()) {
+    window
+      .showInformationMessage(
+        compileConstant.updateNotice,
+        compileConstant.updateNoticeAction
+      )
+      .then((s) => {
+        if (s) {
+          env.openExternal(Uri.parse(compileConstant.changeLogUrl));
+        }
+      });
   }
 }
 

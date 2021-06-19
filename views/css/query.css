@@ -47,7 +47,7 @@ th.disabled {
 button {
   background-color: var(--vscode-button-foreground) !important;
 }
-input {
+input select {
   color: var(--vscode-foreground) !important;
   background-color: var(--vscode-editor-background) !important;
 }
@@ -67,4 +67,9 @@ form {
 tr:hover {
   background-color: var(--vscode-foreground) !important;
   color: var(--vscode-editor-background) !important;
+}
+
+.div-pagination-container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
