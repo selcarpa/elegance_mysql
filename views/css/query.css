@@ -47,9 +47,10 @@ th.disabled {
 button {
   background-color: var(--vscode-button-foreground) !important;
 }
-input select {
-  color: var(--vscode-foreground) !important;
-  background-color: var(--vscode-editor-background) !important;
+input,
+select {
+  color: var(--vscode-editor-background) !important;
+  background-color: var(--vscode-foreground) !important;
 }
 
 .nav-pagination {
