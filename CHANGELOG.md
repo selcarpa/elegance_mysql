@@ -2,7 +2,7 @@
 
 All notable changes to the "elegance mysql" extension will be documented in this file.
 
-## [0.1.5]
+## [0.2.0]
 
 - Add pagination feature to query.html(just support selectTop500 command)
 - Fix colResizable doesn't take effect cause by code execute order

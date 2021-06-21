@@ -12,7 +12,7 @@ import { SelectedSchema } from "../../model/storageModel";
 /**
  * popup change log notice
  */
-function changLogsPopup() {
+function changeLogsPopup() {
   if (getChangeLogPopUpEnable()) {
     window
       .showInformationMessage(
@@ -83,5 +83,5 @@ _/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \
      \/            \//_____/      \/      \/      \/     \/ 
   `;
   Logger.plain(banner);
-  changLogsPopup();
+  // changeLogsPopup();
 }
