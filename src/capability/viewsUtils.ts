@@ -102,7 +102,7 @@ export function openQueryHtml(
         "pagination.min.js",
         "bootstrap.min.css",
         "query.css",
-        "pagination.min.css"
+        "pagination.css"
       );
       panel.webview.html = htmlContent;
     }

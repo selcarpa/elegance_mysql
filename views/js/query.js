@@ -1,12 +1,12 @@
 angular.module("queryApp", []).controller("queryController", function ($scope) {
   $scope.message = "Loading.";
+  let vscode = acquireVsCodeApi();
 
   $scope.apply = function () {
-    let vscode = acquireVsCodeApi();
     vscode.postMessage({
       page: {
-        size: $scope.queryData.size,
-        current: 0,
+        size: $scope.queryData.page.size,
+        current: $scope.queryData.page.current,
       },
       whereClause: $scope.queryData.whereClause,
       orderByClause: $scope.queryData.orderByClause,
@@ -16,23 +16,29 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
 
   window.addEventListener("message", (event) => {
     const message = event.data;
-    debugger;
     if (message.status) {
       $scope.queryData = message.result;
       $("#pagination-container").pagination({
-        dataSource: Array.from({ length: message.result.total }, (x, i) => i),
-        pageSize: 5,
+        dataSource: Array.from(
+          { length: message.result.page.total },
+          (x, i) => i
+        ),
+        pageSize: message.result.page.size,
+        pageNumber:$scope.queryData.page.current+1,
         showGoInput: true,
         showGoButton: true,
-        callback: function (data, pagination) {},
+        callback: function (data, pagination) {
+          if (pagination.pageNumber !== $scope.queryData.page.current + 1) {
+            $scope.queryData.page.current = pagination.pageNumber - 1;
+            $scope.apply();
+          }
+        },
       });
     } else {
       $scope.queryData = {};
       $scope.message = message.result;
     }
     $scope.$digest();
-  });
-  angular.element(document).ready(function () {
     $("#mainContent").colResizable({
       liveDrag: true,
       gripInnerHtml: "<div class='grip'></div>",
@@ -41,267 +47,7 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
       disabledColumns: [0],
     });
   });
+  angular.element(document).ready(function () {
 
-  /*   $scope.queryData = {
-    columns: ["this", "is", "a", "very", "long", "example"],
-    rows: [
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-      {
-        this: "this",
-        is: "is",
-        a: "a",
-        very: "very",
-        long: "looooooooooooooooooooooooooooooong",
-        example: "examply",
-      },
-    ],
-    options: {
-      showToolsBar: true,
-      showPaginationToolsBar: true,
-    },
-    page:{
-      current:1,
-      size:200,
-      total:2000
-    }
-  }; */
+  });
 });

@@ -2,6 +2,13 @@
 
 All notable changes to the "elegance mysql" extension will be documented in this file.
 
+## [0.1.5]
+
+- Add pagination feature to query.html(just support selectTop500 command)
+- Fix colResizable doesn't take effect cause by code execute order
+- ToolsBar and PaginationToolsBar change to float on the top/bottom of query.html
+- Improve code(export some sql to a single file)
+
 ## [0.1.4]
 
 - Fix tools bar doesn't displayed

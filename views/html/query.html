@@ -104,61 +104,10 @@
         justify-content-end
       "
     >
-   <!--    <ul class="navbar-nav justify-content-end">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <div class="col-lg-3 div-pagination-container">
-          <label class="sr-only" for="inlineFormInputGroup">page</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">page</div>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              id="inlineFormInputGroup"
-              ng-model="queryData.page.current"
-            />
-          </div>
-        </div>
-        <div class="col-lg-3 div-pagination-container">
-          <label class="sr-only" for="inlineFormInputGroup">total</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">total</div>
-            </div>
-            <input
-              disabled
-              type="text"
-              class="form-control"
-              id="inlineFormInputGroup"
-              ng-model="queryData.page.total"
-            />
-          </div>
-        </div>
-        <div class="col-lg-3 div-pagination-container">
-          <label class="sr-only" for="inlineFormInputGroup">size</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">size</div>
-            </div>
-            <input
-              class="form-control"
-              id="inlineFormInputGroup"
-              ng-model="queryData.page.size"
-            />
-          </div>
-        </div>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li> 
-      </ul> -->
-      <div id="pagination-container"></div>
+      <div
+        id="pagination-container"
+        ng-show="queryData!=undefined&&queryData.columns.length>0&&queryData.options.showPaginationToolsBar"
+      ></div>
     </nav>
   </body>
 </html>

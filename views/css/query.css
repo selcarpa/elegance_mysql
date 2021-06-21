@@ -20,8 +20,8 @@ table {
   border-style: dashed;
   font-family: var(--vscode-editor-font-family);
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 40px !important;
+  margin-top: 50px;
+  margin-bottom: 50px !important;
 }
 
 td,
@@ -35,8 +35,8 @@ th {
 
 td.disabled,
 th.disabled {
-  width: 35px;
-  min-width: 35px;
+  width: 100px;
+  min-width: 100px;
 }
 
 .jumbotron {
@@ -57,6 +57,7 @@ select {
   bottom: 0px;
   background-color: var(--vscode-editor-background) !important;
   color: var(--vscode-button-foreground) !important;
+  padding-top: 0px;
 }
 form {
   position: fixed;
@@ -73,4 +74,7 @@ tr:hover {
 .div-pagination-container {
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+.paginationjs .paginationjs-go-button {
+  margin-left: 0px !important;
 }
