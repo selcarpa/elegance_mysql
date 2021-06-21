@@ -48,6 +48,8 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
     });
   });
   angular.element(document).ready(function () {
-
+    document.body.addEventListener('contextmenu', e => {
+      // e.preventDefault(); // cancel the built-in context menu
+    });
   });
 });
