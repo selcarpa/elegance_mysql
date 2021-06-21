@@ -2,7 +2,7 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
   $scope.message = "Loading.";
 
   $scope.apply = function () {
-  let vscode = acquireVsCodeApi();
+    let vscode = acquireVsCodeApi();
     vscode.postMessage({
       page: {
         size: $scope.queryData.size,
@@ -16,8 +16,16 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
 
   window.addEventListener("message", (event) => {
     const message = event.data;
+    debugger;
     if (message.status) {
       $scope.queryData = message.result;
+      $("#pagination-container").pagination({
+        dataSource: Array.from({ length: message.result.total }, (x, i) => i),
+        pageSize: 5,
+        showGoInput: true,
+        showGoButton: true,
+        callback: function (data, pagination) {},
+      });
     } else {
       $scope.queryData = {};
       $scope.message = message.result;
@@ -33,8 +41,8 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
       disabledColumns: [0],
     });
   });
-  
-  $scope.queryData = {
+
+  /*   $scope.queryData = {
     columns: ["this", "is", "a", "very", "long", "example"],
     rows: [
       {
@@ -295,6 +303,5 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
       size:200,
       total:2000
     }
-  };
-
+  }; */
 });

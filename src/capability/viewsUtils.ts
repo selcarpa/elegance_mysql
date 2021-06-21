@@ -99,8 +99,10 @@ export function openQueryHtml(
         "bootstrap.bundle.min.js",
         "angular.min.js",
         "query.js",
+        "pagination.min.js",
         "bootstrap.min.css",
-        "query.css"
+        "query.css",
+        "pagination.min.css"
       );
       panel.webview.html = htmlContent;
     }

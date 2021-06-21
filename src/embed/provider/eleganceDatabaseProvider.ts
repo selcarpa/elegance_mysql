@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import * as util from "util";
 import { getDatabaseConfigs } from "../../capability/configurationService";
 import { TreeItemCollapsibleState } from "vscode";
 import { execSelect, versionCheck } from "../../capability/databaseUtils";
@@ -52,11 +53,11 @@ function popVersionMessage(configs: Array<DatabaseConfig>) {
   let notSupportConfigs = configs.filter(
     (config) =>
       config.version &&
-      !versionCheck(config.version, compileConstant.compatibleVersion)
+      !versionCheck(config.version, compileConstant.compatibleVersionMinimize)
   );
   if (notSupportConfigs.length > 0) {
     let message = `The minimum supported version is ${
-      compileConstant.compatibleVersion
+      compileConstant.compatibleVersionMinimize
     }. This database configuration may not get full-support: ${notSupportConfigs
       .map(
         (config) =>
@@ -141,7 +142,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
     let promise = new Promise<Array<EleganceTreeItem>>((resolve) => {
       execSelect(
         this.config,
-        "mysql",
+        compileConstant.databaseMetaTableName,
         this.sql,
         (
           error: QueryError | null,
@@ -236,7 +237,10 @@ export class EleganceTreeItem extends vscode.TreeItem {
           ),
         };
         this.contextValue = "schema";
-        this.sql = `SELECT TABLE_NAME name,TABLE_NAME tableName,TABLE_SCHEMA schemaName,TABLE_COMMENT comment,TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='${result.schemaName}';`;
+        this.sql = util.format(
+          compileConstant.eleganceProviderTableSql,
+          result.schemaName
+        );
         break;
       case EleganceTreeItemType.table:
         if (result.TABLE_TYPE === "BASE TABLE") {
@@ -274,7 +278,11 @@ export class EleganceTreeItem extends vscode.TreeItem {
           };
         }
         this.contextValue = "table";
-        this.sql = `SELECT COLUMN_NAME name,COLUMN_KEY,COLUMN_COMMENT comment FROM information_schema.columns WHERE TABLE_NAME='${result.tableName}' and TABLE_SCHEMA='${result.schemaName}' ORDER BY ORDINAL_POSITION;`;
+        this.sql = util.format(
+          compileConstant.eleganceProviderColumnSql,
+          result.tableName,
+          result.schemaName
+        );
         break;
       case EleganceTreeItemType.column:
         if (result.COLUMN_KEY === "PRI") {

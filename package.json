@@ -179,19 +179,45 @@
       "properties": {
         "elegance.mysql.databases": {
           "type": "array",
-          "default": [
-            {
-              "name": "example",
-              "host": "127.0.0.1",
-              "port": 3306,
-              "user": "root",
-              "password": "mysqlpassword",
-              "schemaFilterEnable": false,
-              "showSchemas": [
-                "schema-1"
-              ]
+          "items": {
+            "type": "object",
+            "title": "DatabaseConfigs",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "this config will be displayed into database list"
+              },
+              "host": {
+                "type": "string",
+                "description": "mysql server ip address or domain"
+              },
+              "port": {
+                "type": "number",
+                "description": "mysql server port"
+              },
+              "user": {
+                "type": "string",
+                "description": "mysql server user"
+              },
+              "password": {
+                "type": "string",
+                "description": "mysql server password"
+              },
+              "schemaFilterEnable": {
+                "type": "boolean",
+                "description": "wheather filter schema to display of this database config, if true schema list will filter by #showSchemas"
+              },
+              "showSchemas": {
+                "type": "array",
+                "description": "give a filter list for #schemaFilterEnable",
+                "items": {
+                  "type": "string",
+                  "title": "SchemaName",
+                  "description": "schema name of this database config"
+                }
+              }
             }
-          ],
+          },
           "description": "database list"
         },
         "elegance.mysql.logLevel": {
