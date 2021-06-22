@@ -56,6 +56,24 @@ export async function tableCompareTo(destination: any) {
     password: RuntimeValues.compareToOrigin.config.password,
     database: RuntimeValues.compareToOrigin.schemaName,
   });
-  let query = await connection.query(sql);
-  Logger.debug(undefined, query);
+  let query1 = await connection.query(sql);
+  let doc1 = await vscode.workspace.openTextDocument({
+    language: "sql",
+    content: (<any>query1)[0][0]["Create Table"],
+  });
+  sql = `SHOW CREATE TABLE ${destination.name};`;
+  connection = await mysql2.createConnection({
+    namedPlaceholders: true,
+    port: destination.config.port,
+    host: destination.config.host,
+    user: destination.config.user,
+    password: destination.config.password,
+    database: destination.schemaName,
+  });
+  let query2 = await connection.query(sql);
+  let doc2 = await vscode.workspace.openTextDocument({
+    language: "sql",
+    content: (<any>query2)[0][0]["Create Table"],
+  });
+  vscode.commands.executeCommand("vscode.diff", doc1.uri, doc2.uri);
 }
