@@ -57,7 +57,6 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "elegance_mysql.newQuery",
       async (item: EleganceTreeItem) => {
-
         RuntimeValues.selectedSchema = {
           schemaName: item.result.schemaName,
           config: item.config,
@@ -68,7 +67,6 @@ export function activate(context: vscode.ExtensionContext) {
         });
         RuntimeValues.barItem.text = `${item.config.name}-${item.result.schemaName}`;
         RuntimeValues.barItem.show();
-
 
         let doc = await vscode.workspace.openTextDocument({
           language: "sql",
@@ -110,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "elegance_mysql.compareWithSelectedTable",
-      (item: EleganceTreeItem) => {
+      async (item: EleganceTreeItem) => {
         tableCompareTo({
           type: item.type,
           config: item.config,
@@ -151,6 +149,13 @@ export function activate(context: vscode.ExtensionContext) {
       }
     })
   );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("elegance_mysql.addDatabase", () => {
+      vscode.commands.executeCommand(
+        "workbench.action.openWorkspaceSettingsFile"
+      );
+    })
+  );
   /// end register
 
   //status bar item
@@ -163,7 +168,6 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   finishStartup();
-
 }
 
 export function deactivate() {}

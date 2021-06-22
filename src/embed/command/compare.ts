@@ -1,15 +1,14 @@
 import * as vscode from "vscode";
-import { FieldPacket, QueryError } from "mysql2";
-import { execSelect } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import {
   EleganceTreeItem,
   EleganceTreeItemType,
 } from "../provider/eleganceDatabaseProvider";
-import { DatabaseConfig } from "../../model/configurationModel";
+import { RuntimeValues } from "../../capability/globalValues";
+import * as mysql2 from "mysql2/promise";
 
 export function compareTo(item: EleganceTreeItem) {
-  CompareToValue.origin = {
+  RuntimeValues.compareToOrigin = {
     type: item.type,
     config: item.config,
     name: item.result.name,
@@ -43,26 +42,20 @@ export function compareTo(item: EleganceTreeItem) {
   }
 }
 
-export class CompareToValue {
-  static origin: {
-    type: EleganceTreeItemType;
-    config: DatabaseConfig;
-    name: string;
-    schemaName: string;
-  };
-}
-
-export function tableCompareTo(destination: any) {
-  let sql = `SHOW CREATE TABLE ${CompareToValue.origin.name};`;
-  execSelect(
-    CompareToValue.origin.config,
-    CompareToValue.origin.schemaName,
-    sql,
-    (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
-      if (error) {
-        Logger.error(error.message, error);
-      }
-      Logger.debug(undefined, results);
-    }
-  );
+/**
+ *
+ * @param destination
+ */
+export async function tableCompareTo(destination: any) {
+  let sql = `SHOW CREATE TABLE ${RuntimeValues.compareToOrigin.name};`;
+  let connection = await mysql2.createConnection({
+    namedPlaceholders: true,
+    port: RuntimeValues.compareToOrigin.config.port,
+    host: RuntimeValues.compareToOrigin.config.host,
+    user: RuntimeValues.compareToOrigin.config.user,
+    password: RuntimeValues.compareToOrigin.config.password,
+    database: RuntimeValues.compareToOrigin.schemaName,
+  });
+  let query = await connection.query(sql);
+  Logger.debug(undefined, query);
 }

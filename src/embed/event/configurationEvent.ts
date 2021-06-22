@@ -1,4 +1,4 @@
-import { ConfigurationChangeEvent, Event, window, workspace } from "vscode";
+import { ConfigurationChangeEvent } from "vscode";
 import { getLogConfig } from "../../capability/configurationService";
 import { Logger } from "../../capability/logService";
 

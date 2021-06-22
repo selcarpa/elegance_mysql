@@ -95,9 +95,18 @@ export class EleganceDatabaseProvider
       //shows database list in root element
       let databaseConfigs = getDatabaseConfigs();
       if (databaseConfigs.length < 1) {
-        vscode.window.showInformationMessage(
-          "No database in this eleganceMysql"
-        );
+        vscode.window
+          .showInformationMessage(
+            compileConstant.eleganceProviderNoDatabaseNotice,
+            compileConstant.eleganceProviderNoDatabaseAction
+          )
+          .then((action) => {
+            if (action) {
+              vscode.commands.executeCommand(
+                "workbench.action.openWorkspaceSettingsFile"
+              );
+            }
+          });
       }
       let databaseTreeItems: EleganceTreeItem[] = [];
       databaseConfigs.forEach((config) => {

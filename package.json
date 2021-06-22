@@ -56,57 +56,57 @@
       {
         "command": "elegance_mysql.addDatabase",
         "title": "add database",
-        "category": "add"
+        "category": "EleganceAdd"
       },
       {
         "command": "elegance_mysql.select500",
         "title": "select top 500",
-        "category": "query"
+        "category": "EleganceQuery"
       },
       {
         "command": "elegance_mysql.newQuery",
         "title": "new query",
-        "category": "query"
+        "category": "EleganceQuery"
       },
       {
         "command": "elegance_mysql.details",
         "title": "details",
-        "category": "query"
+        "category": "EleganceQuery"
       },
       {
         "command": "elegance_mysql.databaseSelect",
         "title": "database select",
-        "category": "query"
+        "category": "EleganceQuery"
       },
       {
         "command": "elegance_mysql.compareTo",
         "title": "compare to",
-        "category": "compare"
+        "category": "EleganceCompare"
       },
       {
         "command": "elegance_mysql.compareWithSelectedSchema",
         "title": "compare with selected schema",
-        "category": "compare"
+        "category": "EleganceCompare"
       },
       {
         "command": "elegance_mysql.compareWithSelectedTable",
         "title": "compare with selected table",
-        "category": "compare"
+        "category": "EleganceCompare"
       },
       {
         "command": "elegance_mysql.execSelected",
         "title": "execute select sql",
-        "category": "exec"
+        "category": "EleganceExecute"
       },
       {
         "command": "elegance_mysql.execFile",
         "title": "execute sql from file",
-        "category": "exec"
+        "category": "EleganceExecute"
       },
       {
         "command": "elegance_mysql.runSelectedSql",
         "title": "run selected sql",
-        "category": "exec"
+        "category": "EleganceExecute"
       }
     ],
     "menus": {
@@ -119,6 +119,11 @@
         {
           "command": "elegance_mysql.newQuery",
           "when": "view == elegance_list && viewItem == schema",
+          "group": "query@2"
+        },
+        {
+          "command": "elegance_mysql.newQuery",
+          "when": "view == elegance_list && viewItem == table",
           "group": "query@2"
         },
         {
@@ -247,7 +252,7 @@
     "viewsWelcome": [
       {
         "view": "elegance_list",
-        "contents": "No Database found.[Edit Settings](command:nodeDependencies.addEntry)"
+        "contents": "No Database found.[Edit Settings](command:elegance_mysql.addDatabase)"
       }
     ]
   },
