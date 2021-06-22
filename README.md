@@ -54,6 +54,7 @@ other settings:
 
 1. Add database button doesn't take effect.
 2. CompareTo doesn't take effect.
+3. Query slowly in some case.
 
 ## Version Plan
 

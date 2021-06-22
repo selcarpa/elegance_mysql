@@ -2,6 +2,9 @@
 
 All notable changes to the "elegance mysql" extension will be documented in this file.
 
+## [0.2.1]
+- Now "Add database" button will jump to workspace settings(Will be modified in future versions)
+
 ## [0.2.0]
 
 - Add pagination feature to query.html(just support selectTop500 command)
