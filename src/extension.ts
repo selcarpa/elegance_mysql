@@ -163,10 +163,11 @@ export function activate(context: vscode.ExtensionContext) {
   RuntimeValues.barItem.command = "elegance_mysql.databaseSelect";
   context.subscriptions.push(RuntimeValues.barItem);
 
-  vscode.workspace.onDidChangeConfiguration((e) => {
-    onConfigurationChange(e);
-  });
-
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      onConfigurationChange(e);
+    })
+  );
   finishStartup();
 }
 

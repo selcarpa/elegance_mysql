@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { Logger } from "../../capability/logService";
 import {
   EleganceTreeItem,
   EleganceTreeItemType,

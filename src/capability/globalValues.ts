@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { ExtensionContext } from "vscode";
 import { EleganceTreeItemType } from "../embed/provider/eleganceDatabaseProvider";
 import { DatabaseConfig } from "../model/configurationModel";
 
@@ -12,6 +13,7 @@ export class RuntimeValues {
     name: string;
     schemaName: string;
   };
+  public static context: ExtensionContext;
 }
 
 export const compileConstant = {

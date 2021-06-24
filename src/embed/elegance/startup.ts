@@ -45,6 +45,7 @@ export function initial(context: ExtensionContext) {
     RuntimeValues.barItem.text = `${selectedSchema.config.name}-${selectedSchema.schemaName}`;
     RuntimeValues.barItem.show();
   }
+  RuntimeValues.context = context;
 
   // compareTo command context
   commands.executeCommand(
