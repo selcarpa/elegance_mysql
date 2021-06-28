@@ -1,6 +1,6 @@
 import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
 import * as vscode from "vscode";
-import { execSelect } from "../../capability/databaseUtils";
+import { execSelect, execSelectAsync } from "../../capability/databaseUtils";
 import {
   Message,
   Page,
@@ -195,25 +195,41 @@ export function select500(
 }
 
 //TODO: Distinguish limit clause or not give a default pagination
-export function selectSql(
+export async function selectSql(
   sql: string,
   panel: vscode.WebviewPanel,
   context: vscode.ExtensionContext,
   config: DatabaseConfig,
   schemaName: string
 ) {
-  // sql = `SELECT * FROM (${sql}) cfd30866091d4a0d9cf12cf76fc448ee`;
-
   openQueryHtml(panel, context.extensionPath);
-  getQueryResult(
+  let [results, fields] = await execSelectAsync(config, schemaName, sql);
+  // assmble result
+  let messageContent = new QueryMessage(
+    Array<string>(),
+    Array<any>(),
+    sql,
     {
-      sql: sql,
-    },
-    config,
-    schemaName,
-    {
-      showToolsBar: false,
       showPaginationToolsBar: false,
-    }
-  ).then((m) => panel.webview.postMessage(m));
+      showToolsBar: false,
+    },
+    {
+      current: 0,
+      size: 0,
+      total: 0,
+    },
+    undefined,
+    undefined
+  );
+  if (fields) {
+    fields.forEach((field) => {
+      messageContent.columns.push(field.name);
+    });
+  }
+  if (results instanceof Array) {
+    results.forEach((result) => {
+      messageContent.rows.push(result);
+    });
+  }
+  panel.webview.postMessage(new Message(messageContent, true));
 }

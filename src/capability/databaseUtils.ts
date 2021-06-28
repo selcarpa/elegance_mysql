@@ -36,15 +36,37 @@ export async function execSelectAsync(
   config: DatabaseConfig,
   schema: string,
   sql: string
-) {
-  window.withProgress(
+): Promise<
+  [
+    (
+      | mysql2.RowDataPacket[]
+      | mysql2.RowDataPacket[][]
+      | mysql2.OkPacket
+      | mysql2.OkPacket[]
+      | mysql2.ResultSetHeader
+    ),
+    mysql2.FieldPacket[]
+  ]
+> {
+  return await window.withProgress(
     {
       location: ProgressLocation.Notification,
       title: "Prepare to execute sql.",
       cancellable: true,
     },
     (process, token) => {
-      return new Promise<void>(async (resolve) => {
+      return new Promise<
+        [
+          (
+            | mysql2.RowDataPacket[]
+            | mysql2.RowDataPacket[][]
+            | mysql2.OkPacket
+            | mysql2.OkPacket[]
+            | mysql2.ResultSetHeader
+          ),
+          mysql2.FieldPacket[]
+        ]
+      >(async (resolve) => {
         process.report({ increment: 0 });
         let connection = await mysql2Promise.createConnection({
           host: config.host,
@@ -59,14 +81,14 @@ export async function execSelectAsync(
         });
         // debug mode will print sql
         Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
-        let query = await connection.query(sql);
+        let [results, fields] = await connection.query(sql);
 
         process.report({
           increment: 90,
           message: "Sql executed success!",
         });
         connection.end();
-        resolve();
+        resolve([results, fields]);
       });
     }
   );
