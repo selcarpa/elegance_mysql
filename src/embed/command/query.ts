@@ -11,7 +11,7 @@ import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
 import { openQueryHtml } from "../../capability/viewsUtils";
-import { compileConstant } from "../../capability/globalValues";
+import { compileConstant, RuntimeValues } from "../../capability/globalValues";
 
 function getCountResult(
   sql: string,
@@ -111,14 +111,13 @@ function getQueryResult(
 
 /**
  *
- * @param item
- * @param panel
- * @param context
+ * @param item EleganceTreeItem
+ * @param panel webview panel instance
+ * @param context vscode extension context
  */
 export function select500(
   item: EleganceTreeItem,
-  panel: vscode.WebviewPanel,
-  context: vscode.ExtensionContext
+  panel: vscode.WebviewPanel
 ): void {
   let columnsSql: string = `SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='${item.result.tableName}' and TABLE_SCHEMA='${item.result.schemaName}' ORDER BY ORDINAL_POSITION;`;
   execSelect(
@@ -139,7 +138,7 @@ export function select500(
         item.result.tableName
       }`;
 
-      openQueryHtml(panel, context.extensionPath);
+      openQueryHtml(panel, RuntimeValues.context.extensionPath);
       getCountResult(sql, item.config, item.result.schemaName).then((c1) => {
         getQueryResult(
           {
@@ -190,7 +189,7 @@ export function select500(
       );
     },
     undefined,
-    context.subscriptions
+    RuntimeValues.context.subscriptions
   );
 }
 

@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.ViewColumn.One,
           context
         );
-        select500(item, panel, context);
+        select500(item, panel);
       }
     )
   );
@@ -86,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.ViewColumn.One,
           context
         );
-        details(item, panel, context);
+        details(item, panel);
       }
     )
   );
