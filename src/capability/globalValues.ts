@@ -3,20 +3,20 @@ import { ExtensionContext } from "vscode";
 import { EleganceTreeItemType } from "../embed/provider/eleganceDatabaseProvider";
 import { DatabaseConfig } from "../model/configurationModel";
 
-export class RuntimeValues {
+export class Values {
   public static barItem: vscode.StatusBarItem =
     vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1);
   public static selectedSchema: { schemaName: string; config: DatabaseConfig };
   public static compareToOrigin: {
     type: EleganceTreeItemType;
     config: DatabaseConfig;
-    name: string;
+    tableName: string;
     schemaName: string;
   };
   public static context: ExtensionContext;
 }
 
-export const compileConstant = {
+export const constants = {
   compatibleVersionMinimize: "5.7.0",
   updateNotice: "Elegance mysql has been updated!",
   updateNoticeAction: "change logs",
@@ -31,4 +31,5 @@ export const compileConstant = {
   eleganceProviderNoDatabaseNotice: "No database in settings.json",
   eleganceProviderNoDatabaseAction: "Open Workspace Settings(JSON)",
   versionSql: "SELECT VERSION() as version1",
+  showCreateSchema: `SHOW CREATE SCHEMA %s`,
 };

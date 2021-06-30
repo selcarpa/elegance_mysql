@@ -2,7 +2,7 @@ import { FieldPacket, QueryError } from "mysql2";
 import * as vscode from "vscode";
 import { getDatabaseConfigs } from "../../capability/configurationService";
 import { execSelect } from "../../capability/databaseUtils";
-import { RuntimeValues } from "../../capability/globalValues";
+import { Values } from "../../capability/globalValues";
 import { StorageService } from "../../capability/localStorageService.ts";
 import { Logger } from "../../capability/logService";
 import { DatabaseConfig } from "../../model/configurationModel";
@@ -45,7 +45,7 @@ export function databaseSelect() {
                 { title: "select a database" }
               )
               .then((schemaName) => {
-                RuntimeValues.selectedSchema = {
+                Values.selectedSchema = {
                   schemaName: schemaName,
                   config: selectedValue.config,
                 };
@@ -53,8 +53,8 @@ export function databaseSelect() {
                   schemaName: schemaName,
                   config: selectedValue.config,
                 });
-                RuntimeValues.barItem.text = `${selectedValue.config.name}-${schemaName}`;
-                RuntimeValues.barItem.show();
+                Values.barItem.text = `${selectedValue.config.name}-${schemaName}`;
+                Values.barItem.show();
               });
           }
         );

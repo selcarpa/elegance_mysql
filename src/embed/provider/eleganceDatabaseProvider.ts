@@ -6,7 +6,7 @@ import { TreeItemCollapsibleState } from "vscode";
 import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
-import { compileConstant } from "../../capability/globalValues";
+import { constants } from "../../capability/globalValues";
 import { DatabaseConfig } from "../../model/configurationModel";
 
 /**
@@ -36,7 +36,7 @@ function setVersion(config: DatabaseConfig): void {
   execSelect(
     config,
     "mysql",
-    compileConstant.versionSql,
+    constants.versionSql,
     (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
       if (error) {
         Logger.error(error.message, error);
@@ -53,11 +53,11 @@ function popVersionMessage(configs: Array<DatabaseConfig>) {
   let notSupportConfigs = configs.filter(
     (config) =>
       config.version &&
-      !versionCheck(config.version, compileConstant.compatibleVersionMinimize)
+      !versionCheck(config.version, constants.compatibleVersionMinimize)
   );
   if (notSupportConfigs.length > 0) {
     let message = `The minimum supported version is ${
-      compileConstant.compatibleVersionMinimize
+      constants.compatibleVersionMinimize
     }. This database configuration may not get full-support: ${notSupportConfigs
       .map(
         (config) =>
@@ -97,8 +97,8 @@ export class EleganceDatabaseProvider
       if (databaseConfigs.length < 1) {
         vscode.window
           .showInformationMessage(
-            compileConstant.eleganceProviderNoDatabaseNotice,
-            compileConstant.eleganceProviderNoDatabaseAction
+            constants.eleganceProviderNoDatabaseNotice,
+            constants.eleganceProviderNoDatabaseAction
           )
           .then((action) => {
             if (action) {
@@ -151,7 +151,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
     let promise = new Promise<Array<EleganceTreeItem>>((resolve) => {
       execSelect(
         this.config,
-        compileConstant.databaseMetaTableName,
+        constants.databaseMetaTableName,
         this.sql,
         (
           error: QueryError | null,
@@ -227,7 +227,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
           ),
         };
         this.contextValue = "database";
-        this.sql = compileConstant.eleganceProviderSchemaSql;
+        this.sql = constants.eleganceProviderSchemaSql;
         setVersion(config);
         break;
       case EleganceTreeItemType.schema:
@@ -247,7 +247,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
         };
         this.contextValue = "schema";
         this.sql = util.format(
-          compileConstant.eleganceProviderTableSql,
+          constants.eleganceProviderTableSql,
           result.schemaName
         );
         break;
@@ -288,7 +288,7 @@ export class EleganceTreeItem extends vscode.TreeItem {
         }
         this.contextValue = "table";
         this.sql = util.format(
-          compileConstant.eleganceProviderColumnSql,
+          constants.eleganceProviderColumnSql,
           result.tableName,
           result.schemaName
         );

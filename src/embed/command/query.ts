@@ -11,7 +11,7 @@ import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
 import { openQueryHtml } from "../../capability/viewsUtils";
-import { compileConstant, RuntimeValues } from "../../capability/globalValues";
+import { constants, Values } from "../../capability/globalValues";
 
 function getCountResult(
   sql: string,
@@ -138,7 +138,7 @@ export function select500(
         item.result.tableName
       }`;
 
-      openQueryHtml(panel, RuntimeValues.context.extensionPath);
+      openQueryHtml(panel, Values.context.extensionPath);
       getCountResult(sql, item.config, item.result.schemaName).then((c1) => {
         getQueryResult(
           {
@@ -146,7 +146,7 @@ export function select500(
             page: {
               current: 0,
               total: c1,
-              size: compileConstant.queryDefaultSize,
+              size: constants.queryDefaultSize,
             },
           },
           item.config,
@@ -189,7 +189,7 @@ export function select500(
       );
     },
     undefined,
-    RuntimeValues.context.subscriptions
+    Values.context.subscriptions
   );
 }
 
@@ -226,7 +226,7 @@ export async function selectSql(
     });
   }
   if (results instanceof Array) {
-    results.forEach((result) => {
+    results.forEach((result:any) => {
       messageContent.rows.push(result);
     });
   }

@@ -4,7 +4,7 @@ import {
   getLogConfig,
   getSecurityDisplayed,
 } from "../../capability/configurationService";
-import { compileConstant, RuntimeValues } from "../../capability/globalValues";
+import { constants, Values } from "../../capability/globalValues";
 import { StorageService } from "../../capability/localStorageService.ts";
 import { Logger } from "../../capability/logService";
 import { SelectedSchema } from "../../model/storageModel";
@@ -16,12 +16,12 @@ function changeLogsPopup() {
   if (getChangeLogPopUpEnable()) {
     window
       .showInformationMessage(
-        compileConstant.updateNotice,
-        compileConstant.updateNoticeAction
+        constants.updateNotice,
+        constants.updateNoticeAction
       )
       .then((s) => {
         if (s) {
-          env.openExternal(Uri.parse(compileConstant.changeLogUrl));
+          env.openExternal(Uri.parse(constants.changeLogUrl));
         }
       });
   }
@@ -41,11 +41,11 @@ export function initial(context: ExtensionContext) {
     StorageService.getValue("selectedSchema")
   );
   if (selectedSchema) {
-    RuntimeValues.selectedSchema = <SelectedSchema>selectedSchema;
-    RuntimeValues.barItem.text = `${selectedSchema.config.name}-${selectedSchema.schemaName}`;
-    RuntimeValues.barItem.show();
+    Values.selectedSchema = <SelectedSchema>selectedSchema;
+    Values.barItem.text = `${selectedSchema.config.name}-${selectedSchema.schemaName}`;
+    Values.barItem.show();
   }
-  RuntimeValues.context = context;
+  Values.context = context;
 
   // compareTo command context
   commands.executeCommand(

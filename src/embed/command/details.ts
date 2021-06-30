@@ -5,13 +5,13 @@ import { FieldPacket, QueryError } from "mysql2";
 import { Logger } from "../../capability/logService";
 import { Message, Page, QueryMessage } from "../../model/messageModel";
 import { openQueryHtml } from "../../capability/viewsUtils";
-import { RuntimeValues } from "../../capability/globalValues";
+import { Values } from "../../capability/globalValues";
 
 export async function details(
   item: EleganceTreeItem,
   panel: vscode.WebviewPanel
 ): Promise<void> {
-  openQueryHtml(panel, RuntimeValues.context.extensionPath);
+  openQueryHtml(panel, Values.context.extensionPath);
   execSelect(
     item.config,
     "mysql",
