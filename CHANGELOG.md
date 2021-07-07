@@ -2,7 +2,14 @@
 
 All notable changes to the "elegance mysql" extension will be documented in this file.
 
+## [0.3.0]
+
+- Disable some command in command palette
+- Give a process notify when sql is executing
+- Fix my banner "elegance"
+
 ## [0.2.1]
+
 - Now "Add database" button will jump to workspace settings(Will be modified in future versions)
 
 ## [0.2.0]

@@ -166,7 +166,15 @@ export function activate(context: vscode.ExtensionContext) {
       );
     })
   );
-  /// end register
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "elegance_mysql.copy",
+      (item: EleganceTreeItem) => {
+        vscode.env.clipboard.writeText(item.label);
+      }
+    )
+  );
+  /// end command register
 
   //status bar item
   Values.barItem.name = "elegance mysql database select";

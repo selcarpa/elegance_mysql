@@ -76,7 +76,7 @@ export function startupTasks() {
 export function finishStartup() {
   Logger.info("Elegance mysql!");
   var banner: string = String.raw`
-  .__                                                 
+        .__                                                 
   ____  |  |    ____    ____ _____     ____    ____   ____  
 _/ __ \ |  |  _/ __ \  / ___\\__  \   /    \ _/ ___\_/ __ \ 
 \  ___/ |  |__\  ___/ / /_/  >/ __ \_|   |  \\  \___\  ___/ 
