@@ -11,7 +11,7 @@ export async function details(
   item: EleganceTreeItem,
   panel: vscode.WebviewPanel
 ): Promise<void> {
-  openQueryHtml(panel, Values.context.extensionPath);
+  openQueryHtml(panel);
   execSelect(
     item.config,
     "mysql",

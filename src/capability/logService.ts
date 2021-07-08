@@ -52,8 +52,8 @@ export class Logger {
     }
   }
 
-  public static infoAndShow(message:string,data?:unknown):void{
-    this.info(message,data);
+  public static infoAndShow(message: string, data?: unknown): void {
+    this.info(message, data);
     window.showInformationMessage(message);
   }
 
@@ -119,5 +119,14 @@ export class Logger {
    */
   public static plain(message: string): void {
     this.outputChannel.appendLine(message);
+  }
+
+  /**
+   * Append messages to the output channel and popup
+   * @param message 
+   */
+  public static attension(message: string): void {
+    this.outputChannel.appendLine(message);
+    this.outputChannel.show();
   }
 }

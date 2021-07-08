@@ -42,8 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
         let panel = getWebviewPanel(
           "elegance_mysql.query",
           "result",
-          vscode.ViewColumn.One,
-          context
+          vscode.ViewColumn.One
         );
         select500(item, panel);
       }
@@ -87,8 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
         let panel = getWebviewPanel(
           "elegance_mysql.query",
           "result",
-          vscode.ViewColumn.One,
-          context
+          vscode.ViewColumn.One
         );
         details(item, panel);
       }
@@ -143,16 +141,8 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Get the word within the selection
         let words = document.getText(selection);
-        let panel = getWebviewPanel(
-          "elegance_mysql.query",
-          "result",
-          vscode.ViewColumn.One,
-          context
-        );
         selectSql(
           words,
-          panel,
-          context,
           Values.selectedSchema.config,
           Values.selectedSchema.schemaName
         );

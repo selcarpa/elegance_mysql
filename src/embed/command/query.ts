@@ -8,9 +8,9 @@ import {
   QueryViewOptions,
 } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
-import { FieldPacket, QueryError } from "mysql2";
+import { FieldPacket, QueryError, ResultSetHeader } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
-import { openQueryHtml } from "../../capability/viewsUtils";
+import { getWebviewPanel, openQueryHtml } from "../../capability/viewsUtils";
 import { constants, Values } from "../../capability/globalValues";
 
 function getCountResult(
@@ -138,7 +138,7 @@ export function select500(
         item.result.tableName
       }`;
 
-      openQueryHtml(panel, Values.context.extensionPath);
+      openQueryHtml(panel);
       getCountResult(sql, item.config, item.result.schemaName).then((c1) => {
         getQueryResult(
           {
@@ -196,12 +196,9 @@ export function select500(
 //TODO: Distinguish limit clause or not give a default pagination
 export async function selectSql(
   sql: string,
-  panel: vscode.WebviewPanel,
-  context: vscode.ExtensionContext,
   config: DatabaseConfig,
   schemaName: string
 ) {
-  openQueryHtml(panel, context.extensionPath);
   let [results, fields] = await execSelectAsync(config, schemaName, sql);
   // assmble result
   let messageContent = new QueryMessage(
@@ -220,15 +217,30 @@ export async function selectSql(
     undefined,
     undefined
   );
+
+  if (
+    !(results instanceof Array) &&
+    Object.getPrototypeOf(results).constructor.name === "ResultSetHeader"
+  ) {
+    Logger.attension(JSON.stringify(results).trim());
+    return;
+  }
+
   if (fields) {
     fields.forEach((field) => {
       messageContent.columns.push(field.name);
     });
   }
   if (results instanceof Array) {
-    results.forEach((result:any) => {
+    let panel = getWebviewPanel(
+      "elegance_mysql.query",
+      "result",
+      vscode.ViewColumn.One
+    );
+    results.forEach((result: any) => {
       messageContent.rows.push(result);
     });
+    openQueryHtml(panel);
+    panel.webview.postMessage(new Message(messageContent, true));
   }
-  panel.webview.postMessage(new Message(messageContent, true));
 }
