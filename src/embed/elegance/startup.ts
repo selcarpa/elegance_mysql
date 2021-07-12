@@ -7,6 +7,7 @@ import {
 import { constants, Values } from "../../capability/globalValues";
 import { StorageService } from "../../capability/localStorageService.ts";
 import { Logger } from "../../capability/logService";
+import { initialResultHandlerStrategy } from "../../capability/resultHandler";
 import { SelectedSchema } from "../../model/storageModel";
 
 /**
@@ -53,6 +54,9 @@ export function initial(context: ExtensionContext) {
     "elegance_mysql.compareTo.supportedItem",
     ["table", "schema"]
   );
+
+  // initial strategy
+  initialResultHandlerStrategy();
 }
 
 /**

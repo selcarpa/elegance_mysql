@@ -12,6 +12,7 @@ import { FieldPacket, QueryError, ResultSetHeader } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
 import { getWebviewPanel, openQueryHtml } from "../../capability/viewsUtils";
 import { constants, Values } from "../../capability/globalValues";
+import { resultHandlerStrategy } from "../../capability/resultHandler";
 
 function getCountResult(
   sql: string,
@@ -200,47 +201,19 @@ export async function selectSql(
   schemaName: string
 ) {
   let [results, fields] = await execSelectAsync(config, schemaName, sql);
-  // assmble result
-  let messageContent = new QueryMessage(
-    Array<string>(),
-    Array<any>(),
-    sql,
-    {
-      showPaginationToolsBar: false,
-      showToolsBar: false,
-    },
-    {
-      current: 0,
-      size: 0,
-      total: 0,
-    },
-    undefined,
-    undefined
-  );
-
-  if (
-    !(results instanceof Array) &&
-    Object.getPrototypeOf(results).constructor.name === "ResultSetHeader"
-  ) {
-    Logger.attension(JSON.stringify(results).trim());
-    return;
-  }
-
-  if (fields) {
-    fields.forEach((field) => {
-      messageContent.columns.push(field.name);
-    });
-  }
   if (results instanceof Array) {
-    let panel = getWebviewPanel(
-      "elegance_mysql.query",
-      "result",
-      vscode.ViewColumn.One
+    let handler = resultHandlerStrategy.get(
+      Object.getPrototypeOf(results[0]).constructor.name
     );
-    results.forEach((result: any) => {
-      messageContent.rows.push(result);
-    });
-    openQueryHtml(panel);
-    panel.webview.postMessage(new Message(messageContent, true));
+    if (handler) {
+      handler({ results: results, fields: fields, sql: sql });
+    }
+  } else {
+    let handler = resultHandlerStrategy.get(
+      Object.getPrototypeOf(results).constructor.name
+    );
+    if (handler) {
+      handler({ results: results, fields: fields, sql: sql });
+    }
   }
 }

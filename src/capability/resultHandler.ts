@@ -1,23 +1,33 @@
 import { FieldPacket, OkPacket, ResultSetHeader } from "mysql2";
-import { WebviewPanel } from "vscode";
+import { ViewColumn, WebviewPanel } from "vscode";
 import { Message, QueryMessage } from "../model/messageModel";
 import { Logger } from "./logService";
-import { openQueryHtml } from "./viewsUtils";
+import { getWebviewPanel, openQueryHtml } from "./viewsUtils";
+
+interface ResultHandler {
+  (result: ResultStruct): void;
+}
+
+interface ResultStruct {
+  results: any;
+  fields?: FieldPacket[];
+  sql: string;
+}
 
 export const resultHandlerStrategy = new Map<string, ResultHandler>();
 
 export function initialResultHandlerStrategy() {
-  let tableResultHandler: ResultHandler = (
-    result: any,
-    fields: FieldPacket[],
-    sql,
-    panel
-  ) => {
+  let tableResultHandler: ResultHandler = (result: ResultStruct) => {
+    let panel = getWebviewPanel(
+      "elegance_mysql.query",
+      result.sql,
+      ViewColumn.One
+    );
     // assmble result
     let messageContent = new QueryMessage(
       Array<string>(),
       Array<any>(),
-      sql,
+      result.sql,
       {
         showPaginationToolsBar: false,
         showToolsBar: false,
@@ -30,19 +40,21 @@ export function initialResultHandlerStrategy() {
       undefined,
       undefined
     );
-    fields.forEach((field) => {
-      messageContent.columns.push(field.name);
+    if (result.fields) {
+      result.fields.forEach((field) => {
+        messageContent.columns.push(field.name);
+      });
+    }
+    result.results.forEach((r: any) => {
+      Logger.debug(JSON.stringify(r).trim());
+      messageContent.rows.push(r);
     });
     openQueryHtml(panel);
     panel.webview.postMessage(new Message(messageContent, true));
   };
 
-  resultHandlerStrategy.set("ResultSetHeader", (result: ResultSetHeader) => {
-    Logger.attension(JSON.stringify(result).trim());
+  resultHandlerStrategy.set("ResultSetHeader", (result: ResultStruct) => {
+    Logger.attension(JSON.stringify(result.results).trim());
   });
-  resultHandlerStrategy.set("OkPacket", tableResultHandler);
-}
-
-interface ResultHandler {
-  (result: any, fields: any, sql: string, panel: WebviewPanel): void;
+  resultHandlerStrategy.set("TextRow", tableResultHandler);
 }
