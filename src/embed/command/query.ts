@@ -1,6 +1,9 @@
 import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
 import * as vscode from "vscode";
-import { execSelect, execSelectAsync } from "../../capability/databaseUtils";
+import {
+  execSelect,
+  execSelectAsyncProcess,
+} from "../../capability/databaseUtils";
 import {
   Message,
   Page,
@@ -194,26 +197,44 @@ export function select500(
   );
 }
 
-//TODO: Distinguish limit clause or not give a default pagination
 export async function selectSql(
   sql: string,
   config: DatabaseConfig,
   schemaName: string
 ) {
-  let [results, fields] = await execSelectAsync(config, schemaName, sql);
-  if (results instanceof Array) {
-    let handler = resultHandlerStrategy.get(
-      Object.getPrototypeOf(results[0]).constructor.name
-    );
-    if (handler) {
-      handler({ results: results, fields: fields, sql: sql });
+  return vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: "Comparing to selected schema.",
+      cancellable: false,
+    },
+    (process, token) => {
+      return new Promise<void>(async (resolve) => {
+        let [results, fields] = await execSelectAsyncProcess(
+          config,
+          schemaName,
+          sql,
+          process,
+          0,
+          100
+        );
+        // get results type then goto result handler strategy
+        let constructorName;
+        if (results instanceof Array) {
+          constructorName = Object.getPrototypeOf(results[0]).constructor.name;
+        } else {
+          constructorName = Object.getPrototypeOf(results).constructor.name;
+        }
+        let handler = resultHandlerStrategy.get(constructorName);
+        if (handler) {
+          handler({ results: results, fields: fields, sql: sql });
+        } else {
+          Logger.attension(
+            String.raw`There's no result handler for this sql, Please submit to issue
+      url: https://github.com/AethLi/elegance_mysql/issues`
+          );
+        }
+      });
     }
-  } else {
-    let handler = resultHandlerStrategy.get(
-      Object.getPrototypeOf(results).constructor.name
-    );
-    if (handler) {
-      handler({ results: results, fields: fields, sql: sql });
-    }
-  }
+  );
 }

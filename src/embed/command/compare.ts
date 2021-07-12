@@ -6,7 +6,7 @@ import {
 } from "../provider/eleganceDatabaseProvider";
 import { constants, Values } from "../../capability/globalValues";
 import * as mysql2 from "mysql2/promise";
-import { execSelectAsyncProcess as execSelectAsyncWithProcess } from "../../capability/databaseUtils";
+import { execSelectAsyncProcess } from "../../capability/databaseUtils";
 
 export function compareTo(item: EleganceTreeItem) {
   Values.compareToOrigin = {
@@ -96,7 +96,7 @@ export async function schemaCompareTo(destination: any) {
           constants.showCreateSchema,
           Values.compareToOrigin.schemaName
         );
-        let [results, field] = await execSelectAsyncWithProcess(
+        let [results, field] = await execSelectAsyncProcess(
           Values.compareToOrigin.config,
           Values.compareToOrigin.schemaName,
           sql,

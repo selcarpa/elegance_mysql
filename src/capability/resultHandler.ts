@@ -57,4 +57,5 @@ export function initialResultHandlerStrategy() {
     Logger.attension(JSON.stringify(result.results).trim());
   });
   resultHandlerStrategy.set("TextRow", tableResultHandler);
+  resultHandlerStrategy.set("RowDataPacket", tableResultHandler);
 }

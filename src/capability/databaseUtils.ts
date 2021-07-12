@@ -93,56 +93,6 @@ export async function execSelectAsyncProcess(
   });
 }
 
-export async function execSelectAsync(
-  config: DatabaseConfig,
-  schema: string,
-  sql: string
-) {
-  return await window.withProgress(
-    {
-      location: ProgressLocation.Notification,
-      title: "Prepare to execute sql.",
-      cancellable: false,
-    },
-    (process, token) => {
-      return new Promise<
-        [
-          (
-            | mysql2.RowDataPacket[]
-            | mysql2.RowDataPacket[][]
-            | mysql2.OkPacket
-            | mysql2.OkPacket[]
-            | mysql2.ResultSetHeader
-          ),
-          mysql2.FieldPacket[]
-        ]
-      >(async (resolve) => {
-        process.report({ increment: 0 });
-        let connection = await mysql2Promise.createConnection({
-          host: config.host,
-          user: config.user,
-          password: config.password,
-          database: schema,
-          port: config.port,
-        });
-        process.report({
-          increment: 10,
-          message: "Connection created success!",
-        });
-        // debug mode will print sql
-        Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
-        let result = await connection.query(sql);
-
-        process.report({
-          increment: 90,
-          message: "Sql executed success!",
-        });
-        connection.end();
-        resolve(result);
-      });
-    }
-  );
-}
 
 /**
  *
