@@ -1,9 +1,6 @@
 import { EleganceTreeItem } from "../provider/eleganceDatabaseProvider";
 import * as vscode from "vscode";
-import {
-  execSelect,
-  execSelectAsyncProcess,
-} from "../../capability/databaseUtils";
+import { execSelect } from "../../capability/databaseUtils";
 import {
   Message,
   Page,
@@ -11,11 +8,11 @@ import {
   QueryViewOptions,
 } from "../../model/messageModel";
 import { Logger } from "../../capability/logService";
-import { FieldPacket, QueryError, ResultSetHeader } from "mysql2";
+import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../../model/configurationModel";
-import { getWebviewPanel, openQueryHtml } from "../../capability/viewsUtils";
+import { openQueryHtml } from "../../capability/viewsUtils";
 import { constants, Values } from "../../capability/globalValues";
-import { resultHandlerStrategy } from "../../capability/resultHandler";
+import * as util from "util";
 
 function getCountResult(
   sql: string,
@@ -123,7 +120,11 @@ export function select500(
   item: EleganceTreeItem,
   panel: vscode.WebviewPanel
 ): void {
-  let columnsSql: string = `SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='${item.result.tableName}' and TABLE_SCHEMA='${item.result.schemaName}' ORDER BY ORDINAL_POSITION;`;
+  let columnsSql: string = util.format(
+    constants.getColumnNames,
+    item.result.tableName,
+    item.result.schemaName
+  );
   execSelect(
     item.config,
     "mysql",
@@ -194,47 +195,5 @@ export function select500(
     },
     undefined,
     Values.context.subscriptions
-  );
-}
-
-export async function selectSql(
-  sql: string,
-  config: DatabaseConfig,
-  schemaName: string
-) {
-  return vscode.window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: "Comparing to selected schema.",
-      cancellable: false,
-    },
-    (process, token) => {
-      return new Promise<void>(async (resolve) => {
-        let [results, fields] = await execSelectAsyncProcess(
-          config,
-          schemaName,
-          sql,
-          process,
-          0,
-          100
-        );
-        // get results type then goto result handler strategy
-        let constructorName;
-        if (results instanceof Array) {
-          constructorName = Object.getPrototypeOf(results[0]).constructor.name;
-        } else {
-          constructorName = Object.getPrototypeOf(results).constructor.name;
-        }
-        let handler = resultHandlerStrategy.get(constructorName);
-        if (handler) {
-          handler({ results: results, fields: fields, sql: sql });
-        } else {
-          Logger.attension(
-            String.raw`There's no result handler for this sql, Please submit to issue
-      url: https://github.com/AethLi/elegance_mysql/issues`
-          );
-        }
-      });
-    }
   );
 }

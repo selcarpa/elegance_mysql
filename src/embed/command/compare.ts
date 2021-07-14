@@ -87,7 +87,7 @@ export async function schemaCompareTo(destination: any) {
   return vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: "Comparing to selected schema.",
+      title: "Comparing to selected schema",
       cancellable: false,
     },
     (process, token) => {

@@ -1,5 +1,5 @@
-import { FieldPacket, OkPacket, ResultSetHeader } from "mysql2";
-import { ViewColumn, WebviewPanel } from "vscode";
+import { FieldPacket } from "mysql2";
+import { ViewColumn } from "vscode";
 import { Message, QueryMessage } from "../model/messageModel";
 import { Logger } from "./logService";
 import { getWebviewPanel, openQueryHtml } from "./viewsUtils";
@@ -59,3 +59,7 @@ export function initialResultHandlerStrategy() {
   resultHandlerStrategy.set("TextRow", tableResultHandler);
   resultHandlerStrategy.set("RowDataPacket", tableResultHandler);
 }
+
+export const errorHandler = function (e: Error) {
+  Logger.error(e.message, e);
+};

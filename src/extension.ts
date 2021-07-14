@@ -3,7 +3,7 @@ import {
   EleganceDatabaseProvider as EleganceTreeNodeProvider,
   EleganceTreeItem,
 } from "./embed/provider/eleganceDatabaseProvider";
-import { select500, selectSql } from "./embed/command/query";
+import { select500 } from "./embed/command/query";
 import { getWebviewPanel } from "./capability/viewsUtils";
 import { details } from "./embed/command/details";
 import {
@@ -16,6 +16,7 @@ import { onConfiguationChange as onConfigurationChange } from "./embed/event/con
 import { databaseSelect } from "./embed/command/otherOperations";
 import { finishStartup, initial, startupTasks } from "./embed/elegance/startup";
 import { StorageService } from "./capability/localStorageService.ts";
+import { runSelectedSql } from "./embed/command/runSql";
 
 export function activate(context: vscode.ExtensionContext) {
   initial(context);
@@ -141,7 +142,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Get the word within the selection
         let words = document.getText(selection);
-        selectSql(
+        runSelectedSql(
           words,
           Values.selectedSchema.config,
           Values.selectedSchema.schemaName

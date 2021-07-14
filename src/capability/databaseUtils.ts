@@ -64,7 +64,7 @@ export async function execSelectAsyncProcess(
       ),
       mysql2.FieldPacket[]
     ]
-  >(async (resolve) => {
+  >(async (resolve, reject) => {
     let increment = (processIncrementEndAt - processIncrementStartAt) / 3;
     let connection = await mysql2Promise.createConnection({
       host: config.host,
@@ -90,9 +90,11 @@ export async function execSelectAsyncProcess(
       message: "Disconnected!",
     });
     resolve(result);
+  }).catch((e) => {
+    Logger.error(e.message, e);
+    return [];
   });
 }
-
 
 /**
  *

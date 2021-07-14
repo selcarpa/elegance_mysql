@@ -3,9 +3,8 @@ import * as vscode from "vscode";
 import { execSelect } from "../../capability/databaseUtils";
 import { FieldPacket, QueryError } from "mysql2";
 import { Logger } from "../../capability/logService";
-import { Message, Page, QueryMessage } from "../../model/messageModel";
+import { Message, QueryMessage } from "../../model/messageModel";
 import { openQueryHtml } from "../../capability/viewsUtils";
-import { Values } from "../../capability/globalValues";
 
 export async function details(
   item: EleganceTreeItem,

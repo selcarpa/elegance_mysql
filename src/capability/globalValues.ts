@@ -32,4 +32,6 @@ export const constants = {
   eleganceProviderNoDatabaseAction: "Open Workspace Settings(JSON)",
   versionSql: "SELECT VERSION() as version1",
   showCreateSchema: `SHOW CREATE SCHEMA %s`,
+  getColumnNames:
+    "SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='%s' and TABLE_SCHEMA='%s' ORDER BY ORDINAL_POSITION;",
 };
