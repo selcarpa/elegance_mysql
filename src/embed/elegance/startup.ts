@@ -7,7 +7,7 @@ import {
 import { constants, Values } from "../../capability/globalValues";
 import { StorageService } from "../../capability/localStorageService.ts";
 import { Logger } from "../../capability/logService";
-import { initialResultHandlerStrategy } from "../../capability/resultHandler";
+import { initialResultHandlers } from "../../capability/resultHandler";
 import { SelectedSchema } from "../../model/storageModel";
 
 /**
@@ -56,7 +56,7 @@ export function initial(context: ExtensionContext) {
   );
 
   // initial strategy
-  initialResultHandlerStrategy();
+  initialResultHandlers();
 }
 
 /**

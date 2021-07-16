@@ -14,9 +14,9 @@ interface ResultStruct {
   sql: string;
 }
 
-export const resultHandlerStrategy = new Map<string, ResultHandler>();
+export const resultHandlers = new Map<string, ResultHandler>();
 
-export function initialResultHandlerStrategy() {
+export function initialResultHandlers() {
   let tableResultHandler: ResultHandler = (result: ResultStruct) => {
     let panel = getWebviewPanel(
       "elegance_mysql.query",
@@ -53,13 +53,9 @@ export function initialResultHandlerStrategy() {
     panel.webview.postMessage(new Message(messageContent, true));
   };
 
-  resultHandlerStrategy.set("ResultSetHeader", (result: ResultStruct) => {
+  resultHandlers.set("ResultSetHeader", (result: ResultStruct) => {
     Logger.attension(JSON.stringify(result.results).trim());
   });
-  resultHandlerStrategy.set("TextRow", tableResultHandler);
-  resultHandlerStrategy.set("RowDataPacket", tableResultHandler);
+  resultHandlers.set("TextRow", tableResultHandler);
+  resultHandlers.set("RowDataPacket", tableResultHandler);
 }
-
-export const errorHandler = function (e: Error) {
-  Logger.error(e.message, e);
-};

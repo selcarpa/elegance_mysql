@@ -2,8 +2,7 @@ import { ProgressLocation, window } from "vscode";
 import { execSelectAsyncProcess } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import {
-  errorHandler,
-  resultHandlerStrategy,
+  resultHandlers,
 } from "../../capability/resultHandler";
 import { DatabaseConfig } from "../../model/configurationModel";
 
@@ -31,7 +30,7 @@ export async function runSelectedSql(
             } else {
               constructorName = Object.getPrototypeOf(results).constructor.name;
             }
-            let handler = resultHandlerStrategy.get(constructorName);
+            let handler = resultHandlers.get(constructorName);
             if (handler) {
               handler({ results: results, fields: fields, sql: sql });
             } else {
