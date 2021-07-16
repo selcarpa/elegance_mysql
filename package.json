@@ -15,11 +15,6 @@
       "url": "https://img.shields.io/github/license/aethli/elegance_mysql?style=flat-square",
       "href": "https://github.com/AethLi/elegance_mysql/blob/main/LICENSE",
       "description": "MIT"
-    },
-    {
-      "url": "https://open.vscode.dev/badges/open-in-vscode.svg",
-      "href": "https://open.vscode.dev/AethLi/elegance_mysql",
-      "description": "MIT"
     }
   ],
   "engines": {
