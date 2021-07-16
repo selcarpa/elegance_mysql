@@ -1,5 +1,6 @@
 # elegancemysql README
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/AethLi/elegance_mysql)
 [![MIT](https://img.shields.io/github/license/aethli/elegance_mysql?style=flat-square)](https://github.com/AethLi/elegance_mysql/blob/main/LICENSE)
 
 ## Features

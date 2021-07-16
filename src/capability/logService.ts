@@ -123,7 +123,7 @@ export class Logger {
 
   /**
    * Append messages to the output channel and popup
-   * @param message 
+   * @param message message to display
    */
   public static attension(message: string): void {
     this.outputChannel.appendLine(message);

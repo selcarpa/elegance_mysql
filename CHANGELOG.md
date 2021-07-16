@@ -6,6 +6,7 @@ All notable changes to the "elegance mysql" extension will be documented in this
 
 - Disable some command in command palette
 - Give a process notify when sql is executing
+- Give an error notify when sql excuting caused error
 - Fix my banner "elegance"
 - change to a simpler logo
 - Add a copy menu to copy schema name or table name selected

@@ -79,20 +79,21 @@ export async function execSelectAsyncProcess(
     });
     // debug mode will print sql
     Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
-    let result = await connection.query(sql);
-    process.report({
-      increment: processIncrementStartAt + increment,
-      message: "Sql executed success!",
-    });
-    connection.end();
-    process.report({
-      increment: processIncrementStartAt + increment * 2,
-      message: "Disconnected!",
-    });
-    resolve(result);
-  }).catch((e) => {
-    Logger.error(e.message, e);
-    return [];
+    try {
+      let result = await connection.query(sql);
+      process.report({
+        increment: processIncrementStartAt + increment,
+        message: "Sql executed success!",
+      });
+      connection.end();
+      process.report({
+        increment: processIncrementStartAt + increment * 2,
+        message: "Disconnected!",
+      });
+      resolve(result);
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 
