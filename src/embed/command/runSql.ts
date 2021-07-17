@@ -1,10 +1,10 @@
 import { ProgressLocation, window } from "vscode";
 import { execSelectAsyncProcess } from "../../capability/databaseUtils";
+import { constants } from "../../capability/globalValues";
 import { Logger } from "../../capability/logService";
-import {
-  resultHandlers,
-} from "../../capability/resultHandler";
+import { resultHandlers } from "../../capability/resultHandler";
 import { DatabaseConfig } from "../../model/configurationModel";
+import * as util from "util";
 
 export async function runSelectedSql(
   sql: string,
@@ -41,8 +41,17 @@ export async function runSelectedSql(
             }
             resolve();
           })
-          .catch((e) => {
-            Logger.error(e.message, e);
+          .catch((error) => {
+            Logger.error(
+              util.format(
+                constants.errorNotify,
+                config.name,
+                config.host,
+                sql,
+                error.message
+              ),
+              error
+            );
             resolve();
           });
       });

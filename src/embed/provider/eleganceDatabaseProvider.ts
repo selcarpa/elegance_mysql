@@ -6,7 +6,7 @@ import { TreeItemCollapsibleState } from "vscode";
 import { execSelect, versionCheck } from "../../capability/databaseUtils";
 import { Logger } from "../../capability/logService";
 import { FieldPacket, QueryError } from "mysql2";
-import { constants } from "../../capability/globalValues";
+import { constants, Values } from "../../capability/globalValues";
 import { DatabaseConfig } from "../../model/configurationModel";
 
 /**
@@ -159,7 +159,16 @@ export class EleganceTreeItem extends vscode.TreeItem {
           fields: FieldPacket[]
         ) => {
           if (error) {
-            Logger.error(error.message, error);
+            Logger.error(
+              util.format(
+                constants.errorNotify,
+                this.config.name,
+                this.config.host,
+                this.sql,
+                error.message
+              ),
+              error
+            );
             resolve([]);
           }
           let sonTreeItems: EleganceTreeItem[] = [];

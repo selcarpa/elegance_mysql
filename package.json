@@ -1,9 +1,9 @@
 {
   "name": "elegancemysql",
-  "displayName": "elegance mysql",
+  "displayName": "Elegance Mysql",
   "description": "mysql database diagram",
   "publisher": "aethli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "repository": {
     "type": "git",

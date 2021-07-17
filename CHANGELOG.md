@@ -2,6 +2,13 @@
 
 All notable changes to the "elegance mysql" extension will be documented in this file.
 
+## [0.3.1]
+- Change version to 0.3.1
+- Change name to Space Camel Case
+- Fix error not catched when creating connection
+- Now whatever log level setted error message will display
+
+
 ## [0.3.0]
 
 - Disable some command in command palette

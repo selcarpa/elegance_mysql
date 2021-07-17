@@ -3,7 +3,7 @@ import * as mysql2Promise from "mysql2/promise";
 import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../model/configurationModel";
 import { Logger } from "./logService";
-import { Progress, ProgressLocation, window } from "vscode";
+import { Progress } from "vscode";
 
 /**
  *
@@ -66,20 +66,20 @@ export async function execSelectAsyncProcess(
     ]
   >(async (resolve, reject) => {
     let increment = (processIncrementEndAt - processIncrementStartAt) / 3;
-    let connection = await mysql2Promise.createConnection({
-      host: config.host,
-      user: config.user,
-      password: config.password,
-      database: schema,
-      port: config.port,
-    });
-    process.report({
-      increment: processIncrementStartAt,
-      message: "Connection created success!",
-    });
-    // debug mode will print sql
-    Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
     try {
+      let connection = await mysql2Promise.createConnection({
+        host: config.host,
+        user: config.user,
+        password: config.password,
+        database: schema,
+        port: config.port,
+      });
+      process.report({
+        increment: processIncrementStartAt,
+        message: "Connection created success!",
+      });
+      // debug mode will print sql
+      Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
       let result = await connection.query(sql);
       process.report({
         increment: processIncrementStartAt + increment,

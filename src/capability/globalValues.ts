@@ -34,4 +34,5 @@ export const constants = {
   showCreateSchema: `SHOW CREATE SCHEMA %s`,
   getColumnNames:
     "SELECT COLUMN_NAME name,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME='%s' and TABLE_SCHEMA='%s' ORDER BY ORDINAL_POSITION;",
+  errorNotify: "name: %s, datbabase: %s, sql: %s, error: %s",
 };
