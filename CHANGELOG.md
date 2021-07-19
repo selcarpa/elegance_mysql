@@ -1,13 +1,13 @@
 # Change Log
 
-All notable changes to the "elegance mysql" extension will be documented in this file.
-
 ## [0.3.1]
+
 - Change version to 0.3.1
-- Change name to Space Camel Case
+- Change name to Space Camel Case(With my another vscode extension [Camel Go Brr](https://marketplace.visualstudio.com/items?itemName=aethli.camelgobrr))
 - Fix error not catched when creating connection
 - Now whatever log level setted error message will display
-
+- Now print sql when log level at least `Info`
+- Now print result with `Logger.info`, while some "DELETE" or "UPDATE" statement excuted
 
 ## [0.3.0]
 

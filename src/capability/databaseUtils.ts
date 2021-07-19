@@ -25,8 +25,8 @@ export function execSelect(
     database: schema,
     port: config.port,
   });
-  // debug mode will print sql
-  Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
+  // print sql when log level at least info
+  Logger.info(`${config.name}(${config.host}) -- execSelect: ${sql}`);
   connection.connect();
   connection.query(sql, callBack);
   connection.end();
@@ -78,8 +78,8 @@ export async function execSelectAsyncProcess(
         increment: processIncrementStartAt,
         message: "Connection created success!",
       });
-      // debug mode will print sql
-      Logger.debug(`${config.name}(${config.host}) -- execSelect: ${sql}`);
+      // print sql when log level at least info
+      Logger.info(`${config.name}(${config.host}) -- execSelect: ${sql}`);
       let result = await connection.query(sql);
       process.report({
         increment: processIncrementStartAt + increment,

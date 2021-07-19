@@ -12,9 +12,10 @@ export class Logger {
   }
 
   /**
-   * Append messages to the output channel and format it with a title
+   * Logs a message with debug log level.
    *
    * @param message The message to append to the output channel
+   * @param data Any data that serializable
    */
   public static debug(message?: string, data?: unknown): void {
     if (
@@ -34,9 +35,10 @@ export class Logger {
   }
 
   /**
-   * Append messages to the output channel and format it with a title
+   * Logs a message with info log level.
    *
    * @param message The message to append to the output channel
+   * @param data Any data that serializable
    */
   public static info(message: string, data?: unknown): void {
     if (
@@ -52,15 +54,22 @@ export class Logger {
     }
   }
 
+  /**
+   * Logs a message with info level and showInformationMessage
+   *
+   * @param message
+   * @param data Any data that serializable
+   */
   public static infoAndShow(message: string, data?: unknown): void {
     this.info(message, data);
     window.showInformationMessage(message);
   }
 
   /**
-   * Append messages to the output channel and format it with a title
+   * Logs a message with warning log level.
    *
    * @param message The message to append to the output channel
+   * @param data Any data that serializable
    */
   public static warning(message: string, data?: unknown): void {
     if (this.logLevel === "NONE" || this.logLevel === "ERROR") {
@@ -72,7 +81,13 @@ export class Logger {
     }
   }
 
-  public static error(message: string, error?: Error | string) {
+  /**
+   * Logs a message with error log level.
+   *
+   * @param message The message to append to the output channel
+   * @param error Typescript Error
+   */
+  public static error(message: string, error?: Error | string): void {
     window.showErrorMessage(message);
     if (this.logLevel === "NONE") {
       return;
@@ -94,19 +109,29 @@ export class Logger {
     }
   }
 
+  /**
+   * Reveal outputChannel in the UI
+   */
   public static show() {
     this.outputChannel.show();
   }
 
+  /**
+   * Serialize with json and log it
+   *
+   * @param data Any data that serializable
+   * @param logLevel
+   */
   private static logObject(data: unknown, logLevel: LogLevel): void {
     const message = JSON.stringify(data).trim();
     this.logMessage(message, logLevel);
   }
 
   /**
-   * Append messages to the output channel and format it with a title
+   * Append message to the output channel and format it with a title
    *
    * @param message The message to append to the output channel
+   * @param logLevel
    */
   private static logMessage(message: string, logLevel: LogLevel): void {
     const title = new Date().toLocaleTimeString();
@@ -114,6 +139,7 @@ export class Logger {
   }
 
   /**
+   * Append message with no format
    *
    * @param message
    */
@@ -122,11 +148,12 @@ export class Logger {
   }
 
   /**
-   * Append messages to the output channel and popup
+   * Append message to the output channel and popup
+   *
    * @param message message to display
    */
   public static attension(message: string): void {
-    this.outputChannel.appendLine(message);
-    this.outputChannel.show();
+    this.info(message);
+    this.show();
   }
 }
