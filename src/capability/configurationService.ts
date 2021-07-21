@@ -12,7 +12,7 @@ function getConfiguration(): vscode.WorkspaceConfiguration {
 }
 
 /**
- * TODO: known issue: other extensions can get this configuration. if there is any malicious extension, it will leak database connection information from settings.json.
+ * Known issue: other extensions can get this configuration. if there is any malicious extension, it will leak database connection information from settings.json.
  * @returns database configs from settings.json
  */
 export function getDatabaseConfigs(): Array<DatabaseConfig> {

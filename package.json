@@ -3,7 +3,7 @@
   "displayName": "Elegance Mysql",
   "description": "mysql database diagram",
   "publisher": "aethli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -238,23 +238,60 @@
               },
               "host": {
                 "type": "string",
-                "description": "mysql server ip address or domain"
+                "description": "The hostname of the database you are connecting to. (Default: localhost)",
+                "default": "localhost"
               },
               "port": {
                 "type": "number",
-                "description": "mysql server port"
+                "description": "The port number to connect to. (Default: 3306)",
+                "default": 3306
               },
               "user": {
                 "type": "string",
-                "description": "mysql server user"
+                "description": "The MySQL user to authenticate as. (Default: root)",
+                "default": "root"
               },
               "password": {
                 "type": "string",
-                "description": "mysql server password"
+                "description": "The password of that MySQL user"
+              },
+              "charset": {
+                "type": "string",
+                "description": "The charset for the connection. This is called 'collation' in the SQL-level of MySQL (like utf8_general_ci). If a SQL-level charset is specified (like utf8mb4) then the default collation for that charset is used. (Default: 'UTF8_GENERAL_CI')",
+                "default": "UTF8_GENERAL_CI"
+              },
+              "localAddress": {
+                "type": "string",
+                "description": "The source IP address to use for TCP connection"
+              },
+              "socketPath": {
+                "type": "string",
+                "description": "The path to a unix domain socket to connect to. When used host and port are ignored"
+              },
+              "timezone": {
+                "type": "string",
+                "description": "The timezone used to store local dates. (Default: 'local')",
+                "default": "local"
+              },
+              "connectTimeout": {
+                "type": "number",
+                "description": "The milliseconds before a timeout occurs during the initial connection to the MySQL server. (Default: 10 seconds)",
+                "default": 100000
+              },
+              "stringifyObjects": {
+                "type": "boolean",
+                "description": "Stringify objects instead of converting to values. (Default: 'true')",
+                "default": true
+              },
+              "insecureAuth": {
+                "type": "boolean",
+                "description": "Allow connecting to MySQL instances that ask for the old (insecure) authentication method. (Default: false)",
+                "default": false
               },
               "schemaFilterEnable": {
                 "type": "boolean",
-                "description": "wheather filter schema to display of this database config, if true schema list will filter by #showSchemas"
+                "description": "wheather filter schema to display of this database config, if true schema list will filter by #showSchemas. (Default: false)",
+                "default": false
               },
               "showSchemas": {
                 "type": "array",
@@ -263,7 +300,8 @@
                   "type": "string",
                   "title": "SchemaName",
                   "description": "schema name of this database config"
-                }
+                },
+                "default": []
               }
             }
           },

@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.3.2]
+
+- Add a lot of item in elegance.mysql.databases
+
 ## [0.3.1]
 
 - Change version to 0.3.1
