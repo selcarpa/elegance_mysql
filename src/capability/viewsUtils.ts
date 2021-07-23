@@ -4,6 +4,10 @@ import * as path from "path";
 import { Logger } from "./logService";
 import { Values } from "./globalValues";
 
+function shorterString(plain: string): string {
+  return plain.substring(0, 16);
+}
+
 /**
  *
  */
@@ -60,7 +64,7 @@ export function getWebviewPanel(
   title: string,
   showOptions: vscode.ViewColumn
 ): vscode.WebviewPanel {
-  return vscode.window.createWebviewPanel(viewType, title, showOptions, {
+  return vscode.window.createWebviewPanel(viewType, shorterString(title), showOptions, {
     retainContextWhenHidden: true,
     enableScripts: true,
     localResourceRoots: [
@@ -72,8 +76,7 @@ export function getWebviewPanel(
 
 /**
  * just open a query webview
- * @param panel
- * @param extensionPath
+ * @param panel @see vscode.WebviewPanel
  */
 export function openQueryHtml(panel: vscode.WebviewPanel) {
   fs.readFile(

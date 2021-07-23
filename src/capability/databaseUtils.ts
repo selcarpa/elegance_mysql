@@ -4,6 +4,22 @@ import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../model/configurationModel";
 import { Logger } from "./logService";
 import { Progress } from "vscode";
+import Connection = require("mysql2/typings/mysql/lib/Connection");
+import { convertConnectionOptions } from "./typeConvertUtils";
+
+/**
+ * get database connection
+ * 
+ * @param config @see DatabaseConfig
+ * @param schema schema name
+ * @returns 
+ */
+export function getConnection(
+  config: DatabaseConfig,
+  schema: string
+): Connection {
+  return mysql2.createConnection(convertConnectionOptions(config, schema));
+}
 
 /**
  *
@@ -18,13 +34,7 @@ export function execSelect(
   sql: string,
   callBack?: (err: QueryError | null, result: any, fields: FieldPacket[]) => any
 ) {
-  let connection = mysql2.createConnection({
-    host: config.host,
-    user: config.user,
-    password: config.password,
-    database: schema,
-    port: config.port,
-  });
+  let connection = getConnection(config, schema);
   // print sql when log level at least info
   Logger.info(`${config.name}(${config.host}) -- execSelect: ${sql}`);
   connection.connect();

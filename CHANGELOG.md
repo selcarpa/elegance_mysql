@@ -2,7 +2,8 @@
 
 ## [0.3.2]
 
-- Add a lot of item in elegance.mysql.databases
+- Add a lot of item in settings.json#elegance.mysql.databases
+- Now view of "run selected sql" will displays a shorter title
 
 ## [0.3.1]
 
