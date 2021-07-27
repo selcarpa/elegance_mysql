@@ -4,6 +4,10 @@
 
 - Add a lot of item in settings.json#elegance.mysql.databases
 - Now view of "run selected sql" will displays a shorter title
+- Fix count error when change where clause in result page
+- Change select500 result panel name to table name
+- Remove version message(It's nothing non-compatible right now)
+- Remove some useless context menu
 
 ## [0.3.1]
 

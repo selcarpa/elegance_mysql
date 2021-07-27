@@ -41,6 +41,7 @@ function setVersion(config: DatabaseConfig): void {
       if (error) {
         Logger.error(error.message, error);
       }
+      Logger.debug(undefined, results);
       let version: string = results[0]["version1"];
       if (version) {
         config.version = version;
@@ -119,9 +120,9 @@ export class EleganceDatabaseProvider
         databaseTreeItems.push(e);
       });
 
-      setTimeout(() => {
-        popVersionMessage(databaseConfigs);
-      }, 5);
+      // setTimeout(() => {
+      //   popVersionMessage(databaseConfigs);
+      // }, 5);
 
       return databaseTreeItems;
     }

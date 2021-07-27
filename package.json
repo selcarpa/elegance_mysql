@@ -143,7 +143,7 @@
         },
         {
           "command": "elegance_mysql.compareWithSelectedSchema",
-          "when": "view == elegance_list && elegance_mysql.compare_schema_selected && viewItem == schema",
+          "when": "view == elegance_list && elegance_mysql.compare_schema_selected && viewItem == schema && false",
           "group": "compare@2"
         },
         {

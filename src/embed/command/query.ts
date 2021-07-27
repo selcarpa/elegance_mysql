@@ -170,28 +170,32 @@ export function select500(
       if (!message.limitValue) {
         message.limitValue = 500;
       }
-      getCountResult(message.sql, item.config, item.result.schemaName).then(
-        (c1) => {
-          getQueryResult(
-            {
-              sql: message.sql,
-              page: {
-                current: message.page.current,
-                total: c1,
-                size: message.page.size,
-              },
-              whereClause: message.whereClause,
-              orderByClause: message.orderByClause,
+      getCountResult(
+        `${message.sql}${
+          message.whereClause ? " where " + message.whereClause : ""
+        }`,
+        item.config,
+        item.result.schemaName
+      ).then((c1) => {
+        getQueryResult(
+          {
+            sql: message.sql,
+            page: {
+              current: message.page.current,
+              total: c1,
+              size: message.page.size,
             },
-            item.config,
-            item.result.schemaName,
-            {
-              showToolsBar: true,
-              showPaginationToolsBar: true,
-            }
-          ).then((m) => panel.webview.postMessage(m));
-        }
-      );
+            whereClause: message.whereClause,
+            orderByClause: message.orderByClause,
+          },
+          item.config,
+          item.result.schemaName,
+          {
+            showToolsBar: true,
+            showPaginationToolsBar: true,
+          }
+        ).then((m) => panel.webview.postMessage(m));
+      });
     },
     undefined,
     Values.context.subscriptions

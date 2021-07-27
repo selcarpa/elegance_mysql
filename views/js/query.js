@@ -16,6 +16,8 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
 
   window.addEventListener("message", (event) => {
     const message = event.data;
+    console.log("Recived elegance mysql message");
+    console.log(event.data);
     if (message.status) {
       $scope.queryData = message.result;
       $("#pagination-container").pagination({

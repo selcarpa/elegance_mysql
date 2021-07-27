@@ -52,7 +52,8 @@ export function initial(context: ExtensionContext) {
   commands.executeCommand(
     "setContext",
     "elegance_mysql.compareTo.supportedItem",
-    ["table", "schema"]
+    // ["table", "schema"]
+    ["table"]
   );
 
   // initial strategy

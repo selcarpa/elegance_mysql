@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
       (item: EleganceTreeItem) => {
         let panel = getWebviewPanel(
           "elegance_mysql.query",
-          "result",
+          item.result.tableName,
           vscode.ViewColumn.One
         );
         select500(item, panel);

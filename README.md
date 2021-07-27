@@ -54,8 +54,8 @@ other settings:
 ## Known Issues
 
 1. Add database button doesn't take effect.
-2. CompareTo doesn't take effect.
-3. Query slowly in some case.
+2. Query slowly in some case.
+3. Query page cannot load correctly.
 
 ## Version Plan
 
