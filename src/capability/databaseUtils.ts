@@ -4,8 +4,8 @@ import { FieldPacket, QueryError } from "mysql2";
 import { DatabaseConfig } from "../model/configurationModel";
 import { Logger } from "./logService";
 import { Progress } from "vscode";
-import Connection = require("mysql2/typings/mysql/lib/Connection");
 import { convertConnectionOptions } from "./typeConvertUtils";
+import { Connection } from "mysql2/typings/mysql";
 
 /**
  * get database connection
