@@ -49,8 +49,7 @@ export function initialResultHandlers() {
       Logger.debug(JSON.stringify(r).trim());
       messageContent.rows.push(r);
     });
-    openQueryHtml(panel);
-    panel.webview.postMessage(new Message(messageContent, true));
+    openQueryHtml(panel,new Message(messageContent, true));
   };
 
   resultHandlers.set("ResultSetHeader", (result: ResultStruct) => {

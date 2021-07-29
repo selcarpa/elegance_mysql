@@ -8,6 +8,7 @@
 - Change select500 result panel name to table name
 - Remove version message(It's nothing non-compatible right now)
 - Remove some useless context menu
+- Fix result page cannot load data sometimes
 
 ## [0.3.1]
 

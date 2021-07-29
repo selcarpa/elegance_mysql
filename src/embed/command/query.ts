@@ -143,7 +143,6 @@ export function select500(
         item.result.tableName
       }`;
 
-      openQueryHtml(panel);
       getCountResult(sql, item.config, item.result.schemaName).then((c1) => {
         getQueryResult(
           {
@@ -160,7 +159,10 @@ export function select500(
             showToolsBar: true,
             showPaginationToolsBar: true,
           }
-        ).then((m) => panel.webview.postMessage(m));
+        ).then((m) => {
+          openQueryHtml(panel, m);
+          // panel.webview.postMessage(m);
+        });
       });
     }
   );

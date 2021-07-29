@@ -10,7 +10,6 @@ export async function details(
   item: EleganceTreeItem,
   panel: vscode.WebviewPanel
 ): Promise<void> {
-  openQueryHtml(panel);
   execSelect(
     item.config,
     "mysql",
@@ -18,7 +17,7 @@ export async function details(
     (error: QueryError | null, results: Array<any>, fields: FieldPacket[]) => {
       if (error) {
         Logger.error(error.message, error);
-        panel.webview.postMessage(new Message(error.message, false));
+        openQueryHtml(panel, new Message(error.message, false));
       }
       let messageContent = new QueryMessage(
         Array<string>(),
@@ -42,7 +41,7 @@ export async function details(
       results.forEach((result) => {
         messageContent.rows.push(result);
       });
-      panel.webview.postMessage(new Message(messageContent, true));
+      openQueryHtml(panel, new Message(messageContent, true));
     }
   );
 }

@@ -64,21 +64,28 @@ export function getWebviewPanel(
   title: string,
   showOptions: vscode.ViewColumn
 ): vscode.WebviewPanel {
-  return vscode.window.createWebviewPanel(viewType, shorterString(title), showOptions, {
-    retainContextWhenHidden: true,
-    enableScripts: true,
-    localResourceRoots: [
-      vscode.Uri.file(path.join(Values.context.extensionPath, "views", "js")),
-      vscode.Uri.file(path.join(Values.context.extensionPath, "views", "css")),
-    ],
-  });
+  return vscode.window.createWebviewPanel(
+    viewType,
+    shorterString(title),
+    showOptions,
+    {
+      retainContextWhenHidden: true,
+      enableScripts: true,
+      localResourceRoots: [
+        vscode.Uri.file(path.join(Values.context.extensionPath, "views", "js")),
+        vscode.Uri.file(
+          path.join(Values.context.extensionPath, "views", "css")
+        ),
+      ],
+    }
+  );
 }
 
 /**
  * just open a query webview
  * @param panel @see vscode.WebviewPanel
  */
-export function openQueryHtml(panel: vscode.WebviewPanel) {
+export function openQueryHtml(panel: vscode.WebviewPanel, preloadData?: unknown) {
   fs.readFile(
     path.join(Values.context.extensionPath, "views", "html", "query.html"),
     (err, data) => {
@@ -104,6 +111,17 @@ export function openQueryHtml(panel: vscode.WebviewPanel) {
         "query.css",
         "pagination.css"
       );
+
+      // add pre-load data
+      if (preloadData) {
+        htmlContent = htmlContent.replace(
+          "<!-- [ELEGANCE_DATA]-->",
+          `<script>
+        preloadData=${JSON.stringify(preloadData).trim()}
+        </script>`
+        );
+      }
+
       panel.webview.html = htmlContent;
     }
   );

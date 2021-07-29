@@ -15,9 +15,12 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
   };
 
   window.addEventListener("message", (event) => {
-    const message = event.data;
+    messageResolve(event.data);
+  });
+
+  function messageResolve(message) {
     console.log("Recived elegance mysql message");
-    console.log(event.data);
+    console.log(message);
     if (message.status) {
       $scope.queryData = message.result;
       $("#pagination-container").pagination({
@@ -26,7 +29,7 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
           (x, i) => i
         ),
         pageSize: message.result.page.size,
-        pageNumber:$scope.queryData.page.current+1,
+        pageNumber: $scope.queryData.page.current + 1,
         showGoInput: true,
         showGoButton: true,
         callback: function (data, pagination) {
@@ -48,10 +51,14 @@ angular.module("queryApp", []).controller("queryController", function ($scope) {
       resizeMode: "overflow",
       disabledColumns: [0],
     });
-  });
+  }
   angular.element(document).ready(function () {
-    document.body.addEventListener('contextmenu', e => {
+    document.body.addEventListener("contextmenu", (e) => {
       // e.preventDefault(); // cancel the built-in context menu
     });
+    console.log(preloadData);
+    if(preloadData){
+      messageResolve(preloadData);
+    }
   });
 });
