@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.3.3]
+
+- Change 'add database' view/title menu to a icon item
+
 ## [0.3.2]
 
 - Add a lot of item in settings.json#elegance.mysql.databases

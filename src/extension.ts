@@ -86,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
       (item: EleganceTreeItem) => {
         let panel = getWebviewPanel(
           "elegance_mysql.query",
-          "result",
+          `${item.result.schemaName}(detail)`,
           vscode.ViewColumn.One
         );
         details(item, panel);

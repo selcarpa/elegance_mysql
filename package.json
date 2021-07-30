@@ -47,7 +47,8 @@
     "commands": [
       {
         "command": "elegance_mysql.refresh",
-        "title": "Refresh",
+        "title": "refresh",
+        "category": "Elegance Refresh",
         "icon": {
           "light": "media/light/elegance_refresh.svg",
           "dark": "media/dark/elegance_refresh.svg"
@@ -56,7 +57,11 @@
       {
         "command": "elegance_mysql.addDatabase",
         "title": "add database",
-        "category": "Elegance Add"
+        "category": "Elegance Add",
+        "icon":{
+          "light": "media/light/elegance_add.svg",
+          "dark": "media/dark/elegance_add.svg"
+        }
       },
       {
         "command": "elegance_mysql.select500",
