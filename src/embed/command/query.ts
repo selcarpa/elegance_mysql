@@ -23,14 +23,14 @@ function getCountResult(
     execSelect(
       config,
       schemaName,
-      `SELECT COUNT(1) as elegance_c1 FROM(${sql}) as elegance_t1`,
+      `SELECT COUNT(1) as ${constants.countAlise} FROM(${sql}) as elegance_t1`,
       (err, result, fields) => {
         if (err) {
           Logger.error(err.message, err);
           r(0);
         } else {
           Logger.debug(undefined, result);
-          r(result[0].elegance_c1);
+          r(result[0][constants.countAlise]);
         }
       }
     );
